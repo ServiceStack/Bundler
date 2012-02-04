@@ -44,7 +44,7 @@ Tip: Give **bundler.cmd** a keyboard short-cut or run it as a post-build script 
 
 To enable MVC Html helper's add ServiceStack.Mvc namespace to your views base class by editing your Views/Web.config:
 
-  <system.web.webPages.razor>
+    <system.web.webPages.razor>
     <pages pageBaseType="System.Web.Mvc.WebViewPage">
       <namespaces>
         <add namespace="System.Web.Mvc" />
@@ -54,7 +54,7 @@ To enable MVC Html helper's add ServiceStack.Mvc namespace to your views base cl
         <add namespace="ServiceStack.Mvc" />    <!-- Enable Html Exentions -->
       </namespaces>
     </pages>
-  </system.web.webPages.razor>
+    </system.web.webPages.razor>
 
 Once enabled, you can then reference these bundles in your MVC **_Layout.cshtml** or **View.cshtml** pages with the **@Html.RenderCssBundle()** and **@Html.RenderJsBundle()** helpers:
 
