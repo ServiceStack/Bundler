@@ -19,9 +19,7 @@ To run you just to put a copy of the **/bundler** folder in your website host di
 
 *One installed you can optionally exclude the '/bunlder' or '/bunlder/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
-To get Started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are 
-
-defined below:
+To get Started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
 
 **/Content/app.js.bundle**
 
