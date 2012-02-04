@@ -1,0 +1,1 @@
+nuget pack ..\NuGet\bundler.nuspec
