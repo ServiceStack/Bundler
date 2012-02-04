@@ -7,6 +7,11 @@ Bundler statically compiles, minifies, combines and adds 'cache breakers' to you
 
 All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so it can be easily debugged and customized to suit your environment. 
 
+## Fast at Runtime and Build time
+The build scripts use only pure 'js' implementations which allows all compilation and minification to happen within a single process.
+Bunder is also designed for maximum runtime performance where no compilation/minification happens at runtime (they're all generated at compile-time). 
+Even the generated HTML output is cached in memory in production mode - so it has almost **no runtime overhead**.
+
 ## How it works
 
 You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** which it goes through, only compiling minifying new or changed files.
