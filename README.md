@@ -13,11 +13,11 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 ## Install
 
-To run you just to put a copy of the **/bundler** folder in your website host directory. You can do this easily via NuGet:
+To run you just to put a copy of the **/bundler** folder in your website host directory. You can do this easily cloning this repo or installing via NuGet:
 
 [![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
-*One installed you can optionally exclude the '/bunlder' or '/bunlder/node_modules' folders from your VS.NET project since they contain a lot of files (as they're not required to be referenced for development).*
+*One installed you can optionally exclude the '/bunlder' or '/bunlder/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
 To get Started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are 
 
@@ -56,7 +56,7 @@ To enable MVC Html helper's add ServiceStack.Mvc namespace to your views base cl
     </pages>
   </system.web.webPages.razor>
 
-Once enabled, you can then reference these bundles in your MVC **_Layout.cshtml** or **View.cshtml** pages with the @Html.RenderCssBundle() and @Html.RenderJsBundle() helpers:
+Once enabled, you can then reference these bundles in your MVC **_Layout.cshtml** or **View.cshtml** pages with the **@Html.RenderCssBundle()** and **@Html.RenderJsBundle()** helpers:
 
 The different BundleOptions supported are:
 
@@ -72,8 +72,8 @@ public enum BundleOptions
 
 With the above bundle configurations, the following helpers below:
 
-@Html.RenderCssBundle("~/Content/app.css.bundle", BundleOptions.Minified)
-@Html.RenderJsBundle("~/Content/app.js.bundle", BundleOptions.MinifiedAndCombined)
+    @Html.RenderCssBundle("~/Content/app.css.bundle", BundleOptions.Minified)
+    @Html.RenderJsBundle("~/Content/app.js.bundle", BundleOptions.MinifiedAndCombined)
 
 Will generate the following HTML:
 
