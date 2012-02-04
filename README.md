@@ -1,6 +1,6 @@
 # Bundler
 
-Bundler statically compiles, minifies, combines and adds 'cache breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
+Bundler statically compiles, minifies, combines and adds 'cache-breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
 
   - All bundling is done at 'compile time' with no dependencies needed at runtime. Requires no outside dependencies outside of the included node.exe and pure javascript npm modules. 
   - Includes a single C# **MvcBundler.cs** class with exension methods to easily integrate it with an existing MVC website.
@@ -9,8 +9,9 @@ All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's
 
 ## Fast at Runtime and Build time
 The build scripts use only pure 'js' implementations which allows all compilation and minification to happen within a single process.
-Bunder is also designed for maximum runtime performance where no compilation/minification happens at runtime (they're all generated at compile-time). 
-Even the generated HTML output is cached in memory in production mode - so it has almost **no runtime overhead**.
+
+Bundler is also designed for maximum runtime performance since no compilation/minification happens at runtime. 
+Even the generated HTML output is cached in memory (in production mode) - so it has almost **no runtime overhead**.
 
 ## How it works
 
