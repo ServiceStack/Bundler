@@ -2,19 +2,19 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Bundler</id> 
-    <version>0.90</version> 
+    <version>0.91</version> 
     <authors>Demis Bellot</authors> 
     <owners>Demis Bellot</owners>
     <summary>Css, Less, CoffeeScript, JavaScript compiler, minifier and combiner for ASP.NET MVC websites.</summary>
     <description>
-		Pure node.js solution to statically complie, minify and concatenate your websites .css, .less, .coffee and .js files into user-defined bundles. Supports configurable bundle settings providing unminified, individual files ideal during development and optimized single minified .min.js and .min.css files for deployment.
+		Pure node.js/javascript solution to statically complie, minify and concatenate your websites .css, .less, .coffee and .js files into user-defined bundles. Supports configurable bundle settings providing unminified, individual files ideal for development and concatenated minified .min.js and .min.css files optimal for deployment. Integrates with MVC. No .dlls, uses only text-based customizable build scripts. Self-contained, no dependencies required at run-time.
     </description> 
-    <projectUrl>https://github.com/ServiceStack/ServiceStack.Text</projectUrl>
-    <licenseUrl>https://github.com/ServiceStack/ServiceStack.Text/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ServiceStack/Bundler</projectUrl>
+    <licenseUrl>https://github.com/ServiceStack/Bundler/blob/master/LICENSE</licenseUrl>
     <iconUrl>http://www.servicestack.net/logo-100x100.png</iconUrl>
-    <tags>LESS CSS CoffeeScript JS JavaScript Node Minify Minifier Compiler Combine Concatenate</tags>
+    <tags>LESS CSS CoffeeScript JavaScript Node JS Minify Minifier Compiler Combine Concatenate</tags>
     <language>en-US</language> 
-    <copyright>Liquidbit 2011 and contributors</copyright>
+    <copyright>ServiceStack 2012 and contributors</copyright>
   </metadata> 
 </package>
 

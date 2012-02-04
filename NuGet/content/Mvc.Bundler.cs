@@ -7,9 +7,18 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SocialBootstrapApi;
 
 namespace ServiceStack.Mvc
 {
+	public enum BundleOptions
+	{
+		Normal,
+		Minified,
+		Combined,
+		MinifiedAndCombined
+	}
+
 	public static class Bundler
 	{
 		public static Func<bool> CachePaths = IsProduction;
