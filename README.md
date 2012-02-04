@@ -42,7 +42,7 @@ defined below:
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 Tip: Give **bundler.cmd** a keyboard short-cut or run it as a post-build script so you can easily re-run it when your files have changed.
 
-To enable MVC Html helper's add ServiceStack.Mvc namespace to your views base class by editing your Views/Web.config:
+To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
 
     <system.web.webPages.razor>
     <pages pageBaseType="System.Web.Mvc.WebViewPage">
