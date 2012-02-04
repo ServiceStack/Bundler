@@ -75,12 +75,12 @@ With the above bundle configurations, the following helpers below:
 
 Will generate the following HTML:
 
-<link href="/Content/css/reset.min.css?b578fa" rel="stylesheet" />
-<link href="/Content/css/variables.min.css?b578fa" rel="stylesheet" />
-<link href="/Content/css/styles.min.css?b578fa" rel="stylesheet" />
-<link href="/Content/default.min.css?b578fa" rel="stylesheet" />
-
-<script src="/Content/app.min.js?b578fa" type="text/javascript"></script>
+    <link href="/Content/css/reset.min.css?b578fa" rel="stylesheet" />
+    <link href="/Content/css/variables.min.css?b578fa" rel="stylesheet" />
+    <link href="/Content/css/styles.min.css?b578fa" rel="stylesheet" />
+    <link href="/Content/default.min.css?b578fa" rel="stylesheet" />
+    
+    <script src="/Content/app.min.js?b578fa" type="text/javascript"></script>
 
 Note: the '?b578fa' suffix are 'cache-breakers' added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
 
