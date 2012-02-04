@@ -13,7 +13,7 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 ## Install
 
-To run you just to put a copy of the **/bundler** folder in your website host directory. You can do this easily cloning this repo or installing via NuGet:
+To run you just a copy of the **/bundler** folder in your website host directory. You can do this by cloning this repo or installing via NuGet:
 
 [![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
