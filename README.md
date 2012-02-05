@@ -61,7 +61,7 @@ Alternatively you can run bundler after every successful build. Add the line bel
     
 ![Add Bundler to VS.NET Post-Build event](http://www.servicestack.net/img/post-build-bundler.png)
 
-### Enable Mvc.Bundler.cs Html helpers inside view pages.
+### Enable Mvc.Bundler.cs Html helpers inside view pages
 
 To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
 
@@ -78,6 +78,8 @@ To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views bas
     </system.web.webPages.razor>
 
 Once enabled, you can then reference these bundles in your MVC **_Layout.cshtml** or **View.cshtml** pages with the **@Html.RenderCssBundle()** and **@Html.RenderJsBundle()** helpers:
+
+### Bundle Options
 
 The different BundleOptions supported are:
 
