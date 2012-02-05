@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
-using SocialBootstrapApi;
 
 namespace ServiceStack.Mvc
 {
@@ -98,6 +97,21 @@ namespace ServiceStack.Mvc
 		private static string RewriteUrl(this string relativePath, BundleOptions options=BundleOptions.Normal)
 		{
 			return DefaultUrlFilter(relativePath, options);
+		}
+
+		public static MvcHtmlString ToMvcHtmlString(this string s)
+		{
+			return MvcHtmlString.Create(s);
+		}
+
+		public static MvcHtmlString ToMvcHtmlString(this TagBuilder t)
+		{
+			return t.ToString().ToMvcHtmlString();
+		}
+
+		public static MvcHtmlString ToMvcHtmlString(this TagBuilder t, TagRenderMode mode)
+		{
+			return t.ToString(mode).ToMvcHtmlString();
 		}
 
 		public static MvcHtmlString Link(this HtmlHelper html, string rel, string href, object htmlAttributes = null, BundleOptions options = BundleOptions.Normal)
@@ -198,9 +212,9 @@ namespace ServiceStack.Mvc
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
 				if (options == BundleOptions.Combined)
-					return html.Js(bundlePath.Replace(".bundle", ""));
+					return html.Js(bundlePath.Replace(".bundle", ""), options);
 				if (options == BundleOptions.MinifiedAndCombined)
-					return html.Js(bundlePath.Replace(".js.bundle", ".min.js"));
+					return html.Js(bundlePath.Replace(".js.bundle", ".min.js"), options);
 
 				var jsFiles = File.ReadAllLines(filePath);
 
