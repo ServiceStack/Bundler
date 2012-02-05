@@ -23,7 +23,7 @@ To run you just a copy of the **/bundler** folder in your website host directory
 
 [![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
-*One installed you can optionally exclude the '/bunlder' or '/bunlder/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
+*One installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
 To get Started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
 
