@@ -7,7 +7,7 @@ Bundler statically compiles, minifies, combines and adds 'cache-breakers' to you
 
 All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so can be easily debugged and customized to suit your needs. 
 
-## Fast at Runtime and Build time
+## Fast at Build time and Runtime
 Uses Googles very fast V8 JavaScript engine (inside node.exe). All build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process. 
 
 
