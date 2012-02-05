@@ -8,10 +8,11 @@ Bundler statically compiles, minifies, combines and adds 'cache-breakers' to you
 All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so can be easily debugged and customized to suit your needs. 
 
 ## Fast at Runtime and Build time
-The build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process.
+Uses Googles very fast V8 JavaScript engine (inside node.exe). All build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process. 
+
 
 Bundler is designed for maximum runtime performance since no compilation/minification happens at runtime. 
-Even the generated HTML output is cached in memory (in production mode) - so it has almost **no runtime overhead**.
+Even the generated HTML output is cached in memory (in production mode) - so it has effectively **no runtime overhead**.
 
 ## How it works
 
