@@ -7,7 +7,8 @@ var fs = require("fs"),
 	pro = require("uglify-js").uglify,
     less = require('less'),
     coffee = require('coffee-script'),
-    cleanCss = require('clean-css');
+    cleanCss = require('clean-css'),
+    Step = require('step');
 
 var walk = function (dir, done) {
     var results = [];
@@ -41,162 +42,246 @@ String.prototype.endsWith = function (suffix) {
 
 walk(SCAN_ROOT_DIR, function (err, allFiles) {
     if (err) throw err;
-    var jsBundles = allFiles.filter(function(file) { return file.endsWith(".js.bundle"); });
-    var cssBundles = allFiles.filter(function (file) { return file.endsWith(".css.bundle"); });
+    var jsBundles  = allFiles.filter(function(file) { return file.endsWith(".js.bundle"); });
+    var cssBundles = allFiles.filter(function(file) { return file.endsWith(".css.bundle"); });
 
-    jsBundles.forEach(function (jsBundle) {
-        var bundleDir = path.dirname(jsBundle);
-        var jsFiles = fs.readFileSync(jsBundle).toString('utf-8').replace("\r", "").split("\n");
-        var bundleName = jsBundle.replace('.bundle', '');
+    Step(
+        function () {
+            var next = this;
+            var index = 0;
+            var nextBundle = function() {
+                if (index == jsBundles.length)
+                    next();
+                else 
+                    processBundle(jsBundles[index++]);
+            };
+            function processBundle(jsBundle) {                
+                var bundleDir = path.dirname(jsBundle);
+                var bundleName = jsBundle.replace('.bundle', '');
+                fs.readFile(jsBundle, 'utf-8', function (_, data) {
+                    var jsFiles = data.toString().replace("\r", "").split("\n");
+                    processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, nextBundle);
+                });
+            };
+            nextBundle();
+        },
+        function () {
+            var next = this;
+            var index = 0;
+            var nextBundle = function () {
+                if (index == cssBundles.length)
+                    next();
+                else
+                    processBundle(cssBundles[index++]);
+            };
+            function processBundle(cssBundle) {
+                var bundleDir = path.dirname(cssBundle);
+                var bundleName = cssBundle.replace('.bundle', '');
+                fs.readFile(cssBundle, 'utf-8', function(_, data) {
+                    var cssFiles = data.toString().replace("\r", "").split("\n");
+                    processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, nextBundle);
+                });
+            };
+            nextBundle();
+        },
+        function () {
+            console.log("\nDone.");
+        }
+    );
 
-        console.log("\nprocessing " + jsBundle + ":");
+});
+
+function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
+
+    console.log("\nprocessing " + jsBundle + ":");
+
+    var allJsArr = [], allMinJsArr = [], index = 0, pending = 0;
+    var whenDone = function () {
+        console.log("writing " + bundleName + "...");
 
         var allJs = "", allMinJs = "";
-        jsFiles.forEach(function (file) {
-            if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        for (var i = 0; i < allJsArr.length; i++) {
+            allJs += allJsArr[i] + ";";
+            allMinJs += allMinJsArr[i] + ";";
+        }
 
-            var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
+        fs.writeFile(bundleName, allJs, function (_) {
+            fs.writeFile(bundleName.replace(".js", ".min.js"), allMinJs, function (_) {
+                cb();
+            });
+        });
+    };
+
+    jsFiles.forEach(function (file) {
+        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+
+        var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
                 : file;
 
-            var filePath = path.join(bundleDir, file),
-            jsPath = path.join(bundleDir, jsFile);
-            var minJsPath = jsPath.replace(".js", ".min.js");
+        var filePath = path.join(bundleDir, file),
+                jsPath = path.join(bundleDir, jsFile),
+                minJsPath = jsPath.replace(".js", ".min.js");
 
-            var js = isCoffee
-                ? getOrCreateJs(fs.readFileSync(filePath).toString('utf-8'), filePath, jsPath)
-                : fs.readFileSync(jsPath).toString('utf-8');
+        var i = index++;
+        pending++;
+        Step(
+            function () {
+                var next = this;
+                if (isCoffee) {
+                    fs.readFile(filePath, 'utf-8', function (_, less) {
+                        getOrCreateJs(less, filePath, jsPath, next);
+                    });
+                } else {
+                    fs.readFile(jsPath, 'utf-8', function (_, css) {
+                        next(css);
+                    });
+                }
+            },
+            function (js) {
+                getOrCreateMinJs(js, jsPath, minJsPath, function (minJs) {
+                    allJsArr[i] = js;
+                    allMinJsArr[i] = minJs;
 
-            var minJs = getOrCreateMinJs(js, jsPath, minJsPath);
-
-            allJs += js + ";";
-            allMinJs += minJs + ";";
-        });
-
-        console.log("writing " + bundleName + "...");
-        fs.writeFileSync(bundleName, allJs);
-        fs.writeFileSync(bundleName.replace(".js", ".min.js"), allMinJs);
+                    if (! --pending) {
+                        whenDone();
+                    }
+                });
+            }
+        );
     });
+}
 
-    cssBundles.forEach(function (cssBundle) {
-        var bundleDir = path.dirname(cssBundle);
-        var cssFiles = fs.readFileSync(cssBundle).toString('utf-8').replace("\r", "").split("\n");
-        var bundleName = cssBundle.replace('.bundle', '');
+function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
+    console.log("\nprocessing " + cssBundle + ":");
 
-        console.log("\nprocessing " + cssBundle + ":");
+    var allCssArr = [], allMinCssArr = [], index = 0, pending = 0;
+    var whenDone = function () {
+        console.log("writing " + bundleName + "...");
 
         var allCss = "", allMinCss = "";
-        cssFiles.forEach(function (file) {
-            if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        for (var i = 0; i < allCssArr.length; i++) {
+            allCss += allCssArr[i] + ";";
+            allMinCss += allMinCssArr[i] + ";";
+        }
 
-            var isLess = file.endsWith(".less"), jsFile = isLess
+        fs.writeFile(bundleName, allCss, function(_) {
+            fs.writeFile(bundleName.replace(".css", ".min.css"), allMinCss, function (_) {
+                cb();                
+            });
+        });
+    };
+
+    cssFiles.forEach(function (file) {
+        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+
+        var isLess = file.endsWith(".less"), cssFile = isLess
                 ? file.replace(".less", ".css")
                 : file;
 
-            var filePath = path.join(bundleDir, file),
-            jsPath = path.join(bundleDir, jsFile);
-            var minJsPath = jsPath.replace(".css", ".min.css");
+        var filePath = path.join(bundleDir, file),
+                cssPath = path.join(bundleDir, cssFile),
+                minCssPath = cssPath.replace(".css", ".min.css");
 
-            var css = isLess
-                ? getOrCreateCss(fs.readFileSync(filePath).toString('utf-8'), filePath, jsPath)
-                : fs.readFileSync(jsPath).toString('utf-8');
+        var i = index++;
+        pending++;
+        Step(
+            function () {
+                var next = this;
+                if (isLess) {
+                    fs.readFile(filePath, 'utf-8', function (_, less) {
+                        getOrCreateCss(less, filePath, cssPath, next);
+                    });
+                } else {
+                    fs.readFile(cssPath, 'utf-8', function (_, css) {
+                        next(css);
+                    });
+                }
+            },
+            function (css) {
+                getOrCreateMinCss(css, cssPath, minCssPath, function (minCss) {
+                    allCssArr[i] = css;
+                    allMinCssArr[i] = minCss;
 
-            var minCss = getOrCreateMinCss(css, jsPath, minJsPath);
-
-            allCss += css + ";";
-            allMinCss += minCss + ";";
-        });
-
-        console.log("writing " + bundleName + "...");
-        fs.writeFileSync(bundleName, allCss);
-        fs.writeFileSync(bundleName.replace(".css", ".min.css"), allMinCss);
-    });    
-
-    console.log("\nDone!");
-});
-
-function getOrCreateJs(coffeeScript, csPath, jsPath) {
-    var csStat = fs.statSync(csPath);
-
-    var compileJs = !path.existsSync(jsPath)
-        || fs.statSync(jsPath).mtime.getTime() < csStat.mtime.getTime();
-
-    if (compileJs)
-        console.log("compiling " + jsPath + "...");
-
-    var js = compileJs
-        ? coffee.compile(coffeeScript)
-        : fs.readFileSync(jsPath).toString('utf-8');
-
-    if (compileJs)
-        fs.writeFileSync(jsPath, js);
-
-    return js;
+                    if (! --pending) {
+                        whenDone();
+                    }
+                });
+            }
+        );
+    });            
 }
 
-function getOrCreateMinJs(js, jsPath, minJsPath) {
-    var jsStat = fs.statSync(jsPath);
-
-    var rewriteMinJs = !path.existsSync(minJsPath)
-        || fs.statSync(minJsPath).mtime.getTime() < jsStat.mtime.getTime();
-
-    if (rewriteMinJs)
-        console.log("minifying " + minJsPath + "...");
-
-    var minJs = rewriteMinJs
-        ? minifyjs(js)
-        : fs.readFileSync(minJsPath).toString('utf-8');
-
-    if (rewriteMinJs)
-        fs.writeFileSync(minJsPath, minJs);
-
-    return minJs;
+function getOrCreateJs(coffeeScript, csPath, jsPath, cb) {
+    compileAsync("compiling", function (coffeeScript, csPath, cb) {
+            cb(coffee.compile(coffeeScript));
+        }, coffeeScript, csPath, jsPath, cb);
 }
 
-function getOrCreateCss(less, lessPath, cssPath) {
-    var csStat = fs.statSync(lessPath);
-
-    var compileCss = !path.existsSync(cssPath)
-        || fs.statSync(cssPath).mtime.getTime() < csStat.mtime.getTime();
-
-    if (compileCss)
-        console.log("compiling " + cssPath + "...");
-
-    var css = compileCss
-        ? compileLess(less)
-        : fs.readFileSync(cssPath).toString('utf-8');
-
-    if (compileCss)
-        fs.writeFileSync(cssPath, css);
-
-    return css;
+function getOrCreateMinJs(js, jsPath, minJsPath, cb /*cb(minJs)*/) {
+    compileAsync("minifying", function (js, jsPath, cb) {
+        cb(minifyjs(js));
+    }, js, jsPath, minJsPath, cb);
 }
 
-function compileLess(lessCss) {
-    var ret = "";
-    less.render(function(e, css) {
-        ret = css;
+function getOrCreateCss(less, lessPath, cssPath, cb /*cb(css)*/) {
+    compileAsync("compiling", compileLess, less, lessPath, cssPath, cb);
+}
+
+function getOrCreateMinCss(css, cssPath, minCssPath, cb /*cb(minCss)*/) {
+    compileAsync("minifying", function (css, cssPath, cb) {
+            cb(cleanCss.process(css));
+        }, css, cssPath, minCssPath, cb);
+}
+
+function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledText))*/, 
+    text, textPath, compileTextPath, cb /*cb(compiledText)*/) {
+    Step(
+        function () {
+            path.exists(compileTextPath, this);
+        },
+        function (exists) {
+            var next = this;
+            if (!exists)
+                next(!exists);
+            else
+                fs.stat(textPath, function (_, textStat) {
+                    fs.stat(compileTextPath, function (_, minTextStat) {
+                        next(minTextStat.mtime.getTime() < textStat.mtime.getTime());
+                    });
+                });
+        },
+        function (doCompile) {
+            if (doCompile) {
+                console.log(mode + " " + compileTextPath + "...");
+                var onAfterCompiled = function(minText) {
+                    fs.writeFile(compileTextPath, minText, 'utf-8', function(_) {
+                        cb(minText);
+                    });
+                };
+                compileFn(text, textPath, onAfterCompiled);
+            }
+            else {
+                fs.readFile(compileTextPath, 'utf-8', function (_, minText) {
+                    cb(minText);
+                });
+            }
+        }
+    );
+}
+
+function compileLess(lessCss, lessPath, cb) {
+    var lessDir = path.dirname(lessPath),
+        fileName = path.basename(lessPath),
+        options = {
+            paths: [SCAN_ROOT_DIR, '.', lessDir], // Specify search paths for @import directives
+            filename: fileName
+        };
+    
+    less.render(lessCss, options, function (err, css) {
+        if (err) return cb("") && console.error(err);
+        cb(css);
     });
-    return ret;
-}
-
-function getOrCreateMinCss(css, cssPath, minCssPath) {
-    var jsStat = fs.statSync(cssPath);
-
-    var rewriteMinCss = !path.existsSync(minCssPath)
-        || fs.statSync(minCssPath).mtime.getTime() < jsStat.mtime.getTime();
-
-    if (rewriteMinCss)
-        console.log("minifying " + minCssPath + "...");
-
-    var minJs = rewriteMinCss
-        ? cleanCss.process(css)
-        : fs.readFileSync(minCssPath).toString('utf-8');
-
-    if (rewriteMinCss)
-        fs.writeFileSync(minCssPath, minJs);
-
-    return minJs;
 }
 
 function minifyjs(js) {
