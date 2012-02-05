@@ -10,6 +10,13 @@ var fs = require("fs"),
     cleanCss = require('clean-css'),
     Step = require('step');
 
+String.prototype.startsWith = function (str){
+    return this.indexOf(str) === 0;
+};
+String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 var walk = function (dir, done) {
     var results = [];
     fs.readdir(dir, function (err, list) {
@@ -32,12 +39,6 @@ var walk = function (dir, done) {
             });
         })();
     });
-};
-String.prototype.startsWith = function (str){
-	return this.indexOf(str) === 0;
-};
-String.prototype.endsWith = function (suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 walk(SCAN_ROOT_DIR, function (err, allFiles) {
@@ -208,7 +209,7 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
     });            
 }
 
-function getOrCreateJs(coffeeScript, csPath, jsPath, cb) {
+function getOrCreateJs(coffeeScript, csPath, jsPath, cb /*cb(js)*/) {
     compileAsync("compiling", function (coffeeScript, csPath, cb) {
             cb(coffee.compile(coffeeScript));
         }, coffeeScript, csPath, jsPath, cb);
