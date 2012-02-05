@@ -3,8 +3,8 @@ var SCAN_ROOT_DIR = "../Content";
 
 var fs = require("fs"),
     path = require("path"),
-	jsp = require("uglify-js").parser,
-	pro = require("uglify-js").uglify,
+    jsp = require("uglify-js").parser,
+    pro = require("uglify-js").uglify,
     less = require('less'),
     coffee = require('coffee-script'),
     cleanCss = require('clean-css'),
@@ -133,8 +133,8 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
                         getOrCreateJs(less, filePath, jsPath, next);
                     });
                 } else {
-                    fs.readFile(jsPath, 'utf-8', function (_, css) {
-                        next(css);
+                    fs.readFile(jsPath, 'utf-8', function (_, js) {
+                        next(js);
                     });
                 }
             },
@@ -143,9 +143,7 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
                     allJsArr[i] = js;
                     allMinJsArr[i] = minJs;
 
-                    if (! --pending) {
-                        whenDone();
-                    }
+                    if (! --pending) whenDone();                    
                 });
             }
         );
@@ -203,9 +201,7 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
                     allCssArr[i] = css;
                     allMinCssArr[i] = minCss;
 
-                    if (! --pending) {
-                        whenDone();
-                    }
+                    if (! --pending) whenDone();                    
                 });
             }
         );
