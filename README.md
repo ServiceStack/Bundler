@@ -2,7 +2,7 @@
 
 Bundler statically compiles, minifies, combines and adds 'cache-breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
 
-  - All bundling is done at 'compile time' with no dependencies needed at runtime. 
+  - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime. 
   - Includes a single C# **MvcBundler.cs** class with exension methods to easily integrate it with an existing MVC website.
 
 All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so can be easily debugged and customized to suit your needs. 
@@ -10,7 +10,7 @@ All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's
 ## Fast at Runtime and Build time
 The build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process.
 
-Bundler is also designed for maximum runtime performance since no compilation/minification happens at runtime. 
+Bundler is designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so it has almost **no runtime overhead**.
 
 ## How it works
@@ -19,7 +19,7 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 ## Install
 
-To run you just a copy of the **/bundler** folder in your website host directory. You can do this by cloning this repo or installing via NuGet:
+To run you just need a copy of the **/bundler** folder in your website host directory. You can do this by cloning this repo or installing via NuGet:
 
 [![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
@@ -44,6 +44,7 @@ To get started, define bundles in your /Content directory. For illustration an E
 	default.css
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
+
 Tip: Give **bundler.cmd** a keyboard short-cut or run it as a post-build script so you can easily re-run it when your files have changed.
 
 To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
