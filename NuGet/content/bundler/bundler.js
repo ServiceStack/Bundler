@@ -49,7 +49,7 @@ walk(SCAN_ROOT_DIR, function (err, allFiles) {
         var jsFiles = fs.readFileSync(jsBundle).toString('utf-8').replace("\r", "").split("\n");
         var bundleName = jsBundle.replace('.bundle', '');
 
-        console.log("processing " + jsBundle + ":");
+        console.log("\nprocessing " + jsBundle + ":");
 
         var allJs = "", allMinJs = "";
         jsFiles.forEach(function (file) {
@@ -83,7 +83,7 @@ walk(SCAN_ROOT_DIR, function (err, allFiles) {
         var cssFiles = fs.readFileSync(cssBundle).toString('utf-8').replace("\r", "").split("\n");
         var bundleName = cssBundle.replace('.bundle', '');
 
-        console.log("processing " + cssBundle + ":");
+        console.log("\nprocessing " + cssBundle + ":");
 
         var allCss = "", allMinCss = "";
         cssFiles.forEach(function (file) {
@@ -111,6 +111,8 @@ walk(SCAN_ROOT_DIR, function (err, allFiles) {
         fs.writeFileSync(bundleName, allCss);
         fs.writeFileSync(bundleName.replace(".css", ".min.css"), allMinCss);
     });    
+
+    console.log("\nDone!");
 });
 
 function getOrCreateJs(coffeeScript, csPath, jsPath) {

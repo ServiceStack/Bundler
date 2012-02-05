@@ -2,7 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Bundler</id> 
-    <version>0.93</version> 
+    <version>0.94</version> 
     <authors>Demis Bellot</authors> 
     <owners>Demis Bellot</owners>
     <summary>Css, Less, CoffeeScript, JavaScript compiler, minifier and combiner for ASP.NET MVC websites.</summary>
