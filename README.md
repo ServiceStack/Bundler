@@ -3,16 +3,21 @@
 Bundler statically compiles, minifies, combines and adds 'cache-breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
 
   - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime. 
-  - Includes a single C# **MvcBundler.cs** class with exension methods to easily integrate it with an existing MVC website.
+  - Can be used with any website project (ie. not only .NET). Does includes a **windows** node.exe but all build scripts work cross-platform.
+  - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website.
+  - Uses a self-contained **node.exe** for all compilation / minification and is designed for maximum runtime and build time performance.
+  
+All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (other than node.exe) so can be easily debugged and customized to suit your needs. 
 
-All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so can be easily debugged and customized to suit your needs. 
+## Extremely fast at both Build and Runtime
+Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to happen within a single process. 
 
-## Fast at Build time and Runtime
-Uses Googles very fast V8 JavaScript engine (inside node.exe). All build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process. 
+#### Async / Non-Blocking
+Bundler is completely **async and non-blocking** - allowing the processing inside each bundle to happen in parallel. 
 
-
+#### No Runtime overhead
 Bundler is designed for maximum runtime performance since no compilation/minification happens at runtime. 
-Even the generated HTML output is cached in memory (in production mode) - so it has effectively **no runtime overhead**.
+Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
 ## How it works
 
