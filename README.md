@@ -48,6 +48,19 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 
 Tip: Give **bundler.cmd** a keyboard short-cut or run it as a post-build script so you can easily re-run it when your files have changed.
 
+### Create an External Tool inside VS.NET:
+
+Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and minify your changed assets without re-building your project:
+
+![Add External Tool in VS.NET](http://www.servicestack.net/img/external-tools-bundler.png)
+
+### Run script on post-build event
+Alternatively you can run bundler after every successful build add the line below to host 'project properties' > 'Build events' > 'Post-build event command line:'
+
+    $(ProjectDir)bundler\node.exe "$(ProjectDir)bundler\bundler.js"
+    
+![Add Bundler to VS.NET Post-Build event](http://www.servicestack.net/img/post-build-bundler.png)
+
 To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
 
     <system.web.webPages.razor>
