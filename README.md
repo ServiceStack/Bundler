@@ -2,20 +2,20 @@
 
 Bundler statically compiles, minifies, combines and adds 'cache-breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
 
-  - All bundling is done at 'compile time' with no dependencies needed at runtime. Requires no outside dependencies outside of the included node.exe and pure javascript npm modules. 
+  - All bundling is done at 'compile time' with no dependencies needed at runtime. 
   - Includes a single C# **MvcBundler.cs** class with exension methods to easily integrate it with an existing MVC website.
 
-All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so it can be easily debugged and customized to suit your environment. 
+All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (apart from node.exe) so can be easily debugged and customized to suit your needs. 
 
 ## Fast at Runtime and Build time
-The build scripts use only pure 'js' implementations which allows all compilation and minification to happen within a single process.
+The build scripts use only pure 'js' implementations (uglifyjs, clean-css, coffee-script, etc) allowing all compilation and minification to happen within a single process.
 
 Bundler is also designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so it has almost **no runtime overhead**.
 
 ## How it works
 
-You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** which it goes through, only compiling minifying new or changed files.
+You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** definition files which it goes through, only compiling and minifying new or modified files.
 
 ## Install
 
@@ -25,7 +25,7 @@ To run you just a copy of the **/bundler** folder in your website host directory
 
 *One installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
-To get Started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
+To get started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
 
 **/Content/app.js.bundle**
 
