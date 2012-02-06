@@ -30,9 +30,12 @@ var fs = require("fs"),
     jsp = require("uglify-js").parser,
     pro = require("uglify-js").uglify,
     less = require('less'),
+    sass = require('sass'),
     coffee = require('coffee-script'),
     cleanCss = require('clean-css'),
     Step = require('step');
+
+//console.log(sass.render('body\n  a\n  :color #fff'));
 
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
@@ -154,8 +157,8 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
             function () {
                 var next = this;
                 if (isCoffee) {
-                    fs.readFile(filePath, 'utf-8', function (_, less) {
-                        getOrCreateJs(less, filePath, jsPath, next);
+                    fs.readFile(filePath, 'utf-8', function (_, coffee) {
+                        getOrCreateJs(coffee, filePath, jsPath, next);
                     });
                 } else {
                     fs.readFile(jsPath, 'utf-8', function (_, js) {
@@ -184,8 +187,8 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
 
         var allCss = "", allMinCss = "";
         for (var i = 0; i < allCssArr.length; i++) {
-            allCss += allCssArr[i] + ";";
-            allMinCss += allMinCssArr[i] + ";";
+            allCss += allCssArr[i] + "\n";
+            allMinCss += allMinCssArr[i] + "\n";
         }
 
         fs.writeFile(bundleName, allCss, function(_) {
@@ -198,9 +201,12 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
     cssFiles.forEach(function (file) {
         if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
 
-        var isLess = file.endsWith(".less"), cssFile = isLess
+        var isLess = file.endsWith(".less"), isSass = file.endsWith(".sass"),
+            cssFile = isLess
                 ? file.replace(".less", ".css")
-                : file;
+                : isSass 
+                    ? file.replace(".sass", ".css")
+                    : file;
 
         var filePath = path.join(bundleDir, file),
                 cssPath = path.join(bundleDir, cssFile),
@@ -213,7 +219,11 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
                 var next = this;
                 if (isLess) {
                     fs.readFile(filePath, 'utf-8', function (_, less) {
-                        getOrCreateCss(less, filePath, cssPath, next);
+                        getOrCreateLessCss(less, filePath, cssPath, next);
+                    });
+                } else if (isSass) {
+                    fs.readFile(filePath, 'utf-8', function (_, sassText) {
+                        getOrCreateSassCss(sassText, filePath, cssPath, next);
                     });
                 } else {
                     fs.readFile(cssPath, 'utf-8', function (_, css) {
@@ -245,8 +255,15 @@ function getOrCreateMinJs(js, jsPath, minJsPath, cb /*cb(minJs)*/) {
     }, js, jsPath, minJsPath, cb);
 }
 
-function getOrCreateCss(less, lessPath, cssPath, cb /*cb(css)*/) {
+function getOrCreateLessCss(less, lessPath, cssPath, cb /*cb(css)*/) {
     compileAsync("compiling", compileLess, less, lessPath, cssPath, cb);
+}
+
+function getOrCreateSassCss(sassText, sassPath, cssPath, cb /*cb(sass)*/) {
+    compileAsync("compiling", function (sassText, sassPath, cb) {
+        var cleanSass = sassText.replace( /\r/g , "");
+        cb(sass.render(cleanSass, { options: path.basename(sassPath) }));
+    }, sassText, sassPath, cssPath, cb);
 }
 
 function getOrCreateMinCss(css, cssPath, minCssPath, cb /*cb(minCss)*/) {
@@ -280,7 +297,11 @@ function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledTex
                         cb(minText);
                     });
                 };
-                compileFn(text, textPath, onAfterCompiled);
+                try {
+                    compileFn(text, textPath, onAfterCompiled);
+                } catch (e) {
+                    console.log(e);
+                }
             }
             else {
                 fs.readFile(compileTextPath, 'utf-8', function (_, minText) {
