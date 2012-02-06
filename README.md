@@ -1,6 +1,6 @@
 # Bundler
 
-Bundler is a fast, command-line tool (easily integrated into existing IDEs, inc VS.NET) that statically **compiles**, **minifies** and **combines** your websites **css**, **less**, **coffeescript** and **js** files.
+Bundler is a fast, command-line tool (easily integrated into existing IDEs, inc VS.NET) that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files.
 
   - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime. 
   - Can be used with any website project (ie. not only .NET). Includes a **windows** node.exe although all scripts work cross-platform.
@@ -47,6 +47,7 @@ To get started, define bundles in your /Content directory. For illustration an E
 	css/reset.css
 	css/variables.less
 	css/styles.less
+	css/sassy.sass
 	default.css
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
@@ -108,6 +109,7 @@ Will generate the following HTML:
     <link href="/Content/css/reset.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/css/variables.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/css/styles.min.css?b578fa" rel="stylesheet" />
+    <link href="/Content/css/sassy.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/default.min.css?b578fa" rel="stylesheet" />
     
     <script src="/Content/app.min.js?b578fa" type="text/javascript"></script>
