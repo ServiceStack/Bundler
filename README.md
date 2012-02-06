@@ -1,22 +1,22 @@
 # Bundler
 
-Bundler statically compiles, minifies, combines and adds 'cache-breakers' to your websites CSS, Less, CoffeeScript or JavaScript assets. 
+Bundler is a fast, command-line tool (easily integrated into existing IDEs, inc VS.NET) that statically **compiles**, **minifies** and **combines** your websites **css**, **less**, **coffeescript** and **js** files.
 
   - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime. 
-  - Can be used with any website project (ie. not only .NET). Does includes a **windows** node.exe but all build scripts work cross-platform.
+  - Can be used with any website project (ie. not only .NET). Includes a **windows** node.exe although all scripts work cross-platform.
   - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website.
-  - Uses a self-contained **node.exe** for all compilation / minification and is designed for maximum runtime and build time performance.
-  
-All build scripts are in plain text, doesn't rely on any compiled dlls or .exe's (other than node.exe) so can be easily debugged and customized to suit your needs. 
+  - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project.
+  - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance.
+  - Doesn't use any compiled dlls or .exe's (excl node.exe) and includes source code for everything so can easily be read and extended.
 
 ## Extremely fast at both Build and Runtime
-Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to happen within a single process. 
+Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process. 
 
 #### Async / Non-Blocking
-Bundler is completely **async and non-blocking** - allowing the processing inside each bundle to happen in parallel. 
+The packager is completely **async and non-blocking** - allowing the processing inside each bundle to happen in parallel. 
 
 #### No Runtime overhead
-Bundler is designed for maximum runtime performance since no compilation/minification happens at runtime. 
+Designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
 ## How it works
@@ -51,7 +51,7 @@ To get started, define bundles in your /Content directory. For illustration an E
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 
-Tip: Give **bundler.cmd** a keyboard short-cut or run it as a post-build script so you can easily re-run it when your files have changed.
+Tip: For greater productivity integrate it with VS.NET by assiging a keyboard short-cut to **bundler.cmd** or run it as a post-build script so it's easily re-run it when your files have changed.
 
 #### Create an External Tool inside VS.NET:
 
@@ -112,5 +112,5 @@ Will generate the following HTML:
     
     <script src="/Content/app.min.js?b578fa" type="text/javascript"></script>
 
-Note: the '?b578fa' suffix are 'cache-breakers' added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
+Note: the **?b578fa** suffix are 'cache-breakers' added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
 
