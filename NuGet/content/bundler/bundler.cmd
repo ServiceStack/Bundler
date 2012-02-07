@@ -1,1 +1,1 @@
-node bundler.js
+node bundler.js ../Content ../Scripts

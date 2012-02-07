@@ -23,7 +23,12 @@ SOFTWARE.
 */
 
 //recursively scans the directory below for *.js.bundle and *.css.bundle files
-var SCAN_ROOT_DIR = "../Content"; 
+var SCAN_ROOT_DIRS = process.argv.splice(2); //directories specified in bundler.cmd
+if (!SCAN_ROOT_DIRS.length) {
+    console.log("No directories were specified.");
+    console.log("Usage: bundler.cmd ../Content ../Scripts");
+    return;
+}
 
 var fs = require("fs"),
     path = require("path"),
@@ -34,8 +39,6 @@ var fs = require("fs"),
     coffee = require('coffee-script'),
     cleanCss = require('clean-css'),
     Step = require('step');
-
-//console.log(sass.render('body\n  a\n  :color #fff'));
 
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
@@ -53,9 +56,9 @@ var walk = function (dir, done) {
             var file = list[i++];
             if (!file) return done(null, results);
             file = dir + '/' + file;
-            fs.stat(file, function (err, stat) {
+            fs.stat(file, function (_, stat) {
                 if (stat && stat.isDirectory()) {
-                    walk(file, function (err, res) {
+                    walk(file, function (_, res) {
                         results = results.concat(res);
                         next();
                     });
@@ -68,26 +71,45 @@ var walk = function (dir, done) {
     });
 };
 
-walk(SCAN_ROOT_DIR, function (err, allFiles) {
-    if (err) throw err;
-    var jsBundles  = allFiles.filter(function(file) { return file.endsWith(".js.bundle"); });
-    var cssBundles = allFiles.filter(function(file) { return file.endsWith(".css.bundle"); });
+var scanIndex = 0;
+(function scanNext() {
+    if (scanIndex < SCAN_ROOT_DIRS.length) {
+        var rootDir = SCAN_ROOT_DIRS[scanIndex++];
+        path.exists(rootDir, function(exists) {
+            if (exists) {
+                walk(rootDir, function(err, allFiles) {
+                    if (err) throw err;
+                    scanDir(allFiles, scanNext);
+                });
+            } else {
+                console.log("\nSpecified dir '" + rootDir + "' does not exist, skipping...");
+                scanNext();
+            }
+        });
+    } else
+        console.log("\nDone.");
+})();
+
+function scanDir(allFiles, cb) {
+
+    var jsBundles  = allFiles.filter(function (file) { return file.endsWith(".js.bundle"); });
+    var cssBundles = allFiles.filter(function (file) { return file.endsWith(".css.bundle"); });
 
     Step(
         function () {
             var next = this;
             var index = 0;
-            var nextBundle = function() {
-                if (index == jsBundles.length)
-                    next();
-                else 
+            var nextBundle = function () {
+                if (index < jsBundles.length)
                     processBundle(jsBundles[index++]);
+                else
+                    next();
             };
-            function processBundle(jsBundle) {                
+            function processBundle(jsBundle) {
                 var bundleDir = path.dirname(jsBundle);
                 var bundleName = jsBundle.replace('.bundle', '');
-                fs.readFile(jsBundle, 'utf-8', function (_, data) {
-                    var jsFiles = data.toString().replace("\r", "").split("\n");
+                readTextFile(jsBundle, function (data) {
+                    var jsFiles = removeCR(data).split("\n");
                     processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, nextBundle);
                 });
             };
@@ -97,27 +119,24 @@ walk(SCAN_ROOT_DIR, function (err, allFiles) {
             var next = this;
             var index = 0;
             var nextBundle = function () {
-                if (index == cssBundles.length)
-                    next();
-                else
+                if (index < cssBundles.length)
                     processBundle(cssBundles[index++]);
+                else
+                    next();
             };
             function processBundle(cssBundle) {
                 var bundleDir = path.dirname(cssBundle);
                 var bundleName = cssBundle.replace('.bundle', '');
-                fs.readFile(cssBundle, 'utf-8', function(_, data) {
-                    var cssFiles = data.toString().replace("\r", "").split("\n");
+                readTextFile(cssBundle, function (data) {
+                    var cssFiles = removeCR(data).split("\n");
                     processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, nextBundle);
                 });
             };
             nextBundle();
         },
-        function () {
-            console.log("\nDone.");
-        }
+        cb
     );
-
-});
+}
 
 function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
 
@@ -129,14 +148,12 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
 
         var allJs = "", allMinJs = "";
         for (var i = 0; i < allJsArr.length; i++) {
-            allJs += allJsArr[i] + ";";
-            allMinJs += allMinJsArr[i] + ";";
+            allJs += ";" + allJsArr[i] + "\n";
+            allMinJs += ";" + allMinJsArr[i] + "\n";
         }
 
         fs.writeFile(bundleName, allJs, function (_) {
-            fs.writeFile(bundleName.replace(".js", ".min.js"), allMinJs, function (_) {
-                cb();
-            });
+            fs.writeFile(bundleName.replace(".js", ".min.js"), allMinJs, cb);
         });
     };
 
@@ -157,13 +174,11 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
             function () {
                 var next = this;
                 if (isCoffee) {
-                    fs.readFile(filePath, 'utf-8', function (_, coffee) {
+                    readTextFile(filePath, function (coffee) {
                         getOrCreateJs(coffee, filePath, jsPath, next);
                     });
                 } else {
-                    fs.readFile(jsPath, 'utf-8', function (_, js) {
-                        next(js);
-                    });
+                    readTextFile(jsPath, next);
                 }
             },
             function (js) {
@@ -192,9 +207,7 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
         }
 
         fs.writeFile(bundleName, allCss, function(_) {
-            fs.writeFile(bundleName.replace(".css", ".min.css"), allMinCss, function (_) {
-                cb();                
-            });
+            fs.writeFile(bundleName.replace(".css", ".min.css"), allMinCss, cb);
         });
     };
 
@@ -218,17 +231,15 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
             function () {
                 var next = this;
                 if (isLess) {
-                    fs.readFile(filePath, 'utf-8', function (_, less) {
-                        getOrCreateLessCss(less, filePath, cssPath, next);
+                    readTextFile(filePath, function (lessText) {
+                        getOrCreateLessCss(lessText, filePath, cssPath, next);
                     });
                 } else if (isSass) {
-                    fs.readFile(filePath, 'utf-8', function (_, sassText) {
+                    readTextFile(filePath, function (sassText) {
                         getOrCreateSassCss(sassText, filePath, cssPath, next);
                     });
                 } else {
-                    fs.readFile(cssPath, 'utf-8', function (_, css) {
-                        next(css);
-                    });
+                    readTextFile(cssPath, next);
                 }
             },
             function (css) {
@@ -261,8 +272,7 @@ function getOrCreateLessCss(less, lessPath, cssPath, cb /*cb(css)*/) {
 
 function getOrCreateSassCss(sassText, sassPath, cssPath, cb /*cb(sass)*/) {
     compileAsync("compiling", function (sassText, sassPath, cb) {
-        var cleanSass = sassText.replace( /\r/g , "");
-        cb(sass.render(cleanSass, { options: path.basename(sassPath) }));
+        cb(sass.render(removeCR(sassText), { options: path.basename(sassPath) }));
     }, sassText, sassPath, cssPath, cb);
 }
 
@@ -304,9 +314,7 @@ function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledTex
                 }
             }
             else {
-                fs.readFile(compileTextPath, 'utf-8', function (_, minText) {
-                    cb(minText);
-                });
+                readTextFile(compileTextPath, cb);
             }
         }
     );
@@ -316,7 +324,7 @@ function compileLess(lessCss, lessPath, cb) {
     var lessDir = path.dirname(lessPath),
         fileName = path.basename(lessPath),
         options = {
-            paths: [SCAN_ROOT_DIR, '.', lessDir], // Specify search paths for @import directives
+            paths: ['.', lessDir], // Specify search paths for @import directives
             filename: fileName
         };
     
@@ -332,4 +340,25 @@ function minifyjs(js) {
     ast = pro.ast_squeeze(ast);
     var minJs = pro.gen_code(ast);
     return minJs;
+}
+
+function removeCR(text) {
+    return text.replace(/\r/g, '');
+}
+
+function stripBOM(content) {
+    // Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+    // because the buffer-to-string conversion in `fs.readFileSync()`
+    // translates it to FEFF, the UTF-16 BOM.
+    if (content.charCodeAt(0) === 0xFEFF) {
+        content = content.slice(1);
+    }
+    return content;
+}
+
+function readTextFile(filePath, cb) {
+    fs.readFile(filePath, 'utf-8', function(err, fileContents) {
+        if (err) throw err;
+        cb(stripBOM(fileContents));
+    });
 }
