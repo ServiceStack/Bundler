@@ -35,7 +35,7 @@ By default bundler looks at **/Content** and **/Scripts** project folders - this
 
     node bundler.js ../Content ../Scripts
 
-This allows you to define .bundles in any of the above directories. For illustration an example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
+Now you can define .bundles in any of the above folders. For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
 
 **/Scripts/app.js.bundle**
 
