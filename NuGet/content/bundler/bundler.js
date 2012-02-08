@@ -158,7 +158,11 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
     };
 
     jsFiles.forEach(function (file) {
-        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        // Skip blank lines/files beginning with '.' or '#', but allow ../relative paths
+        if (!(file = file.trim()) 
+            || (file.startsWith(".") && !file.startsWith(".."))
+            || file.startsWith('#')) 
+            return; 
 
         var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
@@ -212,7 +216,10 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
     };
 
     cssFiles.forEach(function (file) {
-        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        if (!(file = file.trim()) 
+            || (file.startsWith(".") && !file.startsWith(".."))
+            || file.startsWith('#')) 
+            return; 
 
         var isLess = file.endsWith(".less"), isSass = file.endsWith(".sass"),
             cssFile = isLess
