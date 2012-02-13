@@ -221,7 +221,7 @@ namespace ServiceStack.Mvc
 				var scripts = new StringBuilder();
 				foreach (var file in jsFiles)
 				{
-					var jsFile = file.Replace(".coffee", ".js");
+					var jsFile = file.Trim().Replace(".coffee", ".js");
 					var jsSrc = Path.Combine(baseUrl, jsFile);
 
 					scripts.AppendLine(
@@ -255,7 +255,7 @@ namespace ServiceStack.Mvc
 				var styles = new StringBuilder();
 				foreach (var file in cssFiles)
 				{
-					var cssFile = file.Replace(".less", ".css");
+					var cssFile = file.Trim().Replace(".less", ".css");
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
 					styles.AppendLine(
