@@ -67,7 +67,7 @@ Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and
 #### Run script on post-build event
 Alternatively you can run bundler after every successful build. Add the line below to **Properties** > **Build events** > **Post-build event**:
 
-    $(ProjectDir)bundler\node.exe "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
+    "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
     
 ![Add Bundler to VS.NET Post-Build event](http://servicestack.net/img/post-build-bundler.png)
 
