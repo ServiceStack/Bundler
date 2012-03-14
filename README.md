@@ -31,9 +31,13 @@ To run you just need a copy of **/bundler** folder in your website host director
 
 *Once installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
-To get started, define bundles in your /Content directory. For illustration an Example 'app.js.bundle' and 'app.css.bundle' text files are defined below:
+By default bundler looks at **/Content** and **/Scripts** project folders - this can be changed by editing [/bundler/bundler.cmd](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/bundler/bundler.cmd):
 
-**/Content/app.js.bundle**
+    node bundler.js ../Content ../Scripts
+
+Now you can define .bundles in any of the above folders. For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
+
+**/Scripts/app.js.bundle**
 
 	js/underscore.js
 	js/backbone.js
@@ -61,11 +65,11 @@ Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and
 ![Add External Tool in VS.NET](http://www.servicestack.net/img/external-tools-bundler.png)
 
 #### Run script on post-build event
-Alternatively you can run bundler after every successful build. Add the line below to 'Properties' > 'Build events' > 'Post-build event:'
+Alternatively you can run bundler after every successful build. Add the line below to **Properties** > **Build events** > **Post-build event**:
 
-    $(ProjectDir)bundler\node.exe "$(ProjectDir)bundler\bundler.js"
+    "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
     
-![Add Bundler to VS.NET Post-Build event](http://www.servicestack.net/img/post-build-bundler.png)
+![Add Bundler to VS.NET Post-Build event](http://servicestack.net/img/post-build-bundler.png)
 
 ### Enable Mvc.Bundler.cs Html helpers inside view pages
 
@@ -101,18 +105,20 @@ public enum BundleOptions
 
 With the above bundle configurations, the following helpers below:
 
+    @Html.RenderJsBundle("~/Scripts/app.js.bundle", BundleOptions.MinifiedAndCombined)
     @Html.RenderCssBundle("~/Content/app.css.bundle", BundleOptions.Minified)
-    @Html.RenderJsBundle("~/Content/app.js.bundle", BundleOptions.MinifiedAndCombined)
 
 Will generate the following HTML:
+    
+    <script src="/Scripts/app.min.js?b578fa" type="text/javascript"></script>
 
     <link href="/Content/css/reset.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/css/variables.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/css/styles.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/css/sassy.min.css?b578fa" rel="stylesheet" />
     <link href="/Content/default.min.css?b578fa" rel="stylesheet" />
-    
-    <script src="/Content/app.min.js?b578fa" type="text/javascript"></script>
 
-Note: the **?b578fa** suffix are 'cache-breakers' added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
+Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
+
+You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Mvc.Bundler.cs#L24).
 
