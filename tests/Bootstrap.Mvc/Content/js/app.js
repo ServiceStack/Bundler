@@ -9,4 +9,6 @@
     return a * a * a;
   };
 
+  $("BODY").append("<div id='lesstest'>From CoffeeScript with Less</div>");
+
 }).call(this);

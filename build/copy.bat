@@ -22,11 +22,20 @@ COPY %FROM%\node_modules\coffee-script\bin\* %DIST%\node_modules\coffee-script\b
 COPY %FROM%\node_modules\coffee-script\lib\coffee-script\* %DIST%\node_modules\coffee-script\lib\coffee-script
 COPY %FROM%\node_modules\coffee-script\package.json %DIST%\node_modules\coffee-script
 
+REM Try using single coffee-script.js
+REM MD %DIST%\node_modules\coffee-script
+REM COPY %FROM%\node_modules\coffee-script\extras\coffee-script.js %DIST%\node_modules\coffee-script\index.js
+
 MD %DIST%\node_modules\less\bin %DIST%\node_modules\less\lib\less\tree
 COPY %FROM%\node_modules\less\bin\* %DIST%\node_modules\less\bin 
 COPY %FROM%\node_modules\less\lib\less\* %DIST%\node_modules\less\lib\less
 COPY %FROM%\node_modules\less\lib\less\tree\* %DIST%\node_modules\less\lib\less\tree
 COPY %FROM%\node_modules\less\package.json %DIST%\node_modules\less
+
+REM Try using single less.js
+REM MD %DIST%\node_modules\less
+REM COPY %FROM%\node_modules\less\dist\less-1.3.0.js %DIST%\node_modules\less\index.js
+
 
 MD %DIST%\node_modules\lib
 COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib 

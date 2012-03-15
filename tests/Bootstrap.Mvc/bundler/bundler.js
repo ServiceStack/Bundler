@@ -38,7 +38,8 @@ var fs = require("fs"),
     sass = require('sass'),
     coffee = require('coffee-script'),
     cleanCss = require('clean-css'),
-    Step = require('step');
+    Step = require('step'),
+    startedAt = Date.now();
 
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
@@ -87,7 +88,7 @@ var scanIndex = 0;
             }
         });
     } else
-        console.log("\nDone.");
+        console.log("\nDone. " + (Date.now() - startedAt) + "ms");
 })();
 
 function scanDir(allFiles, cb) {
@@ -158,7 +159,11 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
     };
 
     jsFiles.forEach(function (file) {
-        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        // Skip blank lines/files beginning with '.' or '#', but allow ../relative paths
+        if (!(file = file.trim()) 
+            || (file.startsWith(".") && !file.startsWith(".."))
+            || file.startsWith('#')) 
+            return; 
 
         var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
@@ -212,7 +217,10 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
     };
 
     cssFiles.forEach(function (file) {
-        if (!(file = file.trim()) || file.startsWith(".")) return; // . ..
+        if (!(file = file.trim()) 
+            || (file.startsWith(".") && !file.startsWith(".."))
+            || file.startsWith('#')) 
+            return; 
 
         var isLess = file.endsWith(".less"), isSass = file.endsWith(".sass"),
             cssFile = isLess

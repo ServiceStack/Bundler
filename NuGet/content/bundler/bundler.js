@@ -38,7 +38,8 @@ var fs = require("fs"),
     sass = require('sass'),
     coffee = require('coffee-script'),
     cleanCss = require('clean-css'),
-    Step = require('step');
+    Step = require('step'),
+    startedAt = Date.now();
 
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
@@ -87,7 +88,7 @@ var scanIndex = 0;
             }
         });
     } else
-        console.log("\nDone.");
+        console.log("\nDone. " + (Date.now() - startedAt) + "ms");
 })();
 
 function scanDir(allFiles, cb) {
