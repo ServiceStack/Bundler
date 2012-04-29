@@ -255,7 +255,7 @@ namespace ServiceStack.Mvc
 				var styles = new StringBuilder();
 				foreach (var file in cssFiles)
 				{
-					var cssFile = file.Trim().Replace(".less", ".css");
+					var cssFile = file.Trim().Replace(".less", ".css").Replace(".scss", ".css");
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
 					styles.AppendLine(
