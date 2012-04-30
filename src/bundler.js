@@ -222,11 +222,11 @@ function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
             || file.startsWith('#')) 
             return; 
 
-        var isLess = file.endsWith(".less"), isSass = file.endsWith(".sass"),
+        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")),
             cssFile = isLess
                 ? file.replace(".less", ".css")
                 : isSass 
-                    ? file.replace(".sass", ".css")
+                    ? file.replace(".sass", ".css").replace(".scss", ".css")
                     : file;
 
         var filePath = path.join(bundleDir, file),
