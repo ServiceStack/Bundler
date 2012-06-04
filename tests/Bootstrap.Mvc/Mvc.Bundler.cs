@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -51,10 +52,28 @@ namespace ServiceStack.Mvc
 			return string.Empty;
 		}
 
-		static readonly ConcurrentDictionary<string,string> VirutalPathCache = new ConcurrentDictionary<string, string>();
+        private static TVal GetOrAdd<TKey, TVal>(this Dictionary<TKey, TVal> map, TKey key, Func<TKey, TVal> factoryFn)
+        {
+            lock (map)
+            {
+                TVal ret;
+                if (!map.TryGetValue(key, out ret))
+                {
+                    map[key] = ret = factoryFn(key);
+                }
+                return ret;
+            }
+        }
+
+        private static void SafeClear<TKey, TVal>(this Dictionary<TKey, TVal> map)
+        {
+            lock (map) map.Clear();            
+        }
+
+		static readonly Dictionary<string,string> VirutalPathCache = new Dictionary<string, string>();
 		private static string ProcessVirtualPathDefault(string virtualPath, BundleOptions options)
 		{
-			if (!CachePaths()) VirutalPathCache.Clear();
+            if (!CachePaths()) VirutalPathCache.SafeClear();
 
 			return VirutalPathCache.GetOrAdd(virtualPath, str => {
 				// The path that comes in starts with ~/ and must first be made absolute
@@ -197,17 +216,17 @@ namespace ServiceStack.Mvc
 			return value.ToString(CultureInfo.InvariantCulture).ToLower();
 		}
 
-		static readonly ConcurrentDictionary<string, MvcHtmlString> BundleCache = new ConcurrentDictionary<string, MvcHtmlString>();
+        static readonly Dictionary<string, MvcHtmlString> BundleCache = new Dictionary<string, MvcHtmlString>();
 
 		public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
 
-			if (!CachePaths()) BundleCache.Clear();
+			if (!CachePaths()) BundleCache.SafeClear();
 
 			return BundleCache.GetOrAdd(bundlePath, str => {
-				var filePath = HttpContext.Current.Server.MapPath(bundlePath);
+				var filePath = HostingEnvironment.MapPath(bundlePath);
 
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
@@ -238,10 +257,10 @@ namespace ServiceStack.Mvc
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
 
-			if (!CachePaths()) BundleCache.Clear();
+			if (!CachePaths()) BundleCache.SafeClear();
 
 			return BundleCache.GetOrAdd(bundlePath, str => {
-				var filePath = HttpContext.Current.Server.MapPath(bundlePath);
+				var filePath = HostingEnvironment.MapPath(bundlePath);
 
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
