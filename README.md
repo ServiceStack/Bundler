@@ -56,6 +56,19 @@ Now you can define .bundles in any of the above folders. For illustration an exa
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 
+**Bundle file options**
+
+Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.
+
+  #options nobundle
+  css/reset.css
+  css/variables.less
+  default.css
+
+The currently available options are:
+
+1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file.  This allows you to compile and minify your standalone files without bundling them into another file.
+
 Tip: For greater productivity integrate it with VS.NET by assiging a keyboard short-cut to **bundler.cmd** or run it as a post-build script so it's easily re-run it when your files have changed.
 
 #### Create an External Tool inside VS.NET:
