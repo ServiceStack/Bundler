@@ -58,7 +58,7 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 
 **Bundle file options**
 
-Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.
+Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.  Options are comma delimited and each option is a key/value pair separated by a colon.  You can omit the value for boolean options and options specified without a value are set to true.
 
     #options nobundle
     css/reset.css
