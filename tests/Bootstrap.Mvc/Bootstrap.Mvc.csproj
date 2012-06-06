@@ -72,32 +72,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\app.css" />
-    <Content Include="Content\app.js" />
-    <Content Include="Content\app.min.css" />
-    <Content Include="Content\app.min.js" />
     <Content Include="Content\css\bootstrap-responsive.css" />
-    <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.css" />
-    <Content Include="Content\css\bootstrap.min.css" />
     <None Include="Content\css\default.less" />
-    <Content Include="Content\css\default.css" />
-    <Content Include="Content\css\default.min.css" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
-    <Content Include="Content\js\app.js" />
-    <Content Include="Content\js\app.min.js" />
     <Content Include="Content\js\backbone.js" />
-    <Content Include="Content\js\backbone.min.js" />
     <Content Include="Content\js\base.js" />
-    <Content Include="Content\js\base.min.js" />
     <Content Include="Content\js\bootstrap.js" />
-    <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\app.coffee" />
     <Content Include="Content\js\ss-validation.js" />
-    <Content Include="Content\js\ss-validation.min.js" />
     <Content Include="Content\js\underscore.js" />
-    <Content Include="Content\js\underscore.min.js" />
+    <Content Include="Content\options\nobundle\my-app.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Web.config" />
@@ -113,6 +99,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <None Include="Content\options\nobundle\my-app-css.less" />
+    <None Include="Content\options\nobundle\nobundle-scripts.js.bundle" />
+    <None Include="Content\options\nobundle\nobundle-styles.css.bundle" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

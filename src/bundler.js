@@ -96,6 +96,16 @@ function scanDir(allFiles, cb) {
     var jsBundles  = allFiles.filter(function (file) { return file.endsWith(".js.bundle"); });
     var cssBundles = allFiles.filter(function (file) { return file.endsWith(".css.bundle"); });
 
+    function getOptions(optionsString) {
+        var options = {};
+        if (!optionsString.startsWith('#options ')) return options;
+        optionsString.substring(9).split(',').forEach(function (option) {
+            var parts = option.split(':');
+            options[parts[0]] = parts.length > 1 ? parts[1] : true;
+        });
+        return options;
+    };
+
     Step(
         function () {
             var next = this;
@@ -111,7 +121,8 @@ function scanDir(allFiles, cb) {
                 var bundleName = jsBundle.replace('.bundle', '');
                 readTextFile(jsBundle, function (data) {
                     var jsFiles = removeCR(data).split("\n");
-                    processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, nextBundle);
+                    var options = jsFiles.length > 0 ? getOptions(jsFiles[0]) : {};
+                    processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, nextBundle);
                 });
             };
             nextBundle();
@@ -130,7 +141,8 @@ function scanDir(allFiles, cb) {
                 var bundleName = cssBundle.replace('.bundle', '');
                 readTextFile(cssBundle, function (data) {
                     var cssFiles = removeCR(data).split("\n");
-                    processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, nextBundle);
+                    var options = cssFiles.length > 0 ? getOptions(cssFiles[0]) : {};
+                    processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, nextBundle);
                 });
             };
             nextBundle();
@@ -139,12 +151,20 @@ function scanDir(allFiles, cb) {
     );
 }
 
-function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
+function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) {
 
     console.log("\nprocessing " + jsBundle + ":");
+    for (var optionKey in options) {
+        console.log("option: " + optionKey + " -> " + options[optionKey]);
+    }
 
     var allJsArr = [], allMinJsArr = [], index = 0, pending = 0;
     var whenDone = function () {
+        if (options.nobundle) {
+            setTimeout(cb, 0);
+            return;
+        }
+
         console.log("writing " + bundleName + "...");
 
         var allJs = "", allMinJs = "";
@@ -198,11 +218,19 @@ function processJsBundle(jsBundle, bundleDir, jsFiles, bundleName, cb) {
     });
 }
 
-function processCssBundle(cssBundle, bundleDir, cssFiles, bundleName, cb) {
+function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, cb) {
     console.log("\nprocessing " + cssBundle + ":");
+    for (var optionKey in options) {
+        console.log("option: " + optionKey + " -> " + options[optionKey]);
+    }
 
     var allCssArr = [], allMinCssArr = [], index = 0, pending = 0;
     var whenDone = function () {
+        if (options.nobundle) {
+            setTimeout(cb, 0);
+            return;
+        }
+
         console.log("writing " + bundleName + "...");
 
         var allCss = "", allMinCss = "";
