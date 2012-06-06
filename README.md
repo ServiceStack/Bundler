@@ -60,10 +60,10 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 
 Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.
 
-  #options nobundle
-  css/reset.css
-  css/variables.less
-  default.css
+    #options nobundle
+    css/reset.css
+    css/variables.less
+    default.css
 
 The currently available options are:
 
