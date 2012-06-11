@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -113,7 +112,7 @@ namespace ServiceStack.Mvc
 			});
 		}
 
-		private static string RewriteUrl(this string relativePath, BundleOptions options=BundleOptions.Normal)
+		private static string RewriteUrl(this string relativePath, BundleOptions options)
 		{
 			return DefaultUrlFilter(relativePath, options);
 		}
@@ -133,7 +132,7 @@ namespace ServiceStack.Mvc
 			return t.ToString(mode).ToMvcHtmlString();
 		}
 
-		public static MvcHtmlString Link(this HtmlHelper html, string rel, string href, object htmlAttributes = null, BundleOptions options = BundleOptions.Normal)
+		public static MvcHtmlString Link(this HtmlHelper html, string rel, string href, object htmlAttributes, BundleOptions options)
 		{
 			if (string.IsNullOrEmpty(href))
 				return MvcHtmlString.Empty;
@@ -152,7 +151,7 @@ namespace ServiceStack.Mvc
 			return tag.ToString(TagRenderMode.SelfClosing).ToMvcHtmlString();
 		}
 
-		public static MvcHtmlString Css(this HtmlHelper html, string href, string media = null, BundleOptions options = BundleOptions.Minified)
+		public static MvcHtmlString Css(this HtmlHelper html, string href, string media, BundleOptions options)
 		{
 			return media != null
 				   ? html.Link("stylesheet", href, new { media }, options)
@@ -164,7 +163,7 @@ namespace ServiceStack.Mvc
 			return predicate ? whenTrue : whenFalse;
 		}
 
-		public static MvcHtmlString Img(this HtmlHelper html, string src, string alt, string link = null, object htmlAttributes = null)
+		public static MvcHtmlString Img(this HtmlHelper html, string src, string alt, string link, object htmlAttributes)
 		{
 			if (string.IsNullOrEmpty(src))
 				return MvcHtmlString.Empty;
@@ -174,7 +173,7 @@ namespace ServiceStack.Mvc
 
 			var tag = new TagBuilder("img");
 
-			tag.MergeAttribute("src", src.RewriteUrl());
+            tag.MergeAttribute("src", src.RewriteUrl(BundleOptions.Normal));
 			tag.MergeAttribute("alt", alt);
 			if (htmlAttributes != null)
 				tag.MergeAttributes(new RouteValueDictionary(htmlAttributes));
@@ -190,7 +189,7 @@ namespace ServiceStack.Mvc
 			return tag.ToString(TagRenderMode.SelfClosing).ToMvcHtmlString();
 		}
 
-		public static MvcHtmlString Js(this HtmlHelper html, string src, BundleOptions options = BundleOptions.Minified)
+		public static MvcHtmlString Js(this HtmlHelper html, string src, BundleOptions options)
 		{
 			if (string.IsNullOrEmpty(src))
 				return MvcHtmlString.Empty;
@@ -206,7 +205,7 @@ namespace ServiceStack.Mvc
 			return tag.ToString(TagRenderMode.Normal).ToMvcHtmlString();
 		}
 
-		public static MvcHtmlString Img(this HtmlHelper html, Uri url, string alt, Uri link = null, object htmlAttributes = null)
+		public static MvcHtmlString Img(this HtmlHelper html, Uri url, string alt, Uri link, object htmlAttributes)
 		{
 			return html.Img(url.ToString(), alt, link != null ? link.ToString() : "", htmlAttributes);
 		}
@@ -218,7 +217,7 @@ namespace ServiceStack.Mvc
 
         static readonly Dictionary<string, MvcHtmlString> BundleCache = new Dictionary<string, MvcHtmlString>();
 
-		public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
+		public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath, BundleOptions options)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
@@ -252,7 +251,7 @@ namespace ServiceStack.Mvc
 			});
 		}
 
-		public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
+		public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
