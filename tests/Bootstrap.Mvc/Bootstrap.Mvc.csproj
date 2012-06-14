@@ -88,6 +88,8 @@
     <Content Include="Content\options\folder\app.js" />
     <Content Include="Content\options\folder\something\something.js" />
     <Content Include="Content\options\folder\thirdparty\thirdparty.js" />
+    <Content Include="Content\options\nobundle\app.js" />
+    <Content Include="Content\options\skipmin\app.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -107,6 +109,12 @@
     <None Include="Content\options\folder\folder-recursive.js.bundle" />
     <None Include="Content\options\folder\folder.css.bundle" />
     <None Include="Content\options\folder\folder.js.bundle" />
+    <None Include="Content\options\nobundle\app.less" />
+    <None Include="Content\options\nobundle\nobundle.css.bundle" />
+    <None Include="Content\options\nobundle\nobundle.js.bundle" />
+    <None Include="Content\options\skipmin\app.less" />
+    <None Include="Content\options\skipmin\skipmin.css.bundle" />
+    <None Include="Content\options\skipmin\skipmin.js.bundle" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
