@@ -69,6 +69,11 @@ The currently available options are:
 
 1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file.  This allows you to compile and minify your standalone files without bundling them into another file.
 2. **skipmin**: skips the minimization step
+3. **folder**: used a trigger to transform all files in the folder with this bundle file.  If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched.  When the `folder` option is used, the `nobundle` option is automatically set.  When the `folder` option is used, listing files in the bundle file does nothing.
+
+Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
+
+    #options folder:recursive
 
 Tip: For greater productivity integrate it with VS.NET by assiging a keyboard short-cut to **bundler.cmd** or run it as a post-build script so it's easily re-run it when your files have changed.
 
