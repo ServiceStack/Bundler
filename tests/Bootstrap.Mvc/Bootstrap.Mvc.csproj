@@ -74,6 +74,8 @@
   <ItemGroup>
     <Content Include="Content\css\bootstrap-responsive.css" />
     <Content Include="Content\css\bootstrap.css" />
+    <None Include="Content\app.css.bundle" />
+    <None Include="Content\app.js.bundle" />
     <None Include="Content\css\default.less" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
@@ -83,10 +85,10 @@
     <Content Include="Content\js\app.coffee" />
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Content\js\underscore.js" />
-    <Content Include="Content\options\nobundle\my-app.js" />
-    <Content Include="Content\options\skipmin\app.js" />
+    <Content Include="Content\options\folder\app.js" />
+    <Content Include="Content\options\folder\something\something.js" />
+    <Content Include="Content\options\folder\thirdparty\thirdparty.js" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -100,22 +102,18 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <None Include="Content\options\nobundle\my-app-css.less" />
-    <None Include="Content\options\nobundle\nobundle-scripts.js.bundle" />
-    <None Include="Content\options\nobundle\nobundle-styles.css.bundle" />
-    <None Include="Content\options\skipmin\app.less" />
-    <None Include="Content\options\skipmin\skipmin.js.bundle" />
-    <None Include="Content\options\skipmin\skipmin.css.bundle" />
+    <None Include="Content\options\folder\app.less" />
+    <None Include="Content\options\folder\folder-recursive.css.bundle" />
+    <None Include="Content\options\folder\folder-recursive.js.bundle" />
+    <None Include="Content\options\folder\folder.css.bundle" />
+    <None Include="Content\options\folder\folder.js.bundle" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\app.css.bundle" />
-    <None Include="Content\app.js.bundle" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
