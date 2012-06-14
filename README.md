@@ -19,10 +19,6 @@ The packager is completely **async and non-blocking** - allowing the processing 
 Designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
-## How it works
-
-You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** definition files which it goes through, only compiling and minifying new or modified files.
-
 ## Install
 
 To run you just need a copy of **/bundler** folder in your website host directory. This can be done by cloning this repo or installing via NuGet:
@@ -35,7 +31,11 @@ By default bundler looks at **/Content** and **/Scripts** project folders - this
 
     node bundler.js ../Content ../Scripts
 
-Now you can define .bundles in any of the above folders. For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
+Now you can define .bundle files in any of the above folders.
+
+## How it works
+
+You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** definition files which it goes through, only compiling and minifying new or modified files.  For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
 
 **/Scripts/app.js.bundle**
 
