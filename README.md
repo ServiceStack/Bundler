@@ -58,9 +58,9 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 
 **Bundle file options**
 
-Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.  Options are comma delimited and each option is a key/value pair separated by a colon.  You can omit the value for boolean options and options specified without a value are set to true.
+Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.  Options are comma delimited and each option is a key/value pair separated by a colon.  The keys are all converted to lowercase.  You can omit the value for boolean options and options specified without a value are set to true.
 
-    #options nobundle
+    #options nobundle,skipmin
     css/reset.css
     css/variables.less
     default.css
@@ -68,6 +68,7 @@ Options can be specified to alter how your files are processed.  Options must be
 The currently available options are:
 
 1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file.  This allows you to compile and minify your standalone files without bundling them into another file.
+2. **skipmin**: skips the minimization step
 
 Tip: For greater productivity integrate it with VS.NET by assiging a keyboard short-cut to **bundler.cmd** or run it as a post-build script so it's easily re-run it when your files have changed.
 
@@ -135,3 +136,6 @@ Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any cha
 
 You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Mvc.Bundler.cs#L24).
 
+## Bundler Run on Save Visual Studio Extension
+
+The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension.  The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle.  If you install bundler from the nuget package, this should extension should work just fine.  The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file.  When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.

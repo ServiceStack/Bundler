@@ -84,6 +84,7 @@
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Content\js\underscore.js" />
     <Content Include="Content\options\nobundle\my-app.js" />
+    <Content Include="Content\options\skipmin\app.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Web.config" />
@@ -102,6 +103,9 @@
     <None Include="Content\options\nobundle\my-app-css.less" />
     <None Include="Content\options\nobundle\nobundle-scripts.js.bundle" />
     <None Include="Content\options\nobundle\nobundle-styles.css.bundle" />
+    <None Include="Content\options\skipmin\app.less" />
+    <None Include="Content\options\skipmin\skipmin.js.bundle" />
+    <None Include="Content\options\skipmin\skipmin.css.bundle" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
