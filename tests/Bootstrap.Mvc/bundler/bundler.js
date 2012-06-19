@@ -22,11 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+function clone(o) {
+  var ret = {};
+  Object.keys(o).forEach(function (val) {
+    ret[val] = o[val];
+  });
+  return ret;
+}
+String.prototype.startsWith = function (str){
+    return this.indexOf(str) === 0;
+};
+String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+String.prototype.endsWithAny = function (endings) {
+    var str = this;
+    return endings.some(function (ending) { return str.endsWith(ending); });
+}
+
 //recursively scans the directory below for *.js.bundle and *.css.bundle files
-var SCAN_ROOT_DIRS = process.argv.splice(2); //directories specified in bundler.cmd
+var commandLineArgs = process.argv.splice(2); //directories specified in bundler.cmd
+
+var commandLineOptions = commandLineArgs.filter(function (arg) { return arg.startsWith('#'); });
+var defaultOptions = {};
+commandLineOptions.forEach(function (option) {
+    while (option.startsWith('#')) { option = option.substring(1); }
+    var parts = option.split(':');
+    defaultOptions[parts[0].toLowerCase()] = parts.length > 1 ? parts[1] : true;
+});
+
+var SCAN_ROOT_DIRS = commandLineArgs.filter(function (arg) { return !arg.startsWith('#'); });
 if (!SCAN_ROOT_DIRS.length) {
     console.log("No directories were specified.");
-    console.log("Usage: bundler.cmd ../Content ../Scripts");
+    console.log("Usage: bundler.js [#option:value] ../Content [../Scripts]");
     return;
 }
 
@@ -41,16 +69,6 @@ var fs = require("fs"),
     Step = require('step'),
     startedAt = Date.now();
 
-String.prototype.startsWith = function (str){
-    return this.indexOf(str) === 0;
-};
-String.prototype.endsWith = function (suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
-String.prototype.endsWithAny = function (endings) {
-    var str = this;
-    return endings.some(function (ending) { return str.endsWith(ending); });
-}
 
 var walk = function (dir, done) {
     var results = [];
@@ -100,8 +118,10 @@ function scanDir(allFiles, cb) {
     var jsBundles  = allFiles.filter(function (file) { return file.endsWith(".js.bundle"); });
     var cssBundles = allFiles.filter(function (file) { return file.endsWith(".css.bundle"); });
 
-    function getOptions(optionsString) {
-        var options = {};
+    function getOptions(fileLines) {
+        var options = clone(defaultOptions);
+        if (fileLines.length === 0) return options;
+        var optionsString = fileLines[0];
         if (!optionsString.startsWith('#options ')) return options;
         optionsString.substring(9).split(',').forEach(function (option) {
             var parts = option.split(':');
@@ -125,7 +145,7 @@ function scanDir(allFiles, cb) {
                 var bundleName = jsBundle.replace('.bundle', '');
                 readTextFile(jsBundle, function (data) {
                     var jsFiles = removeCR(data).split("\n");
-                    var options = jsFiles.length > 0 ? getOptions(jsFiles[0]) : {};
+                    var options = getOptions(jsFiles);
                     if (options.folder !== undefined) {
                         options.nobundle = true;
                         var recursive = options.folder === 'recursive';
@@ -156,7 +176,7 @@ function scanDir(allFiles, cb) {
                 var bundleName = cssBundle.replace('.bundle', '');
                 readTextFile(cssBundle, function (data) {
                     var cssFiles = removeCR(data).split("\n");
-                    var options = cssFiles.length > 0 ? getOptions(cssFiles[0]) : {};
+                    var options = getOptions(cssFiles);
                     if (options.folder !== undefined) {
                         options.nobundle = true;
                         var recursive = options.folder === 'recursive';
