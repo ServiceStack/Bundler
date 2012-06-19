@@ -202,6 +202,7 @@ namespace ServiceStack.BundlerRunOnSave
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                 };
 
                 process.Exited += (sender, args) =>
