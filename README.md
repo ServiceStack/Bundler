@@ -56,41 +56,34 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 
-**Bundle file options**
+## Running Bundler
 
-Options can be specified to alter how your files are processed.  Options must be specified on the first line of the bundle file and the line must start with `#options `.  Options are comma delimited and each option is a key/value pair separated by a colon.  The keys are all converted to lowercase.  You can omit the value for boolean options and options specified without a value are set to true.
+You basically want to run Bundler when a file your website references has changed, so you can see those changes before the next page refresh.
+Although `bundler.cmd` is just a simple command-line script, there are multiple ways you can run it during development: 
 
-    #options nobundle,skipmin
-    css/reset.css
-    css/variables.less
-    default.css
+  - Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the VS.NET Extension is installed)
+  - Create an **External Tool** inside VS.NET that runs `bundler.cmd`
+    - Optionally assign it a short-cut so you can start it with a single key-stroke
+  - As a Post-Build event
 
-The currently available options are:
+### Bundler Run on Save Visual Studio Extension
 
-1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file.  This allows you to compile and minify your standalone files without bundling them into another file.
-2. **skipmin**: skips the minimization step
-3. **folder**: used a trigger to transform all files in the folder with this bundle file.  If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched.  When the `folder` option is used, the `nobundle` option is automatically set.  When the `folder` option is used, listing files in the bundle file does nothing.
+The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension. The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle.  If you install bundler from the nuget package, this should extension should work just fine. The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file.  When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.
 
-Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
-
-    #options folder:recursive
-
-Tip: For greater productivity integrate it with VS.NET by assiging a keyboard short-cut to **bundler.cmd** or run it as a post-build script so it's easily re-run it when your files have changed.
-
-#### Create an External Tool inside VS.NET:
+### Create an External Tool inside VS.NET:
 
 Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and minify your changed assets without re-building your project:
 
 ![Add External Tool in VS.NET](http://www.servicestack.net/img/external-tools-bundler.png)
 
-#### Run script on post-build event
+### Run script on post-build event
 Alternatively you can run bundler after every successful build. Add the line below to **Properties** > **Build events** > **Post-build event**:
 
     "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
     
 ![Add Bundler to VS.NET Post-Build event](http://servicestack.net/img/post-build-bundler.png)
 
-### Enable Mvc.Bundler.cs Html helpers inside view pages
+## Enable Mvc.Bundler.cs Html helpers inside view pages
 
 To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
 
@@ -108,7 +101,7 @@ To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views bas
 
 Once enabled, you can then reference these bundles in your MVC **_Layout.cshtml** or **View.cshtml** pages with the **@Html.RenderCssBundle()** and **@Html.RenderJsBundle()** helpers:
 
-### Bundle Options
+## Bundle Options
 
 The different BundleOptions supported are:
 
@@ -141,6 +134,30 @@ Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any cha
 
 You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Mvc.Bundler.cs#L24).
 
-## Bundler Run on Save Visual Studio Extension
+## Advanced Options
 
-The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension.  The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle.  If you install bundler from the nuget package, this should extension should work just fine.  The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file.  When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.
+### Bundle file options
+
+Advanced options can be specified to change how your files are processed. You can specify bundler options by following the rules below: 
+
+  - Options must be specified on the first line of the bundle file and the line must start with `#options `.  
+  - Options are comma delimited and each option is a key/value pair separated by a colon and the keys are all converted to lowercase. 
+  - You can omit the value for boolean options and options specified without a value are set to true.
+
+#### Example file with options
+
+    #options nobundle,skipmin
+    css/reset.css
+    css/variables.less
+    default.css
+
+The currently available options are:
+
+  1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file. This allows you to compile and minify your standalone files without concatenating them into a bundle.
+  2. **skipmin**: skips the minimization step for every file
+  3. **folder**: used a trigger to transform all files in the folder with this bundle file. If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched. When the `folder` option is used, the `nobundle` option is automatically set. When the `folder` option is used, listing files in the bundle file does nothing.
+
+Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
+
+    #options folder:recursive
+
