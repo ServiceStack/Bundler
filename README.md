@@ -142,11 +142,11 @@ You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your
 
 ### Bundle file options
 
-Advanced options can be specified to change how your files are processed. You can specify bundler options by following the rules below: 
+Advanced options can be specified that changes how .bundle's are processed. You can specify bundler options following these rules: 
 
-  - Options must be specified on the first line of the bundle file and the line must start with `#options `.  
-  - Options are comma delimited and each option is a key/value pair separated by a colon and the keys are all converted to lowercase. 
-  - You can omit the value for boolean options and options specified without a value are set to true.
+  - Options must be specified on the **first line** of the `.bundle` file, starting with `#options `.  
+  - Options are comma-delimited. Each option is a key/value pair separated by a colon. Keys are case-insensitive.
+  - You can omit the value for boolean options - specified options without a value are set to true.
 
 #### Example file with options
 
@@ -157,11 +157,21 @@ Advanced options can be specified to change how your files are processed. You ca
 
 The currently available options are:
 
-  1. **nobundle**: compiles and minifies all files listed, however it does not bundle them into a single file. This allows you to compile and minify your standalone files without concatenating them into a bundle.
-  2. **skipmin**: skips the minimization step for every file
-  3. **folder**: used a trigger to transform all files in the folder with this bundle file. If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched. When the `folder` option is used, the `nobundle` option is automatically set. When the `folder` option is used, listing files in the bundle file does nothing.
+  - **nobundle** - Compiles and minifies all files listed, however it does not bundle them into a single file. This allows you to compile and minify your standalone files without concatenating them into a bundle.
+  - **skipmin** - Skips the minimization step for every file
+  - **folder** - Used a trigger to transform all files in the folder with this bundle file. If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched. When the `folder` option is used, the `nobundle` option is automatically set. When the `folder` option is used, listing files in the bundle file does nothing.
 
 Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
 
     #options folder:recursive
 
+## Contributors
+A big thanks to all of Bundler's contributors:
+
+ - [mythz](https://github.com/mythz) (Demis Bellot)
+ - [nicklarsen](https://github.com/NickLarsen) (Nick Larsen)
+ - [duncansmart](https://github.com/duncansmart) (Duncan Smart)
+ - [cyberlane](https://github.com/Cyberlane) (Justin Nel)
+ - [michael-wolfenden](https://github.com/michael-wolfenden) (Michael Wolfenden)
+ - [garjitech](https://github.com/garjitech) (Garrett Wolf)
+ 
