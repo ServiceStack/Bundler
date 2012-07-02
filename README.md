@@ -63,12 +63,16 @@ Although `bundler.cmd` is just a simple command-line script, there are multiple 
 
   - Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the VS.NET Extension is installed)
   - Create an **External Tool** inside VS.NET that runs `bundler.cmd`
-    - Optionally assign it a short-cut so you can start it with a single key-stroke
-  - As a Post-Build event
+    - Optionally assign it a short-cut so you can run it with a single key-stroke
+  - As a Post-Build event in your project, to run it at the end of every build
+
+Note: If your team doesn't check in compiled or minified files you should also get your CI build agents to also run `bundler.cmd` after each build.
 
 ### Bundler Run on Save Visual Studio Extension
 
-The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension. The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle.  If you install bundler from the nuget package, this should extension should work just fine. The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file.  When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.
+The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension. The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle. 
+
+If you install bundler from the nuget package, this extension should just work. The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file. When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.
 
 ### Create an External Tool inside VS.NET:
 
