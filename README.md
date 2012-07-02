@@ -58,7 +58,7 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 
 ## Running Bundler
 
-You basically want to run Bundler when a file your website references has changed, so you can see those changes before the next page refresh.
+You basically want to run Bundler when a file your website references has changed, so you can see those changes before your next page refresh.
 Although `bundler.cmd` is just a simple command-line script, there are multiple ways you can run it during development: 
 
   - Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the VS.NET Extension is installed)
@@ -66,7 +66,7 @@ Although `bundler.cmd` is just a simple command-line script, there are multiple 
     - Optionally assign it a short-cut so you can run it with a single key-stroke
   - As a Post-Build event in your project, to run it at the end of every build
 
-Note: If your team doesn't check in compiled or minified files you should also get your CI build agents to also run `bundler.cmd` after each build.
+Note: If your team doesn't check-in compiled or minified files you should also have your CI build agents run `bundler.cmd` after each build.
 
 ### Bundler Run on Save Visual Studio Extension
 
