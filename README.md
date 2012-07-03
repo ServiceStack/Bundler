@@ -23,22 +23,24 @@ The packager is completely **async and non-blocking** - allowing the processing 
 Designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
-#### Cuts build-time in 1/2!
-We've moved the [StackOverflow Careers](http://careers.stackoverflow.com/) website from an older .NET-based build system over to Bundler and it reduced our build-times by more than 50%! YMMV but if your current Compiling/Optimization build-system is slowing you down - definitely give Bundler a try.
+#### Cuts build-time in 1/2
+We've reduced our total build times by more than 50% by moving the [StackOverflow Careers](http://careers.stackoverflow.com/) website from an older .NET-based build solution over to Bundler! YMMV but if your current Compiling/Optimization build-system is slowing you down - definitely give Bundler a try.
 
 #### Pre-configured Single Page App Starter Template
-Checkout [Social Bootstrap Api](https://github.com/ServiceStack/SocialBootstrapApi) for a great template to base your next Single Page App on.
+Checkout [Social Bootstrap Api](https://github.com/ServiceStack/SocialBootstrapApi) for a great starting template to base your next Single Page App on.
 Includes [Twitter Bootstrap](http://twitter.github.com/bootstrap/) + [Backbone.js](http://backbonejs.org/) + ASP.NET MVC + [ServiceStack](https://github.com/ServiceStack/ServiceStack) with Bundler all wired-up with **Twitter** + **Facebook** + HTML Form + Basic and Digest Auth providers ready-to-go out-of-the-box.
 
 
 ## Release Notes
 
 ### v1.10 Release Notes
+This release comes is thanks to the hard work of [@fody](https://twitter.com/fody) who implemented both [Bundler's VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension) and the [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options).
 
   - Added VS.NET the Bundler Integration via [Bundler's VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension)
   - Added [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options) for finer-grain control
     - Lets you skip bundling or minification steps
     - Lets you recursively compile and minify all files in current and sub-directories without having to list them
+
 
 ## Install
 
