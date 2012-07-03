@@ -1,13 +1,16 @@
 # Bundler
 
-Bundler is a fast, command-line tool (easily integrated into existing IDEs, inc VS.NET) that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files.
+Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files. 
 
-  - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime. 
-  - Can be used with any website project (ie. not only .NET). Includes a **windows** node.exe although all scripts work cross-platform.
-  - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website.
-  - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project.
-  - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance.
-  - Doesn't use any compiled dlls or .exe's (excl node.exe) and includes source code for everything so can easily be read and extended.
+Bundler uses the popular and well-tested javascript libraries in [node's package manager](http://npmjs.org/) for all minification and compilation. This enables it to generate faster and more up-to-date outputs than any other .NET wrapper solution which either uses old .NET ports of node.js or ruby implementations, or they have to invoke external out-of-process [IronRuby](http://www.ironruby.net/) and  JavaScript processes resulting in slower execution - consuming valuable iteration-time on each dev-cycle.
+
+  - It's easy to use! all `.bundle` files are plain text files which just lists the file names that make up each bundle
+  - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime
+  - Can be used with any website project (ie. not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
+  - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website
+  - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project
+  - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance
+  - Doesn't use any compiled dlls or .exe's (excl node.exe) and includes source code for everything so can easily be read and extended
 
 ## Extremely fast at both Build and Runtime
 Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process. 
@@ -26,6 +29,9 @@ To run you just need a copy of **/bundler** folder in your website host director
 [![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
 *Once installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
+
+#### Installing the VS.NET 2010 Extension
+If you have VS.NET 2010 you should also install the local `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension which automatically runs bundler for you when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
 
 By default bundler looks at **/Content** and **/Scripts** project folders - this can be changed by editing [/bundler/bundler.cmd](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/bundler/bundler.cmd):
 
@@ -59,20 +65,21 @@ Now everytime you run **/bundler/bundler.cmd** it will scan these files, compili
 ## Running Bundler
 
 You basically want to run Bundler when a file your website references has changed, so you can see those changes before your next page refresh.
-Although `bundler.cmd` is just a simple command-line script, there are multiple ways you can run it during development: 
+Although `bundler.cmd` is just a simple command-line script, there are a few different ways you can run it during development (in order of most productive): 
 
-  - Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the VS.NET Extension is installed)
-  - Create an **External Tool** inside VS.NET that runs `bundler.cmd`
-    - Optionally assign it a short-cut so you can run it with a single key-stroke
-  - As a Post-Build event in your project, to run it at the end of every build
+  1. Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the 2010 VS.NET Extension is installed)
+  2. Create an **External Tool** inside VS.NET that runs `bundler.cmd`. Optionally assign it a short-cut so you can run it with a single key-stroke.
+  3. As a Post-Build event in your project, to run it at the end of every build
 
-Note: If your team doesn't check-in compiled or minified files you should also have your CI build agents run `bundler.cmd` after each build.
+**Reminder:** If you don't check-in compiled or .min files you should also get your CI build agents run `bundler.cmd` after each build.
 
 ### Bundler Run on Save Visual Studio Extension
 
-The Bundler Run on Save extension executes bundler if it is included in the project folder when you save any file in the project with an allowed extension. The file extensions which trigger this are: .less, .css, .sass, .js, .coffee and .bundle. 
+After you install bundler from the nuget package, double-click the `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension to add it to VS.NET - rebooting VS.NET maybe required for the changes to take effect:
 
-If you install bundler from the nuget package, this extension should just work. The bundler directory does not have to be in the project, it just has to exist in the same folder as the project file. When the extension runs bundler, you can see the output in a new Bundler pane of the Output window.
+![Bundler VS.NET Extension installer](http://www.servicestack.net/files/BundlerRunOnSave.png)
+
+Once installed the **BundlerRunOnSave.vsix** VS.NET extension runs bundler when you save any file in the project with any of the supported extensions .less, .css, .sass, .js, .coffee and .bundle. 
 
 ### Create an External Tool inside VS.NET:
 
@@ -164,6 +171,10 @@ The currently available options are:
 Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
 
     #options folder:recursive
+
+## Development
+
+The Bundler VS.NET extension lives in [/src/vs/BundlerRunOnSave](https://github.com/ServiceStack/Bundler/blob/master/src/vs/BundlerRunOnSave) which requires the VS.NET templates provided by the [Visual Studio 2010 SP1 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) in order to open it. 
 
 ## Contributors
 A big thanks to all of Bundler's contributors:
