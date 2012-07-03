@@ -34,7 +34,7 @@ Includes [Twitter Bootstrap](http://twitter.github.com/bootstrap/) + [Backbone.j
 ## Release Notes
 
 ### v1.10 Release Notes
-This release comes is thanks to the hard work of [@fody](https://twitter.com/fody) who implemented both [Bundler's VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension) and the [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options).
+This release is thanks to the hard work of [@fody](https://twitter.com/fody) who implemented both the [VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension) and [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options).
 
   - Added VS.NET the Bundler Integration via [Bundler's VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension)
   - Added [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options) for finer-grain control
