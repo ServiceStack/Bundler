@@ -50,39 +50,13 @@ To run you just need a copy of **/bundler** folder in your website host director
 
 *Once installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
-#### Installing the VS.NET 2010 Extension
-If you have VS.NET 2010 you should also install the local `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension which automatically runs bundler for you when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
-
 By default bundler looks at **/Content** and **/Scripts** project folders - this can be changed by editing [/bundler/bundler.cmd](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/bundler/bundler.cmd):
 
     node bundler.js ../Content ../Scripts
 
 Now you can define .bundle files in any of the above folders.
 
-## How it works
-
-You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** definition files which it goes through, only compiling and minifying new or modified files.  For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
-
-**/Scripts/app.js.bundle**
-
-	js/underscore.js
-	js/backbone.js
-	js/includes.js
-	js/functions.coffee
-	js/base.coffee
-	bootstrap.js
-
-**/Content/app.css.bundle**
-	
-	css/reset.css
-	css/variables.less
-	css/styles.less
-	css/sassy.sass
-	default.css
-
-Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
-
-## Running Bundler
+## Setup a Bundler runner
 
 You basically want to run Bundler when a file your website references has changed, so you can see those changes before your next page refresh.
 Although `bundler.cmd` is just a simple command-line script, there are a few different ways you can run it during development (in order of most productive): 
@@ -93,7 +67,9 @@ Although `bundler.cmd` is just a simple command-line script, there are a few dif
 
 **Reminder:** If you don't check-in compiled or .min files you should also get your CI build agents run `bundler.cmd` after each build.
 
-### Bundler Run on Save Visual Studio Extension
+### Installing the Run on Save VS.NET 2010 Extension
+
+If you have VS.NET 2010 you should also install the local `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension which automatically runs bundler for you when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
 
 After you install bundler from the nuget package, double-click the `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension to add it to VS.NET - rebooting VS.NET maybe required for the changes to take effect:
 
@@ -113,6 +89,29 @@ Alternatively you can run bundler after every successful build. Add the line bel
     "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
     
 ![Add Bundler to VS.NET Post-Build event](http://servicestack.net/img/post-build-bundler.png)
+
+## How it works
+
+You define css or js **bundles** (in plain text) that specifies the list of files you wish to bundle together. Running **bundler.cmd** (either as a short-cut key or post-build script) will scan through your **/Content** folder finding all defined **.js.bundle** and **.css.bundle** definition files which it goes through, only compiling and minifying new or modified files.  For illustration an example **app.js.bundle** and **app.css.bundle** text files are defined below:
+
+**/Scripts/app.js.bundle**
+
+  js/underscore.js
+  js/backbone.js
+  js/includes.js
+  js/functions.coffee
+  js/base.coffee
+  bootstrap.js
+
+**/Content/app.css.bundle**
+  
+  css/reset.css
+  css/variables.less
+  css/styles.less
+  css/sassy.sass
+  default.css
+
+Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 
 ## Enable Mvc.Bundler.cs Html helpers inside view pages
 
