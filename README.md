@@ -24,7 +24,7 @@ Designed for maximum runtime performance since no compilation/minification happe
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
 #### Cuts build-time in 1/2
-We've reduced our total build times by more than 50% by moving the [StackOverflow Careers](http://careers.stackoverflow.com/) website from an older .NET-based build solution over to Bundler! YMMV but if your current Compiling/Optimization build-system is slowing you down - definitely give Bundler a try.
+After moving to Bundler for all their compilation and minification, [StackOverflow Careers](http://careers.stackoverflow.com/) have reduced their total build times by more than **1/2**! YMMV but if your current .NET-based Compilation/Optimization build-system is slowing you down - definitely tryout Bundler.
 
 #### Pre-configured Single Page App Starter Template
 Checkout [Social Bootstrap Api](https://github.com/ServiceStack/SocialBootstrapApi) for a great starting template to base your next Single Page App on.
