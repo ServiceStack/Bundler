@@ -4,12 +4,12 @@ Bundler is a fast, cross-platform, command-line runner (easily integrated into e
 
 Bundler uses the popular and well-tested javascript libraries in [node's package manager](http://npmjs.org/) for all minification and compilation. This enables it to generate faster and more up-to-date outputs than any other .NET wrapper solution which either uses old .NET ports of node.js or ruby implementations, or they have to invoke external out-of-process [IronRuby](http://www.ironruby.net/) and  JavaScript processes resulting in slower execution - consuming valuable iteration-time on each dev-cycle.
 
-  - It's easy to use! All **.bundle's** are plain text files which just contain the list file names that make up each bundle
-  - Includes VS.NET Integration! Saving any supported file auto-runs Bundler. Works seamlessly behind-the-scenes while you code
-  - All bundling is done at **compile time**, by running a single `bundler.cmd` command so no dependencies needed at runtime
-  - Can be used with any website project (not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
-  - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website
+  - Easy to use! All **.bundle**'s are plain text files which just contain a list of the file names that make up each bundle
+  - Includes **VS.NET Integration**! Saving any supported file auto-runs Bundler. Works seamlessly behind-the-scenes while you code
+  - Integrates with **ASP.NET MVC**! Includes 1 C# **MvcBundler.cs** class with extension methods to seamlessly integrate with MVC
   - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project
+  - Can be used with any website project (not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
+  - All bundling done at **compile time**, by running the single `bundler.cmd` command - no dependencies needed at runtime
   - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance
   - All node.js `.js` and MVC C# `.cs` src files used are in plain-text - so can be easily be followed, extended or customized
 
