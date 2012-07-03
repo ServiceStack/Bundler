@@ -69,11 +69,11 @@ Although `bundler.cmd` is just a simple command-line script, there are a few dif
 
 ### Installing the Run on Save VS.NET 2010 Extension
 
-If you have VS.NET 2010 you should also install the local `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension which automatically runs bundler for you when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
-
-After you install bundler from the nuget package, double-click the `bundler\vs2010-extension\BundlerRunOnSave.vsix` VS.NET extension to add it to VS.NET - rebooting VS.NET maybe required for the changes to take effect:
+If you have VS.NET 2010 you should also double-click the `bundler\vs2010-extension\BundlerRunOnSave.vsix` package to install Bundler's VS.NET extension which will automatically runs bundler when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
 
 ![Bundler VS.NET Extension installer](http://www.servicestack.net/files/BundlerRunOnSave.png)
+
+*Note: You should reboot VS.NET for the changes to take effect*
 
 Once installed the **BundlerRunOnSave.vsix** VS.NET extension runs bundler when you save any file in the project with any of the supported extensions .less, .css, .sass, .js, .coffee and .bundle. 
 
