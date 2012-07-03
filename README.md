@@ -62,8 +62,8 @@ You basically want to run Bundler when a file your website references has change
 Although `bundler.cmd` is just a simple command-line script, there are a few different ways you can run it during development (in order of most productive): 
 
   1. Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the 2010 VS.NET Extension is installed)
-  2. Create an **External Tool** inside VS.NET that runs `bundler.cmd`. Optionally assign it a short-cut so you can run it with a single key-stroke.
-  3. As a Post-Build event in your project, to run it at the end of every build
+  2. Add an **External Tool** in VS.NET that runs `bundler.cmd`. Optionally assign a short-cut so you can run with 1 key-stroke
+  3. Add a Post-Build event to your project to automatically run it at the end of every build
 
 **Reminder:** If you don't check-in compiled or .min files you should also get your CI build agents run `bundler.cmd` after each build.
 
