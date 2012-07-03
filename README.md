@@ -4,13 +4,14 @@ Bundler is a fast, cross-platform, command-line runner (easily integrated into e
 
 Bundler uses the popular and well-tested javascript libraries in [node's package manager](http://npmjs.org/) for all minification and compilation. This enables it to generate faster and more up-to-date outputs than any other .NET wrapper solution which either uses old .NET ports of node.js or ruby implementations, or they have to invoke external out-of-process [IronRuby](http://www.ironruby.net/) and  JavaScript processes resulting in slower execution - consuming valuable iteration-time on each dev-cycle.
 
-  - It's easy to use! all `.bundle` files are plain text files which just lists the file names that make up each bundle
-  - All bundling is done at **compile time** with a build-step so no dependencies needed at runtime
-  - Can be used with any website project (ie. not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
+  - It's easy to use! All **.bundle's** are plain text files which just contain the list file names that make up each bundle
+  - Includes VS.NET Integration! Saving any supported file auto-runs Bundler. Works seamlessly behind-the-scenes while you code
+  - All bundling is done at **compile time**, by running a single `bundler.cmd` command so no dependencies needed at runtime
+  - Can be used with any website project (not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
   - Includes a single C# **MvcBundler.cs** class with extension methods to seamlessly integrate it with any **ASP.NET MVC** website
   - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project
   - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance
-  - Doesn't use any compiled dlls or .exe's (excl node.exe) and includes source code for everything so can easily be read and extended
+  - All node.js `.js` and MVC C# `.cs` src files used are in plain-text - so can be easily be followed, extended or customized
 
 ## Extremely fast at both Build and Runtime
 Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process. 
@@ -21,6 +22,23 @@ The packager is completely **async and non-blocking** - allowing the processing 
 #### No Runtime overhead
 Designed for maximum runtime performance since no compilation/minification happens at runtime. 
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
+
+#### Cuts build-time in 1/2!
+We've moved the [StackOverflow Careers](http://careers.stackoverflow.com/) website from an older .NET-based build system over to Bundler and it reduced our build-times by more than 50%! YMMV but if your current Compiling/Optimization build-system is slowing you down - definitely give Bundler a try.
+
+#### Pre-configured Single Page App Starter Template
+Checkout [Social Bootstrap Api](https://github.com/ServiceStack/SocialBootstrapApi) for a great template to base your next Single Page App on.
+Includes [Twitter Bootstrap](http://twitter.github.com/bootstrap/) + [Backbone.js](http://backbonejs.org/) + ASP.NET MVC + [ServiceStack](https://github.com/ServiceStack/ServiceStack) with Bundler all wired-up with **Twitter** + **Facebook** + HTML Form + Basic and Digest Auth providers ready-to-go out-of-the-box.
+
+
+## Release Notes
+
+### v1.10 Release Notes
+
+  - Added VS.NET the Bundler Integration via [Bundler's VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension)
+  - Added [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options) for finer-grain control
+    - Lets you skip bundling or minification steps
+    - Lets you recursively compile and minify all files in current and sub-directories without having to list them
 
 ## Install
 
