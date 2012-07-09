@@ -96,20 +96,20 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 **/Scripts/app.js.bundle**
 
-  js/underscore.js
-  js/backbone.js
-  js/includes.js
-  js/functions.coffee
-  js/base.coffee
-  bootstrap.js
+    js/underscore.js
+    js/backbone.js
+    js/includes.js
+    js/functions.coffee
+    js/base.coffee
+    bootstrap.js
 
 **/Content/app.css.bundle**
   
-  css/reset.css
-  css/variables.less
-  css/styles.less
-  css/sassy.sass
-  default.css
+    css/reset.css
+    css/variables.less
+    css/styles.less
+    css/sassy.sass
+    default.css
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
 
