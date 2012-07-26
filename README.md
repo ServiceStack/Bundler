@@ -41,6 +41,9 @@ This release is thanks to the hard work of [@fody](https://twitter.com/fody) who
     - Lets you skip bundling or minification steps
     - Lets you recursively compile and minify all files in current and sub-directories without having to list them
 
+## Community Resources
+
+  - [Using ServiceStack Bundler](http://antonkallenberg.com/2012/07/26/using-servicestack-bundler/) - Fantastic step-by-step guide to enable Bundler in MVC.
 
 ## Install
 
