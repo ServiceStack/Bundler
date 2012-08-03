@@ -22,6 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+// uncaught exceptions should cause the application to crash and exit
+// with an exit code that will be identified as a failure by most
+// windows build systems
+process.on("uncaughtException", function (err) {
+    console.log(err);
+    process.exit(1);
+});
+
 function clone(o) {
   var ret = {};
   Object.keys(o).forEach(function (val) {
