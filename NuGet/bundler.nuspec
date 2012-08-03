@@ -2,17 +2,22 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Bundler</id> 
-    <version>1.0.3</version> 
+    <title>Bundler: Compile &amp; Minify js, coffeescript, css, less, sass. Integrate in VS.NET/MVC</title>
+    <version>1.1.4</version> 
     <authors>Demis Bellot</authors> 
     <owners>Demis Bellot</owners>
     <summary>CoffeeScript, JavaScript, Less, Sass, Css compiler, minifier and combiner for ASP.NET MVC websites.</summary>
     <description>
-		Extremely fast and simple pure node.js/javascript solution to statically complie, minify and combine your websites .css, .less, .coffee and .js files into user-defined bundles. Supports configurable bundle settings providing ideal unminified output for development and combined minified .min.js and .min.css files optimal for deployment. Integrates with MVC. No .dlls, includes all soure code for all customizable build scripts. Self-contained, no dependencies required at run-time.
+        A native node.js-powered Bundler with integration with VS.NET extension + ASP.NET MVC. No added compile or runtime performance costs.
+
+		Extremely fast and simple pure node.js/javascript solution to statically complie, minify and combine your websites .css, .less, .coffee and .js files into user-defined bundles. Supports configurable bundle settings providing ideal unminified output for development and combined minified .min.js and .min.css files optimal for deployment. Integrates with MVC. No .dlls, includes all soure code for all customizable build scripts. Self-contained, no dependencies required at run-time.        
+
+        More info at: https://github.com/ServiceStack/Bundler
     </description> 
     <projectUrl>https://github.com/ServiceStack/Bundler</projectUrl>
     <licenseUrl>https://github.com/ServiceStack/Bundler/blob/master/LICENSE</licenseUrl>
     <iconUrl>http://www.servicestack.net/logo-100x100.png</iconUrl>
-    <tags>LESS CoffeeScript JavaScript CSS SASS Node JS Minify Minifier Compiler Combine Concatenate</tags>
+    <tags>LESS CoffeeScript JavaScript CSS SASS Node JS Minify Minifier Compiler Combine Concatenate Optimization</tags>
     <language>en-US</language> 
     <copyright>ServiceStack 2012 and contributors</copyright>
   </metadata> 

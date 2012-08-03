@@ -49,3 +49,6 @@ COPY %FROM%\node_modules\step\package.json %DIST%\node_modules\step
 COPY %FROM%\node_modules\step\lib\* %DIST%\node_modules\step\lib
 
 COPY %FROM%\node_modules\uglify-js.js %DIST%\node_modules
+
+MD %DIST%\vs2010-extension
+COPY %FROM%\vs\BundlerRunOnSave\bin\Release\* %DIST%\vs2010-extension
