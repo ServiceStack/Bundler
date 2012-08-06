@@ -222,6 +222,7 @@ namespace ServiceStack.BundlerRunOnSave
                 };
 
                 process.OutputDataReceived += (sender, args) => _outputWindow.WriteLine(args.Data);
+                process.ErrorDataReceived += (sender, args) => _outputWindow.WriteLine(args.Data);
 
                 process.Start();
                 process.BeginOutputReadLine();
