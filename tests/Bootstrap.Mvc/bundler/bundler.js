@@ -26,7 +26,7 @@ SOFTWARE.
 // with an exit code that will be identified as a failure by most
 // windows build systems
 process.on("uncaughtException", function (err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
 });
 
@@ -81,7 +81,7 @@ var fs = require("fs"),
 var walk = function (dir, done) {
     var results = [];
     fs.readdir(dir, function (err, list) {
-        if (err) return done(err);
+        if (err) throw err;
         var i = 0;
         (function next() {
             var file = list[i++];
@@ -414,13 +414,8 @@ function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledTex
                         cb(minText);
                     });
                 };
-                try {
-                    compileFn(text, textPath, onAfterCompiled);
-                } catch (e) {
-                    console.log(e);
-                }
-            }
-            else {
+                compileFn(text, textPath, onAfterCompiled);
+            } else {
                 readTextFile(compileTextPath, cb);
             }
         }
@@ -436,7 +431,7 @@ function compileLess(lessCss, lessPath, cb) {
         };
     
     less.render(lessCss, options, function (err, css) {
-        if (err) return cb("") && console.error(err);
+        if (err) throw err;
         cb(css);
     });
 }
