@@ -1,3 +1,5 @@
+REM Copy from NuGet to MVC test project
+
 DEL /F /S /q Bootstrap.Mvc\bundler\*
 @rmdir /S /Q Bootstrap.Mvc\bundler
 MD Bootstrap.Mvc\bundler
