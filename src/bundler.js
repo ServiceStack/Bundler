@@ -46,7 +46,7 @@ String.prototype.endsWith = function (suffix) {
 String.prototype.endsWithAny = function (endings) {
     var str = this;
     return endings.some(function (ending) { return str.endsWith(ending); });
-}
+};
 
 //recursively scans the directory below for *.js.bundle and *.css.bundle files
 var commandLineArgs = process.argv.splice(2); //directories specified in bundler.cmd
@@ -76,7 +76,6 @@ var fs = require("fs"),
     cleanCss = require('clean-css'),
     Step = require('step'),
     startedAt = Date.now();
-
 
 var walk = function (dir, done) {
     var results = [];
@@ -423,6 +422,7 @@ function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledTex
 }
 
 function compileLess(lessCss, lessPath, cb) {
+    console.log("compiling less... " + lessPath);
     var lessDir = path.dirname(lessPath),
         fileName = path.basename(lessPath),
         options = {
@@ -431,6 +431,7 @@ function compileLess(lessCss, lessPath, cb) {
         };
     
     less.render(lessCss, options, function (err, css) {
+        console.log("Less Err: " + err + ". CSS Len: " + css.length);
         if (err) throw err;
         cb(css);
     });
