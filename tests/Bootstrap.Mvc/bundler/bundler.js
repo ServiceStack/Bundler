@@ -422,7 +422,6 @@ function compileAsync(mode, compileFn /*compileFn(text, textPath, cb(compiledTex
 }
 
 function compileLess(lessCss, lessPath, cb) {
-    console.log("compiling less... " + lessPath);
     var lessDir = path.dirname(lessPath),
         fileName = path.basename(lessPath),
         options = {
@@ -431,7 +430,6 @@ function compileLess(lessCss, lessPath, cb) {
         };
     
     less.render(lessCss, options, function (err, css) {
-        console.log("Less Err: " + err + ". CSS Len: " + css.length);
         if (err) throw err;
         cb(css);
     });
