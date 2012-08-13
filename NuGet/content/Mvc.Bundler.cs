@@ -252,7 +252,7 @@ namespace ServiceStack.Mvc
 			});
 		}
 
-		public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
+        public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified, string media = null)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
@@ -265,9 +265,9 @@ namespace ServiceStack.Mvc
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
 				if (options == BundleOptions.Combined)
-					return html.Css(bundlePath.Replace(".bundle", ""), null, options);
+                    return html.Css(bundlePath.Replace(".bundle", ""), media, options);
 				if (options == BundleOptions.MinifiedAndCombined)
-					return html.Css(bundlePath.Replace(".css.bundle", ".min.css"), null, options);
+                    return html.Css(bundlePath.Replace(".css.bundle", ".min.css"), media, options);
 
 				var cssFiles = File.ReadAllLines(filePath);
 
@@ -278,7 +278,7 @@ namespace ServiceStack.Mvc
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
 					styles.AppendLine(
-						html.Css(cssSrc, null, options).ToString()
+                        html.Css(cssSrc, media, options).ToString()
 					);
 				}
 
