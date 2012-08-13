@@ -253,38 +253,37 @@ namespace ServiceStack.Mvc
 		}
 
         public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified, string media = null)
-        {
-            if (string.IsNullOrEmpty(bundlePath))
-                return MvcHtmlString.Empty;
+		{
+			if (string.IsNullOrEmpty(bundlePath))
+				return MvcHtmlString.Empty;
 
-            if (!CachePaths()) BundleCache.SafeClear();
+			if (!CachePaths()) BundleCache.SafeClear();
 
-            return BundleCache.GetOrAdd(bundlePath, str =>
-            {
-                var filePath = HostingEnvironment.MapPath(bundlePath);
+			return BundleCache.GetOrAdd(bundlePath, str => {
+				var filePath = HostingEnvironment.MapPath(bundlePath);
 
-                var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
+				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
-                if (options == BundleOptions.Combined)
+				if (options == BundleOptions.Combined)
                     return html.Css(bundlePath.Replace(".bundle", ""), media, options);
-                if (options == BundleOptions.MinifiedAndCombined)
+				if (options == BundleOptions.MinifiedAndCombined)
                     return html.Css(bundlePath.Replace(".css.bundle", ".min.css"), media, options);
 
-                var cssFiles = File.ReadAllLines(filePath);
+				var cssFiles = File.ReadAllLines(filePath);
 
-                var styles = new StringBuilder();
-                foreach (var file in cssFiles)
-                {
-                    var cssFile = file.Trim().Replace(".less", ".css");
-                    var cssSrc = Path.Combine(baseUrl, cssFile);
+				var styles = new StringBuilder();
+				foreach (var file in cssFiles)
+				{
+					var cssFile = file.Trim().Replace(".less", ".css");
+					var cssSrc = Path.Combine(baseUrl, cssFile);
 
-                    styles.AppendLine(
+					styles.AppendLine(
                         html.Css(cssSrc, media, options).ToString()
-                    );
-                }
+					);
+				}
 
-                return styles.ToString().ToMvcHtmlString();
-            });
-        }
+				return styles.ToString().ToMvcHtmlString();
+			});
+		}
 	}
 }
