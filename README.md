@@ -1,6 +1,6 @@
 # Bundler
 
-Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files. 
+Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files.
 
 Bundler uses the popular and well-tested javascript libraries in [node's package manager](http://npmjs.org/) for all minification and compilation. This enables it to generate faster and more up-to-date outputs than any other .NET wrapper solution which either uses old .NET ports of node.js or ruby implementations, or they have to invoke external out-of-process [IronRuby](http://www.ironruby.net/) and  JavaScript processes resulting in slower execution - consuming valuable iteration-time on each dev-cycle.
 
@@ -14,13 +14,13 @@ Bundler uses the popular and well-tested javascript libraries in [node's package
   - All node.js `.js` and MVC C# `.cs` src files used are in plain-text - so can be easily be followed, extended or customized
 
 ## Extremely fast at both Build and Runtime
-Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process. 
+Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process.
 
 #### Async / Non-Blocking
-The packager is completely **async and non-blocking** - allowing the processing inside each bundle to happen in parallel. 
+The packager is completely **async and non-blocking** - allowing the processing inside each bundle to happen in parallel.
 
 #### No Runtime overhead
-Designed for maximum runtime performance since no compilation/minification happens at runtime. 
+Designed for maximum runtime performance since no compilation/minification happens at runtime.
 Even the generated HTML output is cached in memory (in production mode) - so has effectively no runtime overhead.
 
 #### Cuts build-time in 1/2
@@ -62,7 +62,7 @@ Now you can define .bundle files in any of the above folders.
 ## Setup a Bundler runner
 
 You basically want to run Bundler when a file your website references has changed, so you can see those changes before your next page refresh.
-Although `bundler.cmd` is just a simple command-line script, there are a few different ways you can run it during development (in order of most productive): 
+Although `bundler.cmd` is just a simple command-line script, there are a few different ways you can run it during development (in order of most productive):
 
   1. Automatically on save of a .less, .css, .sass, .js, .coffee and .bundle (after the 2010 VS.NET Extension is installed)
   2. Add an **External Tool** in VS.NET that runs `bundler.cmd`. Optionally assign a short-cut so you can run with 1 key-stroke
@@ -78,7 +78,7 @@ If you have VS.NET 2010 you should also double-click the `bundler\vs2010-extensi
 
 *Note: You should reboot VS.NET for the changes to take effect*
 
-Once installed the **BundlerRunOnSave.vsix** VS.NET extension runs bundler when you save any file in the project with any of the supported extensions .less, .css, .sass, .js, .coffee and .bundle. 
+Once installed the **BundlerRunOnSave.vsix** VS.NET extension runs bundler when you save any file in the project with any of the supported extensions .less, .css, .sass, .js, .coffee and .bundle.
 
 ### Create an External Tool inside VS.NET:
 
@@ -90,7 +90,7 @@ Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and
 Alternatively you can run bundler after every successful build. Add the line below to **Properties** > **Build events** > **Post-build event**:
 
     "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
-    
+
 ![Add Bundler to VS.NET Post-Build event](http://servicestack.net/img/post-build-bundler.png)
 
 ## How it works
@@ -107,14 +107,14 @@ You define css or js **bundles** (in plain text) that specifies the list of file
     bootstrap.js
 
 **/Content/app.css.bundle**
-  
+
     css/reset.css
     css/variables.less
     css/styles.less
     css/sassy.sass
     default.css
 
-Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files. 
+Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files.
 
 ## Enable Mvc.Bundler.cs Html helpers inside view pages
 
@@ -146,7 +146,7 @@ public enum BundleOptions
     Combined,            // Combined into single unminified app.js / app.css file
     MinifiedAndCombined  // Combined and Minified into a single app.min.js / app.min.css file
 }
-```  
+```
 
 With the above bundle configurations, the following helpers below:
 
@@ -154,7 +154,7 @@ With the above bundle configurations, the following helpers below:
     @Html.RenderCssBundle("~/Content/app.css.bundle", BundleOptions.Minified)
 
 Will generate the following HTML:
-    
+
     <script src="/Scripts/app.min.js?b578fa" type="text/javascript"></script>
 
     <link href="/Content/css/reset.min.css?b578fa" rel="stylesheet" />
@@ -171,9 +171,9 @@ You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your
 
 ### Bundle file options
 
-Advanced options can be specified that changes how .bundle's are processed. You can specify bundler options following these rules: 
+Advanced options can be specified that changes how .bundle's are processed. You can specify bundler options following these rules:
 
-  - Options must be specified on the **first line** of the `.bundle` file, starting with `#options `.  
+  - Options must be specified on the **first line** of the `.bundle` file, starting with `#options `.
   - Options are comma-delimited. Each option is a key/value pair separated by a colon. Keys are case-insensitive.
   - You can omit the value for boolean options - specified options without a value are set to true.
 
@@ -188,6 +188,7 @@ The currently available options are:
 
   - **nobundle** - Compiles and minifies all files listed, however it does not bundle them into a single file. This allows you to compile and minify your standalone files without concatenating them into a bundle.
   - **skipmin** - Skips the minimization step for every file
+  - **skipremin** - Skips the minification step for files that already contain a '.min.' in their filename. This lowers the chance of multiple minification iterations introducing problems.
   - **folder** - Used a trigger to transform all files in the folder with this bundle file. If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched. When the `folder` option is used, the `nobundle` option is automatically set. When the `folder` option is used, listing files in the bundle file does nothing.
 
 Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
@@ -196,7 +197,7 @@ Tip: If you just want bundler to transform all the files in your content folder,
 
 ## Development
 
-The Bundler VS.NET extension lives in [/src/vs/BundlerRunOnSave](https://github.com/ServiceStack/Bundler/blob/master/src/vs/BundlerRunOnSave) which requires the VS.NET templates provided by the [Visual Studio 2010 SP1 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) in order to open it. 
+The Bundler VS.NET extension lives in [/src/vs/BundlerRunOnSave](https://github.com/ServiceStack/Bundler/blob/master/src/vs/BundlerRunOnSave) which requires the VS.NET templates provided by the [Visual Studio 2010 SP1 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=21835) in order to open it.
 
 ## Contributors
 A big thanks to all of Bundler's contributors:
@@ -207,4 +208,5 @@ A big thanks to all of Bundler's contributors:
  - [cyberlane](https://github.com/Cyberlane) (Justin Nel)
  - [michael-wolfenden](https://github.com/michael-wolfenden) (Michael Wolfenden)
  - [garjitech](https://github.com/garjitech) (Garrett Wolf)
- 
+ - [isochronous](https://github.com/isochronous) (Jeremy McLeod)
+
