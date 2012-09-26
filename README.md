@@ -188,7 +188,7 @@ The currently available options are:
 
   - **nobundle** - Compiles and minifies all files listed, however it does not bundle them into a single file. This allows you to compile and minify your standalone files without concatenating them into a bundle.
   - **skipmin** - Skips the minimization step for every file
-  - **skipremin** - Skips the minification step for files that already contain a '.min.' in their filename. This lowers the chance of multiple minification iterations introducing problems.
+  - **skipremin** - Skips the minification step for files that already contain a '.min.' or '.pack.' in their filename. This lowers the chance of multiple minification iterations introducing problems.
   - **folder** - Used a trigger to transform all files in the folder with this bundle file. If the `recursive` value is used, a seek will search recursively from this root transforming all files in all folders searched. When the `folder` option is used, the `nobundle` option is automatically set. When the `folder` option is used, listing files in the bundle file does nothing.
 
 Tip: If you just want bundler to transform all the files in your content folder, add a bundle file in the root of the content folder and set its contents to the following:
