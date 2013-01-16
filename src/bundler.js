@@ -31,11 +31,11 @@ process.on("uncaughtException", function (err) {
 });
 
 function clone(o) {
-  var ret = {};
-  Object.keys(o).forEach(function (val) {
-    ret[val] = o[val];
-  });
-  return ret;
+    var ret = {};
+    Object.keys(o).forEach(function (val) {
+        ret[val] = o[val];
+    });
+    return ret;
 }
 String.prototype.startsWith = function (str){
     return this.indexOf(str) === 0;
@@ -76,6 +76,7 @@ var fs = require("fs"),
     cleanCss = require('clean-css'),
     Step = require('step'),
     startedAt = Date.now();
+
 
 var walk = function (dir, done) {
     var results = [];
@@ -148,7 +149,7 @@ function scanDir(allFiles, cb) {
                     next();
             };
             function processBundle(jsBundle) {
-                var bundleDir = path.dirname(jsBundle);
+                var bundleDir = path.dirname(jsBundle); 
                 var bundleName = jsBundle.replace('.bundle', '');
                 readTextFile(jsBundle, function (data) {
                     var jsFiles = removeCR(data).split("\n");
@@ -206,6 +207,9 @@ function scanDir(allFiles, cb) {
 
 function getMinFileName(fileName) {
     var extension = fileName.substring(fileName.lastIndexOf('.'));
+    if (fileName.endsWith(".min" + extension)) {
+        return fileName;
+    }
     return fileName.substring(0, fileName.length - extension.length) + ".min" + extension;
 }
 
@@ -231,9 +235,9 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
             allMinJs += ";" + allMinJsArr[i] + "\n";
         }
 
-        var afterBundle = options.skipmin ? cb : function (_) {
+        var afterBundle = options.skipmin ? cb : function (_) { 
             var minFileName = getMinFileName(bundleName);
-            fs.writeFile(minFileName, allMinJs, cb);
+            fs.writeFile(minFileName, allMinJs, cb); 
         };
         if (!options.bundleminonly) {
             fs.writeFile(bundleName, allJs, afterBundle);
@@ -244,10 +248,10 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
 
     jsFiles.forEach(function (file) {
         // Skip blank lines/files beginning with '.' or '#', but allow ../relative paths
-        if (!(file = file.trim())
+        if (!(file = file.trim()) 
             || (file.startsWith(".") && !file.startsWith(".."))
             || file.startsWith('#'))
-            return;
+            return; 
 
         var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
@@ -281,7 +285,7 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
                     withMin('');
                 } else if (/(\.min\.|\.pack\.)/.test(file) && options.skipremin) {
                     readTextFile(jsPath, withMin);
-                }  else {
+                } else {
                     getOrCreateMinJs(options, js, jsPath, minJsPath, withMin);
                 }
             }
@@ -310,9 +314,9 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             allMinCss += allMinCssArr[i] + "\n";
         }
 
-        var afterBundle = options.skipmin ? cb : function (_) {
+        var afterBundle = options.skipmin ? cb : function (_) { 
             var minFileName = getMinFileName(bundleName);
-            fs.writeFile(minFileName, allMinCss, cb);
+            fs.writeFile(minFileName, allMinCss, cb); 
         };
 
         if (!options.bundleminonly) {
@@ -323,15 +327,15 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
     };
 
     cssFiles.forEach(function (file) {
-        if (!(file = file.trim())
+        if (!(file = file.trim()) 
             || (file.startsWith(".") && !file.startsWith(".."))
-            || file.startsWith('#'))
-            return;
+            || file.startsWith('#')) 
+            return; 
 
         var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")),
             cssFile = isLess
                 ? file.replace(".less", ".css")
-                : isSass
+                : isSass 
                     ? file.replace(".sass", ".css").replace(".scss", ".css")
                     : file;
 
@@ -367,7 +371,7 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
                     withMin('');
                 } else if (/(\.min\.|\.pack\.)/.test(file) && options.skipremin) {
                     readTextFile(cssPath, withMin);
-                }else {
+                } else {
                     getOrCreateMinCss(options, css, cssPath, minCssPath, withMin);
                 }
             }
@@ -403,7 +407,7 @@ function getOrCreateMinCss(options, css, cssPath, minCssPath, cb /*cb(minCss)*/)
         }, css, cssPath, minCssPath, cb);
 }
 
-function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(compiledText))*/,
+function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(compiledText))*/, 
     text, textPath, compileTextPath, cb /*cb(compiledText)*/) {
     Step(
         function () {

@@ -52,30 +52,31 @@ namespace ServiceStack.Mvc
 			return string.Empty;
 		}
 
-        private static TVal GetOrAdd<TKey, TVal>(this Dictionary<TKey, TVal> map, TKey key, Func<TKey, TVal> factoryFn)
-        {
-            lock (map)
-            {
-                TVal ret;
-                if (!map.TryGetValue(key, out ret))
-                {
-                    map[key] = ret = factoryFn(key);
-                }
-                return ret;
-            }
-        }
+		private static TVal GetOrAdd<TKey, TVal>(this Dictionary<TKey, TVal> map, TKey key, Func<TKey, TVal> factoryFn)
+		{
+			lock (map)
+			{
+				TVal ret;
+				if (!map.TryGetValue(key, out ret))
+				{
+					map[key] = ret = factoryFn(key);
+				}
+				return ret;
+			}
+		}
 
-        private static void SafeClear<TKey, TVal>(this Dictionary<TKey, TVal> map)
-        {
-            lock (map) map.Clear();            
-        }
+		private static void SafeClear<TKey, TVal>(this Dictionary<TKey, TVal> map)
+		{
+			lock (map) map.Clear();
+		}
 
-		static readonly Dictionary<string,string> VirutalPathCache = new Dictionary<string, string>();
+		static readonly Dictionary<string, string> VirutalPathCache = new Dictionary<string, string>();
 		private static string ProcessVirtualPathDefault(string virtualPath, BundleOptions options)
 		{
-            if (!CachePaths()) VirutalPathCache.SafeClear();
+			if (!CachePaths()) VirutalPathCache.SafeClear();
 
-			return VirutalPathCache.GetOrAdd(virtualPath, str => {
+			return VirutalPathCache.GetOrAdd(virtualPath, str =>
+			{
 				// The path that comes in starts with ~/ and must first be made absolute
 
 				if (options == BundleOptions.Minified || options == BundleOptions.MinifiedAndCombined)
@@ -113,7 +114,7 @@ namespace ServiceStack.Mvc
 			});
 		}
 
-		private static string RewriteUrl(this string relativePath, BundleOptions options=BundleOptions.Normal)
+		private static string RewriteUrl(this string relativePath, BundleOptions options = BundleOptions.Normal)
 		{
 			return DefaultUrlFilter(relativePath, options);
 		}
@@ -139,7 +140,7 @@ namespace ServiceStack.Mvc
 				return MvcHtmlString.Empty;
 
 			if (href.StartsWith("~/"))
-				href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+				href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
 			var tag = new TagBuilder("link");
 			tag.MergeAttribute("rel", rel);
@@ -170,7 +171,7 @@ namespace ServiceStack.Mvc
 				return MvcHtmlString.Empty;
 
 			if (src.StartsWith("~/"))
-				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
 			var tag = new TagBuilder("img");
 
@@ -196,7 +197,7 @@ namespace ServiceStack.Mvc
 				return MvcHtmlString.Empty;
 
 			if (src.StartsWith("~/"))
-				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
 			var tag = new TagBuilder("script");
 			tag.MergeAttribute("type", "text/javascript");
@@ -216,7 +217,7 @@ namespace ServiceStack.Mvc
 			return value.ToString(CultureInfo.InvariantCulture).ToLower();
 		}
 
-        static readonly Dictionary<string, MvcHtmlString> BundleCache = new Dictionary<string, MvcHtmlString>();
+		static readonly Dictionary<string, MvcHtmlString> BundleCache = new Dictionary<string, MvcHtmlString>();
 
 		public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
 		{
@@ -225,7 +226,8 @@ namespace ServiceStack.Mvc
 
 			if (!CachePaths()) BundleCache.SafeClear();
 
-			return BundleCache.GetOrAdd(bundlePath, str => {
+			return BundleCache.GetOrAdd(bundlePath, str =>
+			{
 				var filePath = HostingEnvironment.MapPath(bundlePath);
 
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
@@ -241,6 +243,11 @@ namespace ServiceStack.Mvc
 				foreach (var file in jsFiles)
 				{
 					var jsFile = file.Trim().Replace(".coffee", ".js");
+					//Apply the same filtering logic as bundler.js
+					if ((jsFile.StartsWith(".") && !jsFile.StartsWith("..")) || jsFile.StartsWith("#"))
+					{
+						continue;
+					}
 					var jsSrc = Path.Combine(baseUrl, jsFile);
 
 					scripts.AppendLine(
@@ -252,22 +259,23 @@ namespace ServiceStack.Mvc
 			});
 		}
 
-        public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified, string media = null)
+		public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified, string media = null)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
 				return MvcHtmlString.Empty;
 
 			if (!CachePaths()) BundleCache.SafeClear();
 
-			return BundleCache.GetOrAdd(bundlePath, str => {
+			return BundleCache.GetOrAdd(bundlePath, str =>
+			{
 				var filePath = HostingEnvironment.MapPath(bundlePath);
 
 				var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
 				if (options == BundleOptions.Combined)
-                    return html.Css(bundlePath.Replace(".bundle", ""), media, options);
+					return html.Css(bundlePath.Replace(".bundle", ""), media, options);
 				if (options == BundleOptions.MinifiedAndCombined)
-                    return html.Css(bundlePath.Replace(".css.bundle", ".min.css"), media, options);
+					return html.Css(bundlePath.Replace(".css.bundle", ".min.css"), media, options);
 
 				var cssFiles = File.ReadAllLines(filePath);
 
@@ -275,10 +283,15 @@ namespace ServiceStack.Mvc
 				foreach (var file in cssFiles)
 				{
 					var cssFile = file.Trim().Replace(".less", ".css");
+					//Apply the same filtering logic as bundler.js
+					if ((cssFile.StartsWith(".") && !cssFile.StartsWith("..")) || cssFile.StartsWith("#"))
+					{
+						continue;
+					}
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
 					styles.AppendLine(
-                        html.Css(cssSrc, media, options).ToString()
+						html.Css(cssSrc, media, options).ToString()
 					);
 				}
 
