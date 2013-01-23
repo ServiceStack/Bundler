@@ -115,7 +115,7 @@ namespace ServiceStack.Mvc
 
 		private static string RewriteUrl(this string relativePath, BundleOptions options=BundleOptions.Normal)
 		{
-			return DefaultUrlFilter(relativePath, options);
+			return DefaultUrlFilter(relativePath.StartsWith("~/") ? relativePath.Replace("~/", VirtualPathUtility.ToAbsolute("~")) : relativePath, options);
 		}
 
 		public static MvcHtmlString ToMvcHtmlString(this string s)
@@ -137,9 +137,6 @@ namespace ServiceStack.Mvc
 		{
 			if (string.IsNullOrEmpty(href))
 				return MvcHtmlString.Empty;
-
-			if (href.StartsWith("~/"))
-				href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
 
 			var tag = new TagBuilder("link");
 			tag.MergeAttribute("rel", rel);
@@ -169,9 +166,6 @@ namespace ServiceStack.Mvc
 			if (string.IsNullOrEmpty(src))
 				return MvcHtmlString.Empty;
 
-			if (src.StartsWith("~/"))
-				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
-
 			var tag = new TagBuilder("img");
 
 			tag.MergeAttribute("src", src.RewriteUrl());
@@ -194,9 +188,6 @@ namespace ServiceStack.Mvc
 		{
 			if (string.IsNullOrEmpty(src))
 				return MvcHtmlString.Empty;
-
-			if (src.StartsWith("~/"))
-				src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
 
 			var tag = new TagBuilder("script");
 			tag.MergeAttribute("type", "text/javascript");
@@ -284,6 +275,18 @@ namespace ServiceStack.Mvc
 
 				return styles.ToString().ToMvcHtmlString();
 			});
+		}
+
+		public static string RenderBundleUrl(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.MinifiedAndCombined)
+		{
+			if (string.IsNullOrEmpty(bundlePath) || options == BundleOptions.Normal || options == BundleOptions.Minified)
+				return "";
+
+			bundlePath = bundlePath.Replace(".bundle", "");
+			if (options == BundleOptions.MinifiedAndCombined)
+				bundlePath = bundlePath.Insert(bundlePath.LastIndexOf("."), ".min");
+			
+			return bundlePath.RewriteUrl(options);
 		}
 	}
 }
