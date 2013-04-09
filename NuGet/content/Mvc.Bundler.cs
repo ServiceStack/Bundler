@@ -29,7 +29,7 @@ namespace ServiceStack.Mvc
 		{
 			return (HttpContext.Current != null && !HttpContext.Current.IsDebuggingEnabled);
 		}
-		
+
 		private static BundleOptions GetBundleOptions() 
 		{
         	    	return HttpContext.Current.IsDebuggingEnabled
@@ -37,7 +37,8 @@ namespace ServiceStack.Mvc
                                     : BundleOptions.MinifiedAndCombined;
 	        }
 
-		private static bool IsInvalidFileName(string fileName) {
+		private static bool IsInvalidFileName(string fileName)
+		{
 			return ((String.IsNullOrWhiteSpace(fileName) 
 				|| (fileName.StartsWith(".") && !fileName.StartsWith(".."))) 
 				|| fileName.StartsWith("#"));
