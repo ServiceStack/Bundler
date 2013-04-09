@@ -29,7 +29,20 @@ namespace ServiceStack.Mvc
 		{
 			return (HttpContext.Current != null && !HttpContext.Current.IsDebuggingEnabled);
 		}
+		
+		private static BundleOptions GetBundleOptions() 
+		{
+        	    	return HttpContext.Current.IsDebuggingEnabled
+                                    ? BundleOptions.Normal
+                                    : BundleOptions.MinifiedAndCombined;
+	        }
 
+		private static bool IsInvalidFileName(string fileName) {
+			return ((String.IsNullOrWhiteSpace(fileName) 
+				|| (fileName.StartsWith(".") && !fileName.StartsWith(".."))) 
+				|| fileName.StartsWith("#"));
+		}
+		
 		public static bool FileExists(string virtualPath)
 		{
 			if (!HostingEnvironment.IsHosted) return false;
@@ -218,6 +231,16 @@ namespace ServiceStack.Mvc
 
         static readonly Dictionary<string, MvcHtmlString> BundleCache = new Dictionary<string, MvcHtmlString>();
 
+		public static MvcHtmlString RenderCssBundle(this HtmlHelper html, string bundlePath) 
+		{
+	            return RenderCssBundle(html, bundlePath, GetBundleOptions());
+	        }
+	        
+	        public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath) 
+	        {
+	            return RenderJsBundle(html, bundlePath, GetBundleOptions());
+	        }
+	        
 		public static MvcHtmlString RenderJsBundle(this HtmlHelper html, string bundlePath, BundleOptions options = BundleOptions.Minified)
 		{
 			if (string.IsNullOrEmpty(bundlePath))
@@ -242,6 +265,11 @@ namespace ServiceStack.Mvc
 				{
 					var jsFile = file.Trim().Replace(".coffee", ".js");
 					var jsSrc = Path.Combine(baseUrl, jsFile);
+					
+					if (IsInvalidFileName(jsFile)) 
+					{
+						continue;
+					}
 
 					scripts.AppendLine(
 						html.Js(jsSrc, options).ToString()
@@ -277,6 +305,11 @@ namespace ServiceStack.Mvc
 					var cssFile = file.Trim().Replace(".less", ".css");
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
+					if (IsInvalidFileName(jsFile)) 
+					{
+						continue;
+					}
+					
 					styles.AppendLine(
                         html.Css(cssSrc, media, options).ToString()
 					);
