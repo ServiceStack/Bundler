@@ -306,7 +306,7 @@ namespace ServiceStack.Mvc
 					var cssFile = file.Trim().Replace(".less", ".css");
 					var cssSrc = Path.Combine(baseUrl, cssFile);
 
-					if (IsInvalidFileName(jsFile)) 
+					if (IsInvalidFileName(cssFile)) 
 					{
 						continue;
 					}
