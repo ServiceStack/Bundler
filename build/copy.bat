@@ -36,6 +36,16 @@ REM Try using single less.js
 REM MD %DIST%\node_modules\less
 REM COPY %FROM%\node_modules\less\dist\less-1.3.0.js %DIST%\node_modules\less\index.js
 
+MD %DIST%\node_modules\LiveScript %DIST%\node_modules\LiveScript\bin %DIST%\node_modules\LiveScript\lib
+COPY %FROM%\node_modules\LiveScript\bin\* %DIST%\node_modules\LiveScript\bin
+COPY %FROM%\node_modules\LiveScript\lib\* %DIST%\node_modules\LiveScript\lib
+COPY %FROM%\node_modules\LiveScript\package.json %DIST%\node_modules\LiveScript
+
+MD %DIST%\node_modules\stylus 
+XCOPY %FROM%\node_modules\stylus %DIST%\node_modules\stylus /s /e
+
+MD %DIST%\node_modules\nib 
+XCOPY %FROM%\node_modules\nib %DIST%\node_modules\nib /s /e
 
 MD %DIST%\node_modules\lib
 COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib 
