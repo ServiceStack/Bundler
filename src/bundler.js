@@ -72,7 +72,10 @@ var fs = require("fs"),
     pro = require("uglify-js").uglify,
     less = require('less'),
     sass = require('sass'),
+	stylus = require('stylus'),
+	nib = require('nib'),
     coffee = require('coffee-script'),
+	livescript = require('livescript'),
     cleanCss = require('clean-css'),
     Step = require('step'),
     startedAt = Date.now();
@@ -158,7 +161,7 @@ function scanDir(allFiles, cb) {
                         var recursive = options.folder === 'recursive';
                         jsFiles = allFiles.map(function jsMatches(fileName) {
                             if (!fileName.startsWith(bundleDir)) return '#';
-                            if (!fileName.endsWithAny(['.js', '.coffee'])) return '#';
+                            if (!fileName.endsWithAny(['.js', '.coffee', '.ls'])) return '#';
                             if (fileName.endsWithAny(['.min.js'])) return '#';
                             if (!recursive && (path.dirname(fileName) !== bundleDir)) return '#';
                             return fileName.substring(bundleDir.length + 1);
@@ -189,7 +192,7 @@ function scanDir(allFiles, cb) {
                         var recursive = options.folder === 'recursive';
                         cssFiles = allFiles.map(function cssMatches(fileName) {
                             if (!fileName.startsWith(bundleDir)) return '#';
-                            if (!fileName.endsWithAny(['.css', '.less', '.sass', '.scss'])) return '#';
+                            if (!fileName.endsWithAny(['.css', '.less', '.sass', '.scss', '.styl'])) return '#';
                             if (fileName.endsWithAny(['.min.css'])) return '#';
                             if (!recursive && (path.dirname(fileName) !== bundleDir)) return '#';
                             return fileName.substring(bundleDir.length + 1);
@@ -249,9 +252,11 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
             || file.startsWith('#'))
             return;
 
-        var isCoffee = file.endsWith(".coffee"), jsFile = isCoffee
+        var isCoffee = file.endsWith(".coffee"), isLivescript = file.endsWith(".ls"), jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
-                : file;
+				: isLivescript
+					? file.replace(".ls", ".js")
+					: file;
 
         var filePath = path.join(bundleDir, file),
                 jsPath = path.join(bundleDir, jsFile),
@@ -266,6 +271,10 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
                     readTextFile(filePath, function (coffee) {
                         getOrCreateJs(options, coffee, filePath, jsPath, next);
                     });
+				} else if(isLivescript){
+					readTextFile(filePath, function(livescriptText){
+						getOrCreateJsLivescript(options, livescriptText, filePath, jsPath, next);
+					});
                 } else {
                     readTextFile(jsPath, next);
                 }
@@ -328,12 +337,14 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")),
+        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"), 
             cssFile = isLess
                 ? file.replace(".less", ".css")
                 : isSass
                     ? file.replace(".sass", ".css").replace(".scss", ".css")
-                    : file;
+                    :isStylus
+						? file.replace(".styl", ".css")
+						: file;
 
         var filePath = path.join(bundleDir, file),
                 cssPath = path.join(bundleDir, cssFile),
@@ -352,6 +363,10 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
                     readTextFile(filePath, function (sassText) {
                         getOrCreateSassCss(options, sassText, filePath, cssPath, next);
                     });
+				} else if (isStylus){
+					readTextFile(filePath, function (stylusText) {
+						getOrCreateStylusCss(options, stylusText, filePath, cssPath, next);
+					});
                 } else {
                     readTextFile(cssPath, next);
                 }
@@ -381,6 +396,12 @@ function getOrCreateJs(options, coffeeScript, csPath, jsPath, cb /*cb(js)*/) {
         }, coffeeScript, csPath, jsPath, cb);
 }
 
+function getOrCreateJsLivescript(options, livescriptText, lsPath, jsPath, cb /*cb(js)*/) {
+    compileAsync(options, "compiling", function (livescriptText, lsPath, cb) {
+            cb(livescript.compile(livescriptText));
+        }, livescriptText, lsPath, jsPath, cb);
+}
+
 function getOrCreateMinJs(options, js, jsPath, minJsPath, cb /*cb(minJs)*/) {
     compileAsync(options, "minifying", function (js, jsPath, cb) {
         cb(minifyjs(js));
@@ -395,6 +416,21 @@ function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*
     compileAsync(options, "compiling", function (sassText, sassPath, cb) {
         cb(sass.render(removeCR(sassText), { options: path.basename(sassPath) }));
     }, sassText, sassPath, cssPath, cb);
+}
+
+function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(css)*/) {
+    compileAsync(options, "compiling", function (stylusText, stylusPath, cb) {
+        stylus(stylusText)
+			.set('filename', stylusPath)
+			.use(nib())
+			.render(function(err, css){
+				if(err){
+					throw new Error(err);
+				}
+				
+				cb(css);
+			});
+    }, stylusText, stylusPath, cssPath, cb);
 }
 
 function getOrCreateMinCss(options, css, cssPath, minCssPath, cb /*cb(minCss)*/) {
