@@ -10,15 +10,15 @@ COPY %FROM%\* %DIST%
 MD %DIST%\node_modules\.bin
 COPY %FROM%\node_modules\.bin\* %DIST%\node_modules\.bin
 
-MD %DIST%\node_modules\clean-css\bin %DIST%\node_modules\clean-css\lib %DIST%\node_modules\clean-css\node_modules\optimist 
-COPY %FROM%\node_modules\clean-css\bin\* %DIST%\node_modules\clean-css\bin 
-COPY %FROM%\node_modules\clean-css\lib\* %DIST%\node_modules\clean-css\lib 
-COPY %FROM%\node_modules\clean-css\node_modules\optimist\index.js %DIST%\node_modules\clean-css\node_modules\optimist 
-COPY %FROM%\node_modules\clean-css\bin\* %DIST%\node_modules\clean-css\bin 
+MD %DIST%\node_modules\clean-css\bin %DIST%\node_modules\clean-css\lib %DIST%\node_modules\clean-css\node_modules\optimist
+COPY %FROM%\node_modules\clean-css\bin\* %DIST%\node_modules\clean-css\bin
+COPY %FROM%\node_modules\clean-css\lib\* %DIST%\node_modules\clean-css\lib
+COPY %FROM%\node_modules\clean-css\node_modules\optimist\index.js %DIST%\node_modules\clean-css\node_modules\optimist
+COPY %FROM%\node_modules\clean-css\bin\* %DIST%\node_modules\clean-css\bin
 COPY %FROM%\node_modules\clean-css\index.js %DIST%\node_modules\clean-css
 
 MD %DIST%\node_modules\coffee-script\bin %DIST%\node_modules\coffee-script\lib\coffee-script %DIST%\node_modules\coffee-script\node_modules\extras
-COPY %FROM%\node_modules\coffee-script\bin\* %DIST%\node_modules\coffee-script\bin 
+COPY %FROM%\node_modules\coffee-script\bin\* %DIST%\node_modules\coffee-script\bin
 COPY %FROM%\node_modules\coffee-script\lib\coffee-script\* %DIST%\node_modules\coffee-script\lib\coffee-script
 COPY %FROM%\node_modules\coffee-script\package.json %DIST%\node_modules\coffee-script
 
@@ -27,7 +27,7 @@ REM MD %DIST%\node_modules\coffee-script
 REM COPY %FROM%\node_modules\coffee-script\extras\coffee-script.js %DIST%\node_modules\coffee-script\index.js
 
 MD %DIST%\node_modules\less\bin %DIST%\node_modules\less\lib\less\tree
-COPY %FROM%\node_modules\less\bin\* %DIST%\node_modules\less\bin 
+COPY %FROM%\node_modules\less\bin\* %DIST%\node_modules\less\bin
 COPY %FROM%\node_modules\less\lib\less\* %DIST%\node_modules\less\lib\less
 COPY %FROM%\node_modules\less\lib\less\tree\* %DIST%\node_modules\less\lib\less\tree
 COPY %FROM%\node_modules\less\package.json %DIST%\node_modules\less
@@ -41,14 +41,14 @@ COPY %FROM%\node_modules\LiveScript\bin\* %DIST%\node_modules\LiveScript\bin
 COPY %FROM%\node_modules\LiveScript\lib\* %DIST%\node_modules\LiveScript\lib
 COPY %FROM%\node_modules\LiveScript\package.json %DIST%\node_modules\LiveScript
 
-MD %DIST%\node_modules\stylus 
+MD %DIST%\node_modules\stylus
 XCOPY %FROM%\node_modules\stylus %DIST%\node_modules\stylus /s /e
 
-MD %DIST%\node_modules\nib 
+MD %DIST%\node_modules\nib
 XCOPY %FROM%\node_modules\nib %DIST%\node_modules\nib /s /e
 
 MD %DIST%\node_modules\lib
-COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib 
+COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib
 
 MD %DIST%\node_modules\sass\lib
 COPY %FROM%\node_modules\sass\package.json %DIST%\node_modules\sass

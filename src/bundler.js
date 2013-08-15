@@ -337,7 +337,7 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"), 
+        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"),
             cssFile = isLess
                 ? file.replace(".less", ".css")
                 : isSass
@@ -427,7 +427,7 @@ function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(
 				if(err){
 					throw new Error(err);
 				}
-				
+
 				cb(css);
 			});
     }, stylusText, stylusPath, cssPath, cb);
