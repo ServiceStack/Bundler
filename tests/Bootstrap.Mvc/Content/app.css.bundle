@@ -1,3 +1,4 @@
 css/bootstrap.css
 css/bootstrap-responsive.css
-css/default.less
+css/default-less.less
+css/default-scss.scss

@@ -62,6 +62,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\default-scss.scss" />
+    <Content Include="Content\errors\invalid-scss.scss" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -193,7 +195,7 @@
     <None Include="Content-CommandLineOptions\options\skipmin\skipmin.js.bundle" />
     <None Include="Content\app.css.bundle" />
     <None Include="Content\app.js.bundle" />
-    <None Include="Content\css\default.less" />
+    <None Include="Content\css\default-less.less" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\js\backbone.js" />
@@ -202,10 +204,13 @@
     <Content Include="Content\js\app.coffee" />
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Content\js\underscore.js" />
+    <Content Include="Content\options\folder\app-scss.scss" />
     <Content Include="Content\options\folder\app.js" />
     <Content Include="Content\options\folder\something\something.js" />
     <Content Include="Content\options\folder\thirdparty\thirdparty.js" />
+    <Content Include="Content\options\nobundle\app-scss.scss" />
     <Content Include="Content\options\nobundle\app.js" />
+    <Content Include="Content\options\skipmin\app-scss.scss" />
     <Content Include="Content\options\skipmin\app.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -222,16 +227,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <None Include="Content\errors\invalid.css.bundle" />
-    <None Include="Content\errors\invalid.less" />
-    <None Include="Content\options\folder\app.less" />
+    <None Include="Content\errors\invalid-less.less" />
+    <None Include="Content\options\folder\app-less.less" />
     <None Include="Content\options\folder\folder-recursive.css.bundle" />
     <None Include="Content\options\folder\folder-recursive.js.bundle" />
     <None Include="Content\options\folder\folder.css.bundle" />
     <None Include="Content\options\folder\folder.js.bundle" />
-    <None Include="Content\options\nobundle\app.less" />
+    <None Include="Content\options\nobundle\app-less.less" />
     <None Include="Content\options\nobundle\nobundle.css.bundle" />
     <None Include="Content\options\nobundle\nobundle.js.bundle" />
-    <None Include="Content\options\skipmin\app.less" />
+    <None Include="Content\options\skipmin\app-less.less" />
     <None Include="Content\options\skipmin\skipmin.css.bundle" />
     <None Include="Content\options\skipmin\skipmin.js.bundle" />
   </ItemGroup>
