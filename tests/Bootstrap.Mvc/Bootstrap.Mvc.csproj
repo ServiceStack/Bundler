@@ -130,6 +130,7 @@
     <Content Include="bundler\node_modules\lib\process.js" />
     <Content Include="bundler\node_modules\lib\squeeze-more.js" />
     <Content Include="bundler\node_modules\sass\lib\sass.js" />
+    <Content Include="bundler\node_modules\node-sass\lib\sass.js" />
     <Content Include="bundler\node_modules\step\lib\step.js" />
     <Content Include="bundler\node_modules\uglify-js.js" />
     <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll" />
@@ -174,6 +175,7 @@
     <None Include="bundler\node_modules\less\bin\lessc" />
     <None Include="bundler\node_modules\less\package.json" />
     <None Include="bundler\node_modules\sass\package.json" />
+    <None Include="bundler\node_modules\node-sass\package.json" />
     <None Include="bundler\node_modules\step\package.json" />
     <None Include="bundler\uglifyjs" />
     <None Include="bundler\vs2010-extension\BundlerRunOnSave.dll.lastcodeanalysissucceeded" />
