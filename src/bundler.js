@@ -71,7 +71,7 @@ var fs = require("fs"),
     jsp = require("uglify-js").parser,
     pro = require("uglify-js").uglify,
     less = require('less'),
-    sass = require('sass'),
+    sass = require('node-sass'),
 	stylus = require('stylus'),
 	nib = require('nib'),
     coffee = require('coffee-script'),
@@ -414,7 +414,9 @@ function getOrCreateLessCss(options, less, lessPath, cssPath, cb /*cb(css)*/) {
 
 function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*/) {
     compileAsync(options, "compiling", function (sassText, sassPath, cb) {
-        cb(sass.render(removeCR(sassText), { options: path.basename(sassPath) }));
+        cb(sass.renderSync({
+            file: sassPath
+        }));
     }, sassText, sassPath, cssPath, cb);
 }
 
