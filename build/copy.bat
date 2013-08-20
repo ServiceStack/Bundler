@@ -50,13 +50,8 @@ XCOPY %FROM%\node_modules\nib %DIST%\node_modules\nib /s /e
 MD %DIST%\node_modules\lib
 COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib
 
-MD %DIST%\node_modules\sass\lib
-COPY %FROM%\node_modules\sass\package.json %DIST%\node_modules\sass
-COPY %FROM%\node_modules\sass\lib\* %DIST%\node_modules\sass\lib
-
-MD %DIST%\node_modules\node-sass\lib
-COPY %FROM%\node_modules\node-sass\package.json %DIST%\node_modules\node-sass
-COPY %FROM%\node_modules\node-sass\lib\* %DIST%\node_modules\node-sass\lib
+MD %DIST%\node_modules\node-sass
+XCOPY %FROM%\node_modules\node-sass\* %DIST%\node_modules\node-sass /s /e
 
 MD %DIST%\node_modules\step\lib
 COPY %FROM%\node_modules\step\package.json %DIST%\node_modules\step
