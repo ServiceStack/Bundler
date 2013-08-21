@@ -62,7 +62,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	@(true ? Html.Js("~/Scripts/jquery-1.7.1.min.js") : Html.Js("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"))
+	@(false ? Html.Js("~/Scripts/jquery-1.7.1.min.js") : Html.Js("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"))
 	@Html.RenderJsBundle("~/Content/app.js.bundle", BundleOptions.Normal)
 	@Html.RenderJsBundle("~/Content/errors/invalid.css.bundle", BundleOptions.Normal)
 

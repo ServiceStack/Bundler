@@ -71,7 +71,7 @@ var fs = require("fs"),
     jsp = require("uglify-js").parser,
     pro = require("uglify-js").uglify,
     less = require('less'),
-    sass = require('sass'),
+    sass = require('node-sass'),
 	stylus = require('stylus'),
 	nib = require('nib'),
     coffee = require('coffee-script'),
@@ -337,7 +337,7 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"), 
+        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"),
             cssFile = isLess
                 ? file.replace(".less", ".css")
                 : isSass
@@ -414,7 +414,9 @@ function getOrCreateLessCss(options, less, lessPath, cssPath, cb /*cb(css)*/) {
 
 function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*/) {
     compileAsync(options, "compiling", function (sassText, sassPath, cb) {
-        cb(sass.render(removeCR(sassText), { options: path.basename(sassPath) }));
+        cb(sass.renderSync({
+            file: sassPath
+        }));
     }, sassText, sassPath, cssPath, cb);
 }
 
@@ -427,7 +429,7 @@ function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(
 				if(err){
 					throw new Error(err);
 				}
-				
+
 				cb(css);
 			});
     }, stylusText, stylusPath, cssPath, cb);
