@@ -50,8 +50,18 @@ XCOPY %FROM%\node_modules\nib %DIST%\node_modules\nib /s /e
 MD %DIST%\node_modules\lib
 COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib
 
-MD %DIST%\node_modules\node-sass
-XCOPY %FROM%\node_modules\node-sass\* %DIST%\node_modules\node-sass /s /e
+MD %DIST%\node_modules\node-sass %DIST%\node_modules\node-sass\bin %DIST%\node_modules\node-sass\lib
+MD %DIST%\node_modules\node-sass\lib-sass %DIST%\node_modules\node-sass\lib-sass\m4 %DIST%\node_modules\node-sass\lib-sass\src
+MD %DIST%\node_modules\node-sass\node_modules %DIST%\node_modules\node-sass\precompiled
+COPY %FROM%\node_modules\node-sass\* %DIST%\node_modules\node-sass
+COPY %FROM%\node_modules\node-sass\bin\* %DIST%\node_modules\node-sass\bin
+COPY %FROM%\node_modules\node-sass\lib\* %DIST%\node_modules\node-sass\lib
+COPY %FROM%\node_modules\node-sass\lib-sass\* %DIST%\node_modules\node-sass\lib-sass
+COPY %FROM%\node_modules\node-sass\lib-sass\m4\* %DIST%\node_modules\node-sass\lib-sass\m4
+COPY %FROM%\node_modules\node-sass\lib-sass\src\* %DIST%\node_modules\node-sass\lib-sass\src
+XCOPY %FROM%\node_modules\node-sass\node_modules %DIST%\node_modules\node-sass\node_modules /s /e
+XCOPY %FROM%\node_modules\node-sass\precompiled %DIST%\node_modules\node-sass\precompiled /s /e
+
 
 MD %DIST%\node_modules\step\lib
 COPY %FROM%\node_modules\step\package.json %DIST%\node_modules\step
