@@ -1,2 +1,3 @@
 ﻿#options nobundle
-app.less
+app-less.less
+app-scss.scss
