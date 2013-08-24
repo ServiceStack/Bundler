@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ServiceStack.Razor</id>
+    <version>3.9.58</version>
+    <title>ServiceStack.Razor - ServiceStack's HTML story including MVC Razor</title>
+    <authors>Demis Bellot</authors>
+    <owners>Demis Bellot</owners>
+    <licenseUrl>https://github.com/ServiceStack/ServiceStack/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://razor.servicestack.net/</projectUrl>
+    <iconUrl>http://www.servicestack.net/logo-100x100.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ServiceStack Razor Documentation: http://razor.servicestack.net
+
+      - Turns ServiceStack into a Complete Web + REST Services Stack. Replaces need for ASP.NET MVC.
+      - Runs In ASP.NET or Self-host, first-class cross-platform support on .NET / Mono runtimes.
+      - Add HTML views to existing services.
+      - Change Views and Layout templates at runtime.
+      - No Ceremony development options - Pages without controllers, with typed and dynamic View Models.
+      - Include Partial Markdown views in Razor pages.
+      - Cascading Layout templates.
+      - Pretty urls by default (no custom Routes needed).
+      - Keep all views and assets together.
+      - Smart View Pages.</description>
+    <summary>Provides ServiceStack's HTML Story including integrated support for MVC Razor's ViewEngine</summary>
+    <releaseNotes />
+    <copyright>servicestack.net 2012 and contributors</copyright>
+    <language>en-US</language>
+    <tags>Razor ViewEngine View Templates Controllers Mono ASP.NET Self-Host ServiceStack</tags>
+    <dependencies>
+      <dependency id="ServiceStack" />
+      <dependency id="System.Web.Razor.Unofficial" />
+    </dependencies>
+  </metadata>
+</package>

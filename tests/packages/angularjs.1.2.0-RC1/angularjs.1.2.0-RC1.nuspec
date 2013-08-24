@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>angularjs</id>
+    <version>1.2.0-RC1</version>
+    <title>Angular JS</title>
+    <authors>Fitzchak Yitzchaki</authors>
+    <owners>Fitzchak Yitzchaki</owners>
+    <projectUrl>http://angularjs.org/</projectUrl>
+    <iconUrl>https://secure.gravatar.com/avatar/6e1b5ab3ef1593413f1bee4e5a6e6ae7?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>AngularJS. HTML enhanced for web apps!</description>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <tags>angular angularjs</tags>
+  </metadata>
+</package>

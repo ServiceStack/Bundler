@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Angular.UI.Bootstrap</id>
+    <version>0.5.0</version>
+    <title>AngularJS UI Bootstrap</title>
+    <authors>AngularUI Team</authors>
+    <owners>AngularUI Team</owners>
+    <licenseUrl>https://github.com/angular-ui/bootstrap/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://angular-ui.github.com/bootstrap/</projectUrl>
+    <iconUrl>https://secure.gravatar.com/avatar/46d07086561c66caae16ce4d96bfd345?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-org-420.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Bootstrap components written in pure AngularJS</description>
+    <summary>Native AngularJS directives for Twitter's Bootstrap. Small footprint (5kB gzipped!), no 3rd party JS dependencies (jQuery, bootstrap JS etc.) required!</summary>
+    <releaseNotes>https://github.com/angular-ui/bootstrap/blob/master/CHANGELOG.md#050-2013-08-04</releaseNotes>
+    <copyright />
+    <language>en-US</language>
+    <tags>angular angularjs angular-ui bootstrap</tags>
+    <dependencies>
+      <dependency id="angularjs" version="1.0.5" />
+    </dependencies>
+  </metadata>
+</package>

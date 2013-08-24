@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0C14CCD9-9C47-40A2-8A46-5CFFDD7FF0B9}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bootstrap.Mvc</RootNamespace>
+    <AssemblyName>Bootstrap.Mvc</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\default-scss.scss" />
+    <Content Include="Content\errors\invalid-scss.scss" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Mvc.Bundler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bundler\bundler.js" />
+    <Content Include="bundler\node.exe" />
+    <Content Include="bundler\node_modules\clean-css\index.js" />
+    <Content Include="bundler\node_modules\clean-css\lib\clean.js" />
+    <Content Include="bundler\node_modules\clean-css\node_modules\optimist\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\browser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\cake.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\coffee-script.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\command.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\grammar.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\helpers.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\lexer.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\nodes.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\optparse.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\parser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\repl.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\rewriter.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\scope.js" />
+    <Content Include="bundler\node_modules\less\lib\less\browser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\colors.js" />
+    <Content Include="bundler\node_modules\less\lib\less\cssmin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\functions.js" />
+    <Content Include="bundler\node_modules\less\lib\less\index.js" />
+    <Content Include="bundler\node_modules\less\lib\less\parser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\rhino.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\alpha.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\anonymous.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\assignment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\call.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\color.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\comment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\condition.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\dimension.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\directive.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\element.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\expression.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\import.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\javascript.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\keyword.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\media.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\mixin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\operation.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\paren.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\quoted.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\rule.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\ruleset.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\selector.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\url.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\value.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\variable.js" />
+    <Content Include="bundler\node_modules\lib\parse-js.js" />
+    <Content Include="bundler\node_modules\lib\process.js" />
+    <Content Include="bundler\node_modules\lib\squeeze-more.js" />
+    <Content Include="bundler\node_modules\sass\lib\sass.js" />
+    <Content Include="bundler\node_modules\node-sass\lib\sass.js" />
+    <Content Include="bundler\node_modules\step\lib\step.js" />
+    <Content Include="bundler\node_modules\uglify-js.js" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll.CodeAnalysisLog.xml" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.pkgdef" />
+    <Content Include="bundler\vs2010-extension\extension.vsixmanifest" />
+    <Content Include="bundler\vs2010-extension\favicon.ico" />
+    <Content Include="bundler\vs2010-extension\ServiceStack-logo.png" />
+    <Content Include="Content-CommandLineOptions\app.css" />
+    <Content Include="Content-CommandLineOptions\app.js" />
+    <Content Include="Content-CommandLineOptions\css\bootstrap-responsive.css" />
+    <Content Include="Content-CommandLineOptions\css\bootstrap.css" />
+    <Content Include="Content-CommandLineOptions\img\glyphicons-halflings-white.png" />
+    <Content Include="Content-CommandLineOptions\img\glyphicons-halflings.png" />
+    <Content Include="Content-CommandLineOptions\js\backbone.js" />
+    <Content Include="Content-CommandLineOptions\js\base.js" />
+    <Content Include="Content-CommandLineOptions\js\bootstrap.js" />
+    <Content Include="Content-CommandLineOptions\js\ss-validation.js" />
+    <Content Include="Content-CommandLineOptions\js\underscore.js" />
+    <Content Include="Content-CommandLineOptions\options\folder\app.js" />
+    <Content Include="Content-CommandLineOptions\options\folder\something\something.js" />
+    <Content Include="Content-CommandLineOptions\options\folder\thirdparty\thirdparty.js" />
+    <Content Include="Content-CommandLineOptions\options\nobundle\app.js" />
+    <Content Include="Content-CommandLineOptions\options\skipmin\app.js" />
+    <Content Include="Content\css\bootstrap-responsive.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <None Include="bundler\bundler.cmd" />
+    <None Include="bundler\coffee.cmd" />
+    <None Include="bundler\LICENSE" />
+    <None Include="bundler\node_modules\.bin\cake" />
+    <None Include="bundler\node_modules\.bin\cake.cmd" />
+    <None Include="bundler\node_modules\.bin\cleancss" />
+    <None Include="bundler\node_modules\.bin\cleancss.cmd" />
+    <None Include="bundler\node_modules\.bin\coffee" />
+    <None Include="bundler\node_modules\.bin\coffee.cmd" />
+    <None Include="bundler\node_modules\.bin\lessc" />
+    <None Include="bundler\node_modules\.bin\lessc.cmd" />
+    <None Include="bundler\node_modules\clean-css\bin\cleancss" />
+    <None Include="bundler\node_modules\coffee-script\bin\cake" />
+    <None Include="bundler\node_modules\coffee-script\bin\coffee" />
+    <None Include="bundler\node_modules\coffee-script\package.json" />
+    <None Include="bundler\node_modules\less\bin\lessc" />
+    <None Include="bundler\node_modules\less\package.json" />
+    <None Include="bundler\node_modules\sass\package.json" />
+    <None Include="bundler\node_modules\node-sass\package.json" />
+    <None Include="bundler\node_modules\step\package.json" />
+    <None Include="bundler\uglifyjs" />
+    <None Include="bundler\vs2010-extension\BundlerRunOnSave.dll.lastcodeanalysissucceeded" />
+    <None Include="bundler\vs2010-extension\BundlerRunOnSave.vsix" />
+    <None Include="Content-CommandLineOptions\app.css.bundle" />
+    <None Include="Content-CommandLineOptions\app.js.bundle" />
+    <None Include="Content-CommandLineOptions\css\default.less" />
+    <None Include="Content-CommandLineOptions\js\app.coffee" />
+    <None Include="Content-CommandLineOptions\options\folder\app.less" />
+    <None Include="Content-CommandLineOptions\options\folder\folder-recursive.css.bundle" />
+    <None Include="Content-CommandLineOptions\options\folder\folder-recursive.js.bundle" />
+    <None Include="Content-CommandLineOptions\options\folder\folder.css.bundle" />
+    <None Include="Content-CommandLineOptions\options\folder\folder.js.bundle" />
+    <None Include="Content-CommandLineOptions\options\nobundle\app.less" />
+    <None Include="Content-CommandLineOptions\options\nobundle\nobundle.css.bundle" />
+    <None Include="Content-CommandLineOptions\options\nobundle\nobundle.js.bundle" />
+    <None Include="Content-CommandLineOptions\options\skipmin\app.less" />
+    <None Include="Content-CommandLineOptions\options\skipmin\skipmin.css.bundle" />
+    <None Include="Content-CommandLineOptions\options\skipmin\skipmin.js.bundle" />
+    <None Include="Content\app.css.bundle" />
+    <None Include="Content\app.js.bundle" />
+    <None Include="Content\css\default-less.less" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\js\backbone.js" />
+    <Content Include="Content\js\base.js" />
+    <Content Include="Content\js\bootstrap.js" />
+    <Content Include="Content\js\app.coffee" />
+    <Content Include="Content\js\ss-validation.js" />
+    <Content Include="Content\js\underscore.js" />
+    <Content Include="Content\options\folder\app-scss.scss" />
+    <Content Include="Content\options\folder\app.js" />
+    <Content Include="Content\options\folder\something\something.js" />
+    <Content Include="Content\options\folder\thirdparty\thirdparty.js" />
+    <Content Include="Content\options\nobundle\app-scss.scss" />
+    <Content Include="Content\options\nobundle\app.js" />
+    <Content Include="Content\options\skipmin\app-scss.scss" />
+    <Content Include="Content\options\skipmin\app.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <None Include="Content\errors\invalid.css.bundle" />
+    <None Include="Content\errors\invalid-less.less" />
+    <None Include="Content\options\folder\app-less.less" />
+    <None Include="Content\options\folder\folder-recursive.css.bundle" />
+    <None Include="Content\options\folder\folder-recursive.js.bundle" />
+    <None Include="Content\options\folder\folder.css.bundle" />
+    <None Include="Content\options\folder\folder.js.bundle" />
+    <None Include="Content\options\nobundle\app-less.less" />
+    <None Include="Content\options\nobundle\nobundle.css.bundle" />
+    <None Include="Content\options\nobundle\nobundle.js.bundle" />
+    <None Include="Content\options\skipmin\app-less.less" />
+    <None Include="Content\options\skipmin\skipmin.css.bundle" />
+    <None Include="Content\options\skipmin\skipmin.js.bundle" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>7530</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
