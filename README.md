@@ -215,4 +215,5 @@ A big thanks to all of Bundler's contributors:
  - [michael-wolfenden](https://github.com/michael-wolfenden) (Michael Wolfenden)
  - [garjitech](https://github.com/garjitech) (Garrett Wolf)
  - [isochronous](https://github.com/isochronous) (Jeremy McLeod)
+ - [legomind](https://github.com/legomind)
 
