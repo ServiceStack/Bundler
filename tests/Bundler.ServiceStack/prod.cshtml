@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ServiceStack Bundler Test Page</title>
+    <style>
+        #css-results div, #js-results div {
+            background: red;            
+        }
+    </style>
+
+    <!-- Le styles -->
+	@Html.RenderCssBundle("~/Content/test.css.bundle", BundleOptions.MinifiedAndCombined)
+    
+    <!-- Print StyleSheet (should include media="print" -->
+	@Html.RenderCssBundle("~/Content/test.css.bundle", BundleOptions.MinifiedAndCombined, "print")
+
+</head>
+<body>
+    <h1>ServiceStack Bundler Test Page</h1>
+    
+    <h3>JavaScript</h3>
+    <div id="js-results">
+        <div id="js">JavaScript</div>
+        <div id="coffee">CoffeeScript</div>
+        <div id="ls">LiveScript</div>
+    </div>
+    
+    <h3>CSS</h3>
+    <div id="css-results">
+        <div id="css">CSS</div>
+        <div id="less">LESS</div>
+        <div id="sass">SASS</div>
+        <div id="scss">SCSS</div>
+        <div id="styl">STYL</div>
+    </div>
+    
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    @Html.RenderJsBundle("~/Content/test.js.bundle", BundleOptions.MinifiedAndCombined)
+@*	@Html.RenderJsBundle("~/Content/errors/invalid.css.bundle", BundleOptions.Normal)*@
+    
+    <script type="text/javascript">
+        doJavaScript(document.getElementById("js"));
+        doCoffeeScript(document.getElementById("coffee"));
+        doLiveScript(document.getElementById("ls"));
+    </script>
+
+</body>
+</html>

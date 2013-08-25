@@ -252,15 +252,17 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
             || file.startsWith('#'))
             return;
 
-        var isCoffee = file.endsWith(".coffee"), isLivescript = file.endsWith(".ls"), jsFile = isCoffee
+        var isCoffee = file.endsWith(".coffee");
+        var isLivescript = file.endsWith(".ls");
+        var jsFile = isCoffee
                 ? file.replace(".coffee", ".js")
 				: isLivescript
 					? file.replace(".ls", ".js")
 					: file;
 
         var filePath = path.join(bundleDir, file),
-                jsPath = path.join(bundleDir, jsFile),
-                minJsPath = getMinFileName(jsPath);
+              jsPath = path.join(bundleDir, jsFile),
+           minJsPath = getMinFileName(jsPath);
 
         var i = index++;
         pending++;
@@ -337,18 +339,20 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"), isSass = (file.endsWith(".sass") || file.endsWith(".scss")), isStylus = file.endsWith(".styl"),
-            cssFile = isLess
-                ? file.replace(".less", ".css")
-                : isSass
-                    ? file.replace(".sass", ".css").replace(".scss", ".css")
-                    :isStylus
-						? file.replace(".styl", ".css")
-						: file;
+        var isLess = file.endsWith(".less"), 
+            isSass = (file.endsWith(".sass") || file.endsWith(".scss")), 
+            isStylus = file.endsWith(".styl");
+        var cssFile = isLess
+            ? file.replace(".less", ".css") 
+            : isSass
+                ? file.replace(".sass", ".css").replace(".scss", ".css")
+                : isStylus
+					? file.replace(".styl", ".css")
+					: file;
 
         var filePath = path.join(bundleDir, file),
-                cssPath = path.join(bundleDir, cssFile),
-                minCssPath = getMinFileName(cssPath);
+             cssPath = path.join(bundleDir, cssFile),
+          minCssPath = getMinFileName(cssPath);
 
         var i = index++;
         pending++;

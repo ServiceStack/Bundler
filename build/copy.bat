@@ -50,6 +50,9 @@ XCOPY %FROM%\node_modules\nib %DIST%\node_modules\nib /s /e
 MD %DIST%\node_modules\lib
 COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib
 
+MD %DIST%\node_modules\debug
+XCOPY %FROM%\node_modules\debug %DIST%\node_modules\debug /s /e
+
 MD %DIST%\node_modules\node-sass %DIST%\node_modules\node-sass\bin %DIST%\node_modules\node-sass\lib
 MD %DIST%\node_modules\node-sass\lib-sass %DIST%\node_modules\node-sass\lib-sass\m4 %DIST%\node_modules\node-sass\lib-sass\src
 MD %DIST%\node_modules\node-sass\node_modules %DIST%\node_modules\node-sass\precompiled

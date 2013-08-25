@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F6AD2248-5F8B-4D70-9F59-133903322C99}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bundler.ServiceStack</RootNamespace>
+    <AssemblyName>Bundler.ServiceStack</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="ServiceStack">
+      <HintPath>..\packages\ServiceStack.3.9.58\lib\net35\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\packages\ServiceStack.Common.3.9.58\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\packages\ServiceStack.Common.3.9.58\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.58\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer">
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.58\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Razor">
+      <HintPath>..\packages\ServiceStack.Razor.3.9.58\lib\net40\ServiceStack.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\packages\ServiceStack.Redis.3.9.58\lib\net35\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.ServiceInterface">
+      <HintPath>..\packages\ServiceStack.3.9.58\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.58\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor.Unofficial">
+      <HintPath>..\packages\System.Web.Razor.Unofficial.2.0.2\lib\net40\System.Web.Razor.Unofficial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bundler\bundler.js" />
+    <Content Include="bundler\node.exe" />
+    <Content Include="bundler\node_modules\clean-css\index.js" />
+    <Content Include="bundler\node_modules\clean-css\lib\clean.js" />
+    <Content Include="bundler\node_modules\clean-css\node_modules\optimist\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\browser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\cake.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\coffee-script.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\command.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\grammar.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\helpers.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\index.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\lexer.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\nodes.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\optparse.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\parser.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\repl.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\rewriter.js" />
+    <Content Include="bundler\node_modules\coffee-script\lib\coffee-script\scope.js" />
+    <Content Include="bundler\node_modules\less\lib\less\browser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\colors.js" />
+    <Content Include="bundler\node_modules\less\lib\less\cssmin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\functions.js" />
+    <Content Include="bundler\node_modules\less\lib\less\index.js" />
+    <Content Include="bundler\node_modules\less\lib\less\parser.js" />
+    <Content Include="bundler\node_modules\less\lib\less\rhino.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\alpha.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\anonymous.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\assignment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\call.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\color.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\comment.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\condition.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\dimension.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\directive.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\element.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\expression.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\import.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\javascript.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\keyword.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\media.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\mixin.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\operation.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\paren.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\quoted.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\rule.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\ruleset.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\selector.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\url.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\value.js" />
+    <Content Include="bundler\node_modules\less\lib\less\tree\variable.js" />
+    <Content Include="bundler\node_modules\lib\parse-js.js" />
+    <Content Include="bundler\node_modules\lib\process.js" />
+    <Content Include="bundler\node_modules\lib\squeeze-more.js" />
+    <Content Include="bundler\node_modules\node-sass\binding.cpp" />
+    <Content Include="bundler\node_modules\node-sass\lib\middleware.js" />
+    <Content Include="bundler\node_modules\node-sass\sass.js" />
+    <Content Include="bundler\node_modules\node-sass\sass_context_wrapper.cpp" />
+    <Content Include="bundler\node_modules\node-sass\sass_context_wrapper.h" />
+    <Content Include="bundler\node_modules\step\lib\step.js" />
+    <Content Include="bundler\node_modules\uglify-js.js" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll.CodeAnalysisLog.xml" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.pkgdef" />
+    <Content Include="bundler\vs2010-extension\extension.vsixmanifest" />
+    <Content Include="bundler\vs2010-extension\favicon.ico" />
+    <Content Include="bundler\vs2010-extension\ServiceStack-logo.png" />
+    <Content Include="Content\test.js.bundle" />
+    <Content Include="bundler\bundler.cmd" />
+    <Content Include="bundler\coffee.cmd" />
+    <Content Include="bundler\LICENSE" />
+    <Content Include="bundler\node_modules\.bin\cake" />
+    <Content Include="bundler\node_modules\.bin\cake.cmd" />
+    <Content Include="bundler\node_modules\.bin\cleancss" />
+    <Content Include="bundler\node_modules\.bin\cleancss.cmd" />
+    <Content Include="bundler\node_modules\.bin\coffee" />
+    <Content Include="bundler\node_modules\.bin\coffee.cmd" />
+    <Content Include="bundler\node_modules\.bin\lessc" />
+    <Content Include="bundler\node_modules\.bin\lessc.cmd" />
+    <Content Include="bundler\node_modules\.bin\node-sass" />
+    <Content Include="bundler\node_modules\.bin\node-sass.cmd" />
+    <Content Include="bundler\node_modules\clean-css\bin\cleancss" />
+    <Content Include="bundler\node_modules\coffee-script\bin\cake" />
+    <Content Include="bundler\node_modules\coffee-script\bin\coffee" />
+    <Content Include="bundler\node_modules\coffee-script\package.json" />
+    <Content Include="bundler\node_modules\less\bin\lessc" />
+    <Content Include="bundler\node_modules\less\package.json" />
+    <Content Include="bundler\node_modules\node-sass\.gitmodules" />
+    <Content Include="bundler\node_modules\node-sass\.npmignore" />
+    <Content Include="bundler\node_modules\node-sass\.travis.yml" />
+    <Content Include="bundler\node_modules\node-sass\binding.gyp" />
+    <Content Include="bundler\node_modules\node-sass\bin\node-sass" />
+    <Content Include="bundler\node_modules\node-sass\LICENSE" />
+    <Content Include="bundler\node_modules\node-sass\package.json" />
+    <Content Include="bundler\node_modules\node-sass\README.md" />
+    <Content Include="bundler\node_modules\step\package.json" />
+    <Content Include="bundler\uglifyjs" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.dll.lastcodeanalysissucceeded" />
+    <Content Include="bundler\vs2010-extension\BundlerRunOnSave.vsix" />
+    <None Include="Content\test.css.bundle" />
+    <Content Include="Content\css\test-less.less" />
+    <Content Include="Content\css\test-css.css" />
+    <None Include="Content\css\test-sass.sass" />
+    <None Include="Content\css\test-stylus.styl" />
+    <None Include="Content\css\test-scss.scss" />
+    <None Include="Content\js\test-livescript.ls" />
+    <None Include="Content\js\test-coffeescript.coffee" />
+    <Content Include="Content\js\test-javascript.js" />
+    <Content Include="prod.cshtml" />
+    <None Include="default.cshtml" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bundler.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:65076/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
