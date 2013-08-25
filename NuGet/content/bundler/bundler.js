@@ -75,7 +75,7 @@ var fs = require("fs"),
 	stylus = require('stylus'),
 	nib = require('nib'),
     coffee = require('coffee-script'),
-	livescript = require('livescript'),
+    livescript = require('livescript'),
     cleanCss = require('clean-css'),
     Step = require('step'),
     startedAt = Date.now();
@@ -253,12 +253,12 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
             return;
 
         var isCoffee = file.endsWith(".coffee");
-        var isLivescript = file.endsWith(".ls");
-        var jsFile = isCoffee
-                ? file.replace(".coffee", ".js")
-				: isLivescript
-					? file.replace(".ls", ".js")
-					: file;
+        var isLiveScript = file.endsWith(".ls");
+        var jsFile = isCoffee ? 
+            file.replace(".coffee", ".js")
+    		: isLiveScript ? 
+            file.replace(".ls", ".js") :
+            file;
 
         var filePath = path.join(bundleDir, file),
               jsPath = path.join(bundleDir, jsFile),
@@ -273,10 +273,10 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
                     readTextFile(filePath, function (coffee) {
                         getOrCreateJs(options, coffee, filePath, jsPath, next);
                     });
-				} else if(isLivescript){
-					readTextFile(filePath, function(livescriptText){
-						getOrCreateJsLivescript(options, livescriptText, filePath, jsPath, next);
-					});
+                } else if(isLiveScript){
+                    readTextFile(filePath, function(livescriptText){
+                        getOrCreateJsLiveScript(options, livescriptText, filePath, jsPath, next);
+                    });
                 } else {
                     readTextFile(jsPath, next);
                 }
@@ -339,16 +339,16 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"), 
-            isSass = (file.endsWith(".sass") || file.endsWith(".scss")), 
-            isStylus = file.endsWith(".styl");
-        var cssFile = isLess
-            ? file.replace(".less", ".css") 
-            : isSass
-                ? file.replace(".sass", ".css").replace(".scss", ".css")
-                : isStylus
-					? file.replace(".styl", ".css")
-					: file;
+        var isLess = file.endsWith(".less"); 
+        var isSass = (file.endsWith(".sass") || file.endsWith(".scss"));
+        var isStylus = file.endsWith(".styl");
+        var cssFile = isLess ? 
+            file.replace(".less", ".css") 
+            : isSass ? 
+            file.replace(".sass", ".css").replace(".scss", ".css")
+            : isStylus ? 
+            file.replace(".styl", ".css") : 
+            file;
 
         var filePath = path.join(bundleDir, file),
              cssPath = path.join(bundleDir, cssFile),
@@ -400,7 +400,7 @@ function getOrCreateJs(options, coffeeScript, csPath, jsPath, cb /*cb(js)*/) {
         }, coffeeScript, csPath, jsPath, cb);
 }
 
-function getOrCreateJsLivescript(options, livescriptText, lsPath, jsPath, cb /*cb(js)*/) {
+function getOrCreateJsLiveScript(options, livescriptText, lsPath, jsPath, cb /*cb(js)*/) {
     compileAsync(options, "compiling", function (livescriptText, lsPath, cb) {
             cb(livescript.compile(livescriptText));
         }, livescriptText, lsPath, jsPath, cb);

@@ -1,5 +1,8 @@
 REM Copy from NuGet to MVC test project
 
+REM Master 'Bundler.cs' is maintained in Bundler.ServiceStack\Bundler.cs 
+COPY Bundler.ServiceStack\Bundler.cs  ..\NuGet\content\
+
 DEL /F /S /q Bootstrap.Mvc\bundler\*
 @rmdir /S /Q Bootstrap.Mvc\bundler
 MD Bootstrap.Mvc\bundler

@@ -12,6 +12,7 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+//Dummy namespaces to keep compiler happy when MVC isn't referenced
 namespace System.Web.Mvc { }
 namespace System.Web.Routing { }
 
