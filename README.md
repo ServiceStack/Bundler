@@ -1,17 +1,17 @@
 # Bundler
 
-Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **css**, **coffeescript** and **js** files.
+Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC and ServiceStack that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **stylus**, **css**, **coffeescript**, **livescript** and **js** files.
 
 Bundler uses the popular and well-tested javascript libraries in [node's package manager](http://npmjs.org/) for all minification and compilation. This enables it to generate faster and more up-to-date outputs than any other .NET wrapper solution which either uses old .NET ports of node.js or ruby implementations, or they have to invoke external out-of-process [IronRuby](http://www.ironruby.net/) and  JavaScript processes resulting in slower execution - consuming valuable iteration-time on each dev-cycle.
 
   - Easy to use! All **.bundle**'s are plain text files which just contain a list of the file names that make up each bundle
   - Includes **VS.NET Integration**! Saving any supported file auto-runs Bundler. Works seamlessly behind-the-scenes while you code
-  - Integrates with **ASP.NET MVC**! Includes 1 C# **MvcBundler.cs** class with extension methods to seamlessly integrate with MVC
-  - Runs outside the context of your ASP.NET MVC website so client scripts can be re-compiled **without restarting** your C# project
+  - Integrates with **ASP.NET MVC** and **ServiceStack**! Includes 1 C# **Bundler.cs** class to seamlessly integrate with web apps
+  - Runs outside the context of your ASP.NET website so client scripts can be re-compiled **without restarting** your C# project
   - Can be used with any website project (not only .NET). Includes a **windows** node.exe although all scripts work cross-platform
   - All bundling done at **compile time**, by running the single `bundler.cmd` command - no dependencies needed at runtime
   - Uses a self-contained **node.exe** for all compilation & minification - designed for maximum runtime and compile time performance
-  - All node.js `.js` and MVC C# `.cs` src files used are in plain-text - so can be easily be followed, extended or customized
+  - All node.js `.js` and C# `.cs` src files used are in plain-text - so can be easily be followed, extended or customized
 
 ## Extremely fast at both Build and Runtime
 Bundler is extremely fast - uses Googles leading V8 JavaScript engine (inside node.exe). All build scripts use only *pure JavaScript* implementations (uglifyjs, coffee-script, clean-css, etc) allowing all compilation and minification to run in a single process.
@@ -32,6 +32,16 @@ Includes [Twitter Bootstrap](http://twitter.github.com/bootstrap/) + [Backbone.j
 
 
 ## Release Notes
+
+### v1.16 Release Notes
+
+Bundler has added support for [LiveScript](http://livescript.net/) and [Stylus](http://learnboost.github.io/stylus/) thanks to [@legomind](https://github.com/legomind). 
+
+LiveScript is a terse, functionally-inspired language with CoffeeScript roots popular with functional programmers who want to target JS. Whilst Stylus is another creation from JavaScript's code hero [@tjholowaychuk](https://twitter.com/tjholowaychuk), with his take on a terse white-space significant DSL for CSS.
+
+SASS support has also been vastly improved thanks to the integration efforts of [@michael-misshore](https://github.com/michael-misshore) who updated Bundler's SASS provider to use the more robust `node-sass` implementation.
+
+In addition to supporting ASP.NET MVC we've also added first-class support for ServiceStack-only web projects. To reflect this change `Mvc.Bundler.cs` (which contains all MVC and ServcieStack HTML Helper utils) has been renamed to `Bundler.cs` and now sits in the `ServiceStack.Html` namespace. If you're upgrading from an older version of Bundler you may need to update to use the new references.
 
 ### v1.10 Release Notes
 This release is thanks to the hard work of [@fody](https://twitter.com/fody) who implemented both the [VS.NET Extension](https://github.com/ServiceStack/Bundler#bundler-run-on-save-visual-studio-extension) and [advanced bundling options](https://github.com/ServiceStack/Bundler#advanced-options).
@@ -116,9 +126,9 @@ You define css or js **bundles** (in plain text) that specifies the list of file
 
 Now everytime you run **/bundler/bundler.cmd** it will scan these files, compiling and minifying any new or changed files.
 
-## Enable Mvc.Bundler.cs Html helpers inside view pages
+## Enable Bundler.cs Html helpers inside view pages
 
-To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views base class by editing your Views/Web.config:
+To enable MVC or ServiceStack Html helper's add **ServiceStack.Html** namespace to your views base class by editing your Views/Web.config:
 
     <system.web.webPages.razor>
     <pages pageBaseType="System.Web.Mvc.WebViewPage">
@@ -127,7 +137,7 @@ To enable MVC Html helper's add **ServiceStack.Mvc** namespace to your views bas
         <add namespace="System.Web.Mvc.Ajax" />
         <add namespace="System.Web.Mvc.Html" />
         <add namespace="System.Web.Routing" />
-        <add namespace="ServiceStack.Mvc" />    <!-- Enable Html Exentions -->
+        <add namespace="ServiceStack.Html" />    <!-- Enable Html Exentions -->
       </namespaces>
     </pages>
     </system.web.webPages.razor>
@@ -165,7 +175,7 @@ Will generate the following HTML:
 
 Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
 
-You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Mvc.Bundler.cs#L24).
+You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Bundler.cs#L32).
 
 ## Advanced Options
 
