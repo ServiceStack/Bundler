@@ -161,7 +161,7 @@ function scanDir(allFiles, cb) {
                         var recursive = options.folder === 'recursive';
                         jsFiles = allFiles.map(function jsMatches(fileName) {
                             if (!fileName.startsWith(bundleDir)) return '#';
-                            if (!fileName.endsWithAny(['.js', '.coffee', '.ls'])) return '#';
+                            if (!fileName.endsWithAny(['.js', '.coffee', '.ls', '.ts'])) return '#';
                             if (fileName.endsWithAny(['.min.js'])) return '#';
                             if (!recursive && (path.dirname(fileName) !== bundleDir)) return '#';
                             return fileName.substring(bundleDir.length + 1);

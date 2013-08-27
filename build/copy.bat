@@ -51,7 +51,10 @@ XCOPY %FROM%\node_modules\debug %DIST%\node_modules\debug /s /e
 MD %DIST%\node_modules\node-sass %DIST%\node_modules\node-sass\bin %DIST%\node_modules\node-sass\lib
 MD %DIST%\node_modules\node-sass\lib-sass %DIST%\node_modules\node-sass\lib-sass\m4 %DIST%\node_modules\node-sass\lib-sass\src
 MD %DIST%\node_modules\node-sass\node_modules %DIST%\node_modules\node-sass\precompiled
-COPY %FROM%\node_modules\node-sass\* %DIST%\node_modules\node-sass
+REM Don't copy over .cpp files which can break aspnet's pre-compilation of views by just existing in a sub folder
+COPY %FROM%\node_modules\node-sass\*.js %DIST%\node_modules\node-sass
+COPY %FROM%\node_modules\node-sass\*.json %DIST%\node_modules\node-sass
+COPY %FROM%\node_modules\node-sass\*.md %DIST%\node_modules\node-sass
 COPY %FROM%\node_modules\node-sass\bin\* %DIST%\node_modules\node-sass\bin
 COPY %FROM%\node_modules\node-sass\lib\* %DIST%\node_modules\node-sass\lib
 COPY %FROM%\node_modules\node-sass\lib-sass\* %DIST%\node_modules\node-sass\lib-sass
