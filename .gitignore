@@ -23,7 +23,7 @@ Thumbs.db
 *.ilk
 *.log
 #[Bb]in
-[Dd]ebug*/
+Debug*/
 *.lib
 *.sbr
 *.resharper.user
