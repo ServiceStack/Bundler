@@ -254,9 +254,9 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
 
         var isCoffee = file.endsWith(".coffee");
         var isLiveScript = file.endsWith(".ls");
-        var jsFile = isCoffee ? 
+        var jsFile = isCoffee ?
             file.replace(".coffee", ".js")
-    		: isLiveScript ? 
+    		: isLiveScript ?
             file.replace(".ls", ".js") :
             file;
 
@@ -339,15 +339,15 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             || file.startsWith('#'))
             return;
 
-        var isLess = file.endsWith(".less"); 
+        var isLess = file.endsWith(".less");
         var isSass = (file.endsWith(".sass") || file.endsWith(".scss"));
         var isStylus = file.endsWith(".styl");
-        var cssFile = isLess ? 
-            file.replace(".less", ".css") 
-            : isSass ? 
+        var cssFile = isLess ?
+            file.replace(".less", ".css")
+            : isSass ?
             file.replace(".sass", ".css").replace(".scss", ".css")
-            : isStylus ? 
-            file.replace(".styl", ".css") : 
+            : isStylus ?
+            file.replace(".styl", ".css") :
             file;
 
         var filePath = path.join(bundleDir, file),
