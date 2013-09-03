@@ -571,6 +571,7 @@
     <Content Include="Content\options\nobundle\app.js" />
     <Content Include="Content\options\skipmin\app-scss.scss" />
     <Content Include="Content\options\skipmin\app.js" />
+    <Content Include="Content\scss\imported.scss" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
