@@ -417,9 +417,19 @@ function getOrCreateLessCss(options, less, lessPath, cssPath, cb /*cb(css)*/) {
 }
 
 function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*/) {
+    var explodedSassPath = sassPath.split('\\');
+
+    if (explodedSassPath.length == 0) {
+        explodedSassPath = sassPath.split('/');
+    }
+
+    var sassFileName = explodedSassPath.pop();
+    var includePaths = [sassPath.replace(sassFileName, '')];
+
     compileAsync(options, "compiling", function (sassText, sassPath, cb) {
         cb(sass.renderSync({
-            file: sassPath
+            file: sassPath,
+            includePaths: includePaths
         }));
     }, sassText, sassPath, cssPath, cb);
 }
