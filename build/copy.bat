@@ -1,9 +1,9 @@
 SET FROM=..\src
-SET DIST=..\NuGet\content\bundler
+SET DIST=..\NuGet\Bundler\content\bundler
 
 DEL /F /S /q %DIST%\*
 @rmdir /S /Q %DIST%
-MD %DIST%\
+MD %DIST%
 
 COPY %FROM%\* %DIST%
 MD %DIST%\node_modules\.bin
