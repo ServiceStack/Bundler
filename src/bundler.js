@@ -108,7 +108,7 @@ var scanIndex = 0;
 (function scanNext() {
     if (scanIndex < SCAN_ROOT_DIRS.length) {
         var rootDir = SCAN_ROOT_DIRS[scanIndex++];
-        path.exists(rootDir, function(exists) {
+        fs.exists(rootDir, function(exists) {
             if (exists) {
                 walk(rootDir, function(err, allFiles) {
                     if (err) throw err;
@@ -459,7 +459,7 @@ function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(co
     text, textPath, compileTextPath, cb /*cb(compiledText)*/) {
     Step(
         function () {
-            path.exists(compileTextPath, this);
+            fs.exists(compileTextPath, this);
         },
         function (exists) {
             var next = this;

@@ -15,7 +15,7 @@
     max-width: 480;
   }
 }
-@media all and (device-aspect-ratio: 16/9) {
+@media all and (device-aspect-ratio: 16 / 9) {
   body {
     max-width: 800px;
   }
@@ -191,5 +191,13 @@ body {
 @media (max-width: 1000px) and (max-width: 500px) {
   body {
     background: green;
+  }
+}
+@media (max-width: 1200px) {
+  /* a comment */
+}
+@media (max-width: 1200px) and (max-width: 900px) {
+  body {
+    font-size: 11px;
   }
 }

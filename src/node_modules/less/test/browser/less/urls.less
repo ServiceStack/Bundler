@@ -31,3 +31,19 @@
     @a: 'Trebuchet';
     url: url(@a);
 }
+#data-uri {
+  uri: data-uri('image/jpeg;base64', '../../data/image.jpg');
+}
+
+#data-uri-guess {
+  uri: data-uri('../../data/image.jpg');
+}
+
+#data-uri-ascii {
+  uri-1: data-uri('text/html', '../../data/page.html');
+  uri-2: data-uri('../../data/page.html');
+}
+
+#data-uri-toobig {
+  uri: data-uri('../../data/data-uri-fail.png');
+}
