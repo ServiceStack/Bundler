@@ -299,6 +299,9 @@ namespace ServiceStack.Html
                 var scripts = new StringBuilder();
                 foreach (var file in jsFiles)
                 {
+                    if (file.StartsWith("#"))
+                        continue;
+                    
                     var jsFile = file.Trim()
                         .Replace(".coffee", ".js")
                         .Replace(".ls", ".js");
@@ -337,6 +340,9 @@ namespace ServiceStack.Html
                 var styles = new StringBuilder();
                 foreach (var file in cssFiles)
                 {
+                    if (file.StartsWith("#"))
+                        continue;
+                    
                     var cssFile = file.Trim()
                         .Replace(".less", ".css")
                         .Replace(".sass", ".css")
