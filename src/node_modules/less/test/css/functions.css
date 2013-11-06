@@ -26,6 +26,7 @@
   luma-cyan: 79%;
   luma-white-alpha: 50%;
   contrast-filter: contrast(30%);
+  saturate-filter: saturate(5%);
   contrast-white: #000000;
   contrast-black: #ffffff;
   contrast-red: #ffffff;
@@ -80,6 +81,11 @@
   pow: 64px;
   pow: 64;
   pow: 27;
+  min: 0;
+  min: min("junk", 5);
+  min: 3pt;
+  max: 3;
+  max: max(8%, 1cm);
   percentage: 20%;
   color: #ff0011;
   tint: #898989;
@@ -96,11 +102,13 @@
   mix-0: #ffff00;
   mix-100: #ff0000;
   mix-weightless: #ff8000;
+  mixt: rgba(255, 0, 0, 0.5);
 }
 #built-in .is-a {
   color: true;
   color1: true;
   color2: true;
+  color3: true;
   keyword: true;
   number: true;
   string: true;
@@ -111,6 +119,8 @@
 }
 #alpha {
   alpha: rgba(153, 94, 51, 0.6);
+  alpha2: 0.5;
+  alpha3: 0;
 }
 #blendmodes {
   multiply: #ed0000;
@@ -123,6 +133,7 @@
   average: #7b007b;
   negation: #d73131;
 }
-#extract {
-  result: 3 2 1 C B A;
+#extract-and-length {
+  extract: 3 2 1 C B A;
+  length: 6;
 }

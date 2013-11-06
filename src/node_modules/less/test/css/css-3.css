@@ -97,18 +97,29 @@ p::before {
   font-size: 10px;
 }
 @namespace foo url(http://www.example.com);
-foo | h1 {
+foo|h1 {
   color: blue;
 }
-foo | * {
+foo|* {
   color: yellow;
 }
-| h1 {
+|h1 {
   color: red;
 }
-* | h1 {
+*|h1 {
   color: green;
 }
 h1 {
   color: green;
+}
+.upper-test {
+  UpperCaseProperties: allowed;
+}
+@host {
+  div {
+    display: block;
+  }
+}
+::distributed(input::placeholder) {
+  color: #b3b3b3;
 }

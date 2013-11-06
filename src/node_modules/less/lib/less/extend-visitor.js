@@ -1,4 +1,6 @@
 (function (tree) {
+    /*jshint loopfunc:true */
+
     tree.extendFinderVisitor = function() {
         this._visitor = new tree.visitor(this);
         this.contexts = [];
@@ -29,6 +31,7 @@
             for(i = 0; i < rulesetNode.rules.length; i++) {
                 if (rulesetNode.rules[i] instanceof tree.Extend) {
                     allSelectorsExtendList.push(rulesetNode.rules[i]);
+                    rulesetNode.extendOnEveryPath = true;
                 }
             }
 
@@ -212,7 +215,7 @@
                     selectorPath = rulesetNode.paths[pathIndex];
 
                     // extending extends happens initially, before the main pass
-                    if (selectorPath[selectorPath.length-1].extendList.length) { continue; }
+                    if (rulesetNode.extendOnEveryPath || selectorPath[selectorPath.length-1].extendList.length) { continue; }
 
                     matches = this.findMatch(allExtends[extendIndex], selectorPath);
 
@@ -246,7 +249,7 @@
                     haystackElement = hackstackSelector.elements[hackstackElementIndex];
 
                     // if we allow elements before our match we can add a potential match every time. otherwise only at the first element.
-                    if (extend.allowBefore || (haystackSelectorIndex == 0 && hackstackElementIndex == 0)) {
+                    if (extend.allowBefore || (haystackSelectorIndex === 0 && hackstackElementIndex === 0)) {
                         potentialMatches.push({pathIndex: haystackSelectorIndex, index: hackstackElementIndex, matched: 0, initialCombinator: haystackElement.combinator});
                     }
 
@@ -257,7 +260,7 @@
                         // then each selector in haystackSelectorPath has a space before it added in the toCSS phase. so we need to work out
                         // what the resulting combinator will be
                         targetCombinator = haystackElement.combinator.value;
-                        if (targetCombinator == '' && hackstackElementIndex === 0) {
+                        if (targetCombinator === '' && hackstackElementIndex === 0) {
                             targetCombinator = ' ';
                         }
 
@@ -313,6 +316,24 @@
                 elementValue2 = elementValue2.value.value || elementValue2.value;
                 return elementValue1 === elementValue2;
             }
+            elementValue1 = elementValue1.value;
+            elementValue2 = elementValue2.value;
+            if (elementValue1 instanceof tree.Selector) {
+                if (!(elementValue2 instanceof tree.Selector) || elementValue1.elements.length !== elementValue2.elements.length) {
+                    return false;
+                }
+                for(var i = 0; i <elementValue1.elements.length; i++) {
+                    if (elementValue1.elements[i].combinator.value !== elementValue2.elements[i].combinator.value) {
+                        if (i !== 0 || (elementValue1.elements[i].combinator.value || ' ') !== (elementValue2.elements[i].combinator.value || ' ')) {
+                            return false;
+                        }
+                    }
+                    if (!this.isElementValuesEqual(elementValue1.elements[i].value, elementValue2.elements[i].value)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
             return false;
         },
         extendSelector:function (matches, selectorPath, replacementSelector) {
@@ -325,7 +346,8 @@
                 matchIndex,
                 selector,
                 firstElement,
-                match;
+                match,
+                newElements;
 
             for (matchIndex = 0; matchIndex < matches.length; matchIndex++) {
                 match = matches[matchIndex];
@@ -333,7 +355,8 @@
                 firstElement = new tree.Element(
                     match.initialCombinator,
                     replacementSelector.elements[0].value,
-                    replacementSelector.elements[0].index
+                    replacementSelector.elements[0].index,
+                    replacementSelector.elements[0].currentFileInfo
                 );
 
                 if (match.pathIndex > currentSelectorPathIndex && currentSelectorPathElementIndex > 0) {
@@ -342,17 +365,24 @@
                     currentSelectorPathIndex++;
                 }
 
-                path = path.concat(selectorPath.slice(currentSelectorPathIndex, match.pathIndex));
+                newElements = selector.elements
+                    .slice(currentSelectorPathElementIndex, match.index)
+                    .concat([firstElement])
+                    .concat(replacementSelector.elements.slice(1));
 
-                path.push(new tree.Selector(
-                    selector.elements
-                        .slice(currentSelectorPathElementIndex, match.index)
-                        .concat([firstElement])
-                        .concat(replacementSelector.elements.slice(1))
-                ));
+                if (currentSelectorPathIndex === match.pathIndex && matchIndex > 0) {
+                    path[path.length - 1].elements =
+                        path[path.length - 1].elements.concat(newElements);
+                } else {
+                    path = path.concat(selectorPath.slice(currentSelectorPathIndex, match.pathIndex));
+
+                    path.push(new tree.Selector(
+                        newElements
+                    ));
+                }
                 currentSelectorPathIndex = match.endPathIndex;
                 currentSelectorPathElementIndex = match.endPathElementIndex;
-                if (currentSelectorPathElementIndex >= selector.elements.length) {
+                if (currentSelectorPathElementIndex >= selectorPath[currentSelectorPathIndex].elements.length) {
                     currentSelectorPathElementIndex = 0;
                     currentSelectorPathIndex++;
                 }
@@ -360,7 +390,6 @@
 
             if (currentSelectorPathIndex < selectorPath.length && currentSelectorPathElementIndex > 0) {
                 path[path.length - 1].elements = path[path.length - 1].elements.concat(selectorPath[currentSelectorPathIndex].elements.slice(currentSelectorPathElementIndex));
-                currentSelectorPathElementIndex = 0;
                 currentSelectorPathIndex++;
             }
 
