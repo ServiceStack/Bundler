@@ -1,10 +1,43 @@
+/*jshint rhino:true, unused: false */
+/*global name:true, less, loadStyleSheet */
 var name;
+
+function error(e, filename) {
+
+    var content = "Error : " + filename + "\n";
+
+    filename = e.filename || filename;
+
+    if (e.message) {
+        content += e.message + "\n";
+    }
+
+    var errorline = function (e, i, classname) {
+        if (e.extract[i]) {
+            content +=
+                String(parseInt(e.line, 10) + (i - 1)) +
+                    ":" + e.extract[i] + "\n";
+        }
+    };
+
+    if (e.stack) {
+        content += e.stack;
+    } else if (e.extract) {
+        content += 'on line ' + e.line + ', column ' + (e.column + 1) + ':\n';
+        errorline(e, 0);
+        errorline(e, 1);
+        errorline(e, 2);
+    }
+    print(content);
+}
 
 function loadStyleSheet(sheet, callback, reload, remaining) {
     var endOfPath = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\')),
         sheetName = name.slice(0, endOfPath + 1) + sheet.href,
         contents = sheet.contents || {},
         input = readFile(sheetName);
+
+    input = input.replace(/^\xEF\xBB\xBF/, '');
         
     contents[sheetName] = input;
         
@@ -35,7 +68,8 @@ function writeFile(filename, content) {
 (function (args) {
     var output,
         compress = false,
-        i;
+        i,
+        path;
         
     for(i = 0; i < args.length; i++) {
         switch(args[i]) {
@@ -58,7 +92,7 @@ function writeFile(filename, content) {
         print('No files present in the fileset; Check your pattern match in build.xml');
         quit(1);
     }
-    path = name.split("/");path.pop();path=path.join("/")
+    path = name.split("/");path.pop();path=path.join("/");
 
     var input = readFile(name);
 
@@ -92,32 +126,3 @@ function writeFile(filename, content) {
     }
     print("done");
 }(arguments));
-
-function error(e, filename) {
-
-    var content = "Error : " + filename + "\n";
-    
-    filename = e.filename || filename;
-    
-    if (e.message) {
-        content += e.message + "\n";
-    }
-
-    var errorline = function (e, i, classname) {
-        if (e.extract[i]) {
-            content += 
-                String(parseInt(e.line) + (i - 1)) + 
-                ":" + e.extract[i] + "\n";
-        }
-    };
-
-    if (e.stack) {
-        content += e.stack;
-    } else if (e.extract) {
-        content += 'on line ' + e.line + ', column ' + (e.column + 1) + ':\n';
-        errorline(e, 0);
-        errorline(e, 1);
-        errorline(e, 2);
-    }
-   print(content);
-}

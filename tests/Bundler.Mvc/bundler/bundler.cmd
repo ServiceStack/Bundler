@@ -9,3 +9,5 @@ if "%*" == "" (
 )
 
 popd
+
+exit %ERRORLEVEL%

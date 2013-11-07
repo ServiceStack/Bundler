@@ -25,10 +25,11 @@ SOFTWARE.
 // uncaught exceptions should cause the application to crash and exit
 // with an exit code that will be identified as a failure by most
 // windows build systems
-process.on("uncaughtException", function (err) {
-    console.error(err);
-    process.exit(1);
-});
+
+// process.on("uncaughtException", function (err) {
+//     console.error(err);
+//     process.exit(1);
+// });
 
 function clone(o) {
   var ret = {};
@@ -72,11 +73,11 @@ var fs = require("fs"),
     pro = require("uglify-js").uglify,
     less = require('less'),
     sass = require('node-sass'),
-	stylus = require('stylus'),
-	nib = require('nib'),
+    stylus = require('stylus'),
+    nib = require('nib'),
     coffee = require('coffee-script'),
     livescript = require('livescript'),
-    cleanCss = require('clean-css'),
+    CleanCss = require('clean-css'),
     Step = require('step'),
     startedAt = Date.now();
 
@@ -451,7 +452,7 @@ function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(
 
 function getOrCreateMinCss(options, css, cssPath, minCssPath, cb /*cb(minCss)*/) {
     compileAsync(options, "minifying", function (css, cssPath, cb) {
-            cb(cleanCss.process(css));
+            cb(new CleanCss(options).minify(css));
         }, css, cssPath, minCssPath, cb);
 }
 

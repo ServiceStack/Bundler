@@ -10,6 +10,7 @@
  */
 
 var Compiler = require('../visitor/compiler')
+  , events = require('../renderer').events
   , nodes = require('../nodes')
   , parse = require('url').parse
   , extname = require('path').extname
@@ -20,12 +21,15 @@ var Compiler = require('../visitor/compiler')
  * Mime table.
  */
 
-var mimes = {
+var defaultMimes = {
     '.gif': 'image/gif'
   , '.png': 'image/png'
   , '.jpg': 'image/jpeg'
   , '.jpeg': 'image/jpeg'
   , '.svg': 'image/svg+xml'
+  , '.ttf': 'application/x-font-ttf'
+  , '.eot': 'application/vnd.ms-fontobject'
+  , '.woff': 'application/font-woff'
 };
 
 /**
@@ -53,6 +57,7 @@ module.exports = function(options) {
 
   var _paths = options.paths || [];
   var sizeLimit = null != options.limit ? options.limit : 30000;
+  var mimes = options.mimes || defaultMimes;
 
   function fn(url){
     // Compile the url
@@ -80,7 +85,14 @@ module.exports = function(options) {
     var found = utils.lookup(url.pathname, paths);
 
     // Failed to lookup
-    if (!found) return literal;
+    if (!found) {
+      events.emit(
+          'file not found'
+        , 'File ' + literal + ' could not be found, literal url retained!'
+      );
+
+      return literal;
+    }
 
     // Read data
     buf = fs.readFileSync(found);
@@ -95,3 +107,7 @@ module.exports = function(options) {
   fn.raw = true;
   return fn;
 };
+
+// Exporting default mimes so we could easily access them
+module.exports.mimes = defaultMimes;
+

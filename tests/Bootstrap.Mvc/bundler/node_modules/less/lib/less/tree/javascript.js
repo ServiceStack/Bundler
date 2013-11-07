@@ -6,6 +6,7 @@ tree.JavaScript = function (string, index, escaped) {
     this.index = index;
 };
 tree.JavaScript.prototype = {
+    type: "JavaScript",
     eval: function (env) {
         var result,
             that = this,
@@ -18,11 +19,12 @@ tree.JavaScript.prototype = {
         try {
             expression = new(Function)('return (' + expression + ')');
         } catch (e) {
-            throw { message: "JavaScript evaluation error: `" + expression + "`" ,
+            throw { message: "JavaScript evaluation error: " + e.message + " from `" + expression + "`" ,
                     index: this.index };
         }
 
         for (var k in env.frames[0].variables()) {
+            /*jshint loopfunc:true */
             context[k.slice(1)] = {
                 value: env.frames[0].variables()[k].value,
                 toJS: function () {

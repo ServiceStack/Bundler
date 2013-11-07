@@ -20,12 +20,15 @@ var Compiler = require('../visitor/compiler')
  * Mime table.
  */
 
-var mimes = {
+var defaultMimes = {
     '.gif': 'image/gif'
   , '.png': 'image/png'
   , '.jpg': 'image/jpeg'
   , '.jpeg': 'image/jpeg'
   , '.svg': 'image/svg+xml'
+  , '.ttf': 'application/x-font-ttf'
+  , '.eot': 'application/vnd.ms-fontobject'
+  , '.woff': 'application/x-font-woff'
 };
 
 /**
@@ -53,6 +56,7 @@ module.exports = function(options) {
 
   var _paths = options.paths || [];
   var sizeLimit = null != options.limit ? options.limit : 30000;
+  var mimes = options.mimes || defaultMimes;
 
   function fn(url){
     // Compile the url
@@ -95,3 +99,7 @@ module.exports = function(options) {
   fn.raw = true;
   return fn;
 };
+
+// Exporting default mimes so we could easily access them
+module.exports.mimes = defaultMimes;
+

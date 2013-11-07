@@ -22,26 +22,44 @@ tree.Color = function (rgb, a) {
     }
     this.alpha = typeof(a) === 'number' ? a : 1;
 };
-tree.Color.prototype = {
-    eval: function () { return this },
 
-    //
-    // If we have some transparency, the only way to represent it
-    // is via `rgba`. Otherwise, we use the hex representation,
-    // which has better compatibility with older browsers.
-    // Values are capped between `0` and `255`, rounded and zero-padded.
-    //
-    toCSS: function () {
+var transparentKeyword = "transparent";
+
+tree.Color.prototype = {
+    type: "Color",
+    eval: function () { return this; },
+    luma: function () { return (0.2126 * this.rgb[0] / 255) + (0.7152 * this.rgb[1] / 255) + (0.0722 * this.rgb[2] / 255); },
+
+    genCSS: function (env, output) {
+        output.add(this.toCSS(env));
+    },
+    toCSS: function (env, doNotCompress) {
+        var compress = env && env.compress && !doNotCompress;
+
+        // If we have some transparency, the only way to represent it
+        // is via `rgba`. Otherwise, we use the hex representation,
+        // which has better compatibility with older browsers.
+        // Values are capped between `0` and `255`, rounded and zero-padded.
         if (this.alpha < 1.0) {
+            if (this.alpha === 0 && this.isTransparentKeyword) {
+                return transparentKeyword;
+            }
             return "rgba(" + this.rgb.map(function (c) {
                 return Math.round(c);
-            }).concat(this.alpha).join(', ') + ")";
+            }).concat(this.alpha).join(',' + (compress ? '' : ' ')) + ")";
         } else {
-            return '#' + this.rgb.map(function (i) {
-                i = Math.round(i);
-                i = (i > 255 ? 255 : (i < 0 ? 0 : i)).toString(16);
-                return i.length === 1 ? '0' + i : i;
-            }).join('');
+            var color = this.toRGB();
+
+            if (compress) {
+                var splitcolor = color.split('');
+
+                // Convert color to short format
+                if (splitcolor[1] === splitcolor[2] && splitcolor[3] === splitcolor[4] && splitcolor[5] === splitcolor[6]) {
+                    color = '#' + splitcolor[1] + splitcolor[3] + splitcolor[5];
+                }
+            }
+
+            return color;
         }
     },
 
@@ -51,7 +69,7 @@ tree.Color.prototype = {
     // our result, in the form of an integer triplet,
     // we create a new Color node to hold the result.
     //
-    operate: function (op, other) {
+    operate: function (env, op, other) {
         var result = [];
 
         if (! (other instanceof tree.Color)) {
@@ -59,9 +77,17 @@ tree.Color.prototype = {
         }
 
         for (var c = 0; c < 3; c++) {
-            result[c] = tree.operate(op, this.rgb[c], other.rgb[c]);
+            result[c] = tree.operate(env, op, this.rgb[c], other.rgb[c]);
         }
         return new(tree.Color)(result, this.alpha + other.alpha);
+    },
+
+    toRGB: function () {
+        return '#' + this.rgb.map(function (i) {
+            i = Math.round(i);
+            i = (i > 255 ? 255 : (i < 0 ? 0 : i)).toString(16);
+            return i.length === 1 ? '0' + i : i;
+        }).join('');
     },
 
     toHSL: function () {
@@ -87,6 +113,35 @@ tree.Color.prototype = {
         }
         return { h: h * 360, s: s, l: l, a: a };
     },
+    //Adapted from http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    toHSV: function () {
+        var r = this.rgb[0] / 255,
+            g = this.rgb[1] / 255,
+            b = this.rgb[2] / 255,
+            a = this.alpha;
+
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h, s, v = max;
+
+        var d = max - min;
+        if (max === 0) {
+            s = 0;
+        } else {
+            s = d / max;
+        }
+
+        if (max === min) {
+            h = 0;
+        } else {
+            switch(max){
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        return { h: h * 360, s: s, v: v, a: a };
+    },
     toARGB: function () {
         var argb = [Math.round(this.alpha * 255)].concat(this.rgb);
         return '#' + argb.map(function (i) {
@@ -104,6 +159,18 @@ tree.Color.prototype = {
             x.rgb[1] === this.rgb[1] &&
             x.rgb[2] === this.rgb[2] &&
             x.alpha === this.alpha) ? 0 : -1;
+    }
+};
+
+tree.Color.fromKeyword = function(keyword) {
+    if (tree.colors.hasOwnProperty(keyword)) {
+        // detect named color
+        return new(tree.Color)(tree.colors[keyword].slice(1));
+    }
+    if (keyword === transparentKeyword) {
+        var transparent = new(tree.Color)([0, 0, 0], 0);
+        transparent.isTransparentKeyword = true;
+        return transparent;
     }
 };
 
