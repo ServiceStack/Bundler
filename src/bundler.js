@@ -26,10 +26,10 @@ SOFTWARE.
 // with an exit code that will be identified as a failure by most
 // windows build systems
 
-// process.on("uncaughtException", function (err) {
-//     console.error(err);
-//     process.exit(1);
-// });
+process.on("uncaughtException", function (err) {
+    console.error(err);
+    process.exit(1);
+});
 
 function clone(o) {
   var ret = {};
