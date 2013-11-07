@@ -299,7 +299,7 @@ namespace ServiceStack.Html
                 var scripts = new StringBuilder();
                 foreach (var file in jsFiles)
                 {
-                    if (file.StartsWith("#"))
+                    if (file.StartsWith("#") || string.IsNullOrEmpty(file))
                         continue;
                     
                     var jsFile = file.Trim()
@@ -340,7 +340,7 @@ namespace ServiceStack.Html
                 var styles = new StringBuilder();
                 foreach (var file in cssFiles)
                 {
-                    if (file.StartsWith("#"))
+                    if (file.StartsWith("#") || string.IsNullOrEmpty(file))
                         continue;
                     
                     var cssFile = file.Trim()
