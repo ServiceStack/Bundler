@@ -177,7 +177,7 @@ Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any cha
 
 You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Bundler.cs#L32).
 
-## Advanced Options
+## Advanced Options 
 
 ### Bundle file options
 
