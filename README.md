@@ -63,7 +63,7 @@ To run you just need a copy of **/bundler** folder in your website host director
 
 *Once installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
-By default bundler looks at **/Content** and **/Scripts** project folders - this can be changed by editing [/bundler/bundler.cmd](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/bundler/bundler.cmd):
+By default bundler looks at **/Content** and **/Scripts** project folders - this can be changed by editing [/bundler/bundler.cmd](https://github.com/ServiceStack/Bundler/blob/master/src/bundler.cmd):
 
     node bundler.js ../Content ../Scripts
 
