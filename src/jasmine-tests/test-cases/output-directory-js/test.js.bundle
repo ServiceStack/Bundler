@@ -1,0 +1,4 @@
+#options outputdirectory:test-cases/output-directory-js/folder-output
+
+file1.js
+file2.js

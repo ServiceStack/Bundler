@@ -1,0 +1,4 @@
+#options outputdirectory:test-cases/output-directory-css/folder-output
+
+file1.css
+file2.css

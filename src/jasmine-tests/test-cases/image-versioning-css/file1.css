@@ -1,0 +1,5 @@
+.file1 { color: red; }
+
+.aa { background: url("img/an-image-there.jpg") center no-repeat; }
+
+.bb { background: url("img/an-image-not-there.jpg") center no-repeat; }
