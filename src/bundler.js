@@ -379,7 +379,13 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             function (css) {
                 allCssArr[i] = css;
                 var withMin = function (minCss) {
-                    allMinCssArr[i] = minCss;
+                    var rebaseOptions = {
+                        target: path.resolve(bundleName),
+                        relativeTo: path.resolve(path.dirname(cssPath)),
+                        noAdvanced: true
+                    };
+                    
+                    allMinCssArr[i] = new CleanCss(rebaseOptions).minify(minCss);
 
                     if (! --pending) whenDone();
                 };
