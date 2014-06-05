@@ -196,6 +196,7 @@ function scanDir(allFiles, cb) {
                             if (!fileName.endsWithAny(['.css', '.less', '.sass', '.scss', '.styl'])) return '#';
                             if (fileName.endsWithAny(['.min.css'])) return '#';
                             if (!recursive && (path.dirname(fileName) !== bundleDir)) return '#';
+                            if (fileName.match(/_[^/]+\.s[ca]ss$/)) return '#';
                             return fileName.substring(bundleDir.length + 1);
                         });
                     }
