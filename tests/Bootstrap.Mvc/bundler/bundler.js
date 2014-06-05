@@ -48,6 +48,9 @@ String.prototype.endsWithAny = function (endings) {
     var str = this;
     return endings.some(function (ending) { return str.endsWith(ending); });
 };
+String.prototype.toBoolOrString = function () {
+    return this === 'true' ? true : this === 'false' ? false : this.toString();
+};
 
 //recursively scans the directory below for *.js.bundle and *.css.bundle files
 var commandLineArgs = process.argv.splice(2); //directories specified in bundler.cmd
@@ -57,7 +60,7 @@ var defaultOptions = {};
 commandLineOptions.forEach(function (option) {
     while (option.startsWith('#')) { option = option.substring(1); }
     var parts = option.split(':');
-    defaultOptions[parts[0].toLowerCase()] = parts.length > 1 ? parts[1] : true;
+    defaultOptions[parts[0].toLowerCase()] = parts.length > 1 ? parts[1].toBoolOrString() : true;
 });
 
 var SCAN_ROOT_DIRS = commandLineArgs.filter(function (arg) { return !arg.startsWith('#'); });
@@ -136,7 +139,7 @@ function scanDir(allFiles, cb) {
         if (!optionsString.startsWith('#options ')) return options;
         optionsString.substring(9).split(',').forEach(function (option) {
             var parts = option.split(':');
-            options[parts[0].toLowerCase()] = parts.length > 1 ? parts[1] : true;
+            options[parts[0].toLowerCase()] = parts.length > 1 ? parts[1].toBoolOrString() : true;
         });
         return options;
     };
