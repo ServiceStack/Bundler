@@ -48,6 +48,9 @@ String.prototype.endsWithAny = function (endings) {
     var str = this;
     return endings.some(function (ending) { return str.endsWith(ending); });
 };
+String.prototype.toBoolOrString = function () {
+    return this === 'true' ? true : this === 'false' ? false : this.toString();
+};
 
 //recursively scans the directory below for *.js.bundle and *.css.bundle files
 var commandLineArgs = process.argv.splice(2); //directories specified in bundler.cmd
@@ -57,7 +60,7 @@ var defaultOptions = {};
 commandLineOptions.forEach(function (option) {
     while (option.startsWith('#')) { option = option.substring(1); }
     var parts = option.split(':');
-    defaultOptions[parts[0].toLowerCase()] = parts.length > 1 ? parts[1] : true;
+    defaultOptions[parts[0].toLowerCase()] = parts.length > 1 ? parts[1].toBoolOrString() : true;
 });
 
 var SCAN_ROOT_DIRS = commandLineArgs.filter(function (arg) { return !arg.startsWith('#'); });
@@ -136,7 +139,7 @@ function scanDir(allFiles, cb) {
         if (!optionsString.startsWith('#options ')) return options;
         optionsString.substring(9).split(',').forEach(function (option) {
             var parts = option.split(':');
-            options[parts[0].toLowerCase()] = parts.length > 1 ? parts[1] : true;
+            options[parts[0].toLowerCase()] = parts.length > 1 ? parts[1].toBoolOrString() : true;
         });
         return options;
     };
@@ -196,6 +199,7 @@ function scanDir(allFiles, cb) {
                             if (!fileName.endsWithAny(['.css', '.less', '.sass', '.scss', '.styl'])) return '#';
                             if (fileName.endsWithAny(['.min.css'])) return '#';
                             if (!recursive && (path.dirname(fileName) !== bundleDir)) return '#';
+                            if (fileName.match(/_[^/]+\.s[ca]ss$/)) return '#';
                             return fileName.substring(bundleDir.length + 1);
                         });
                     }
@@ -222,7 +226,7 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
 
     var allJsArr = [], allMinJsArr = [], index = 0, pending = 0;
     var whenDone = function () {
-        if (options.nobundle) {
+        if (options.nobundle && options.outputbundleonly !== true) {
             setTimeout(cb, 0);
             return;
         }
@@ -309,7 +313,7 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
 
     var allCssArr = [], allMinCssArr = [], index = 0, pending = 0;
     var whenDone = function () {
-        if (options.nobundle) {
+        if (options.nobundle && options.outputbundleonly !== true) {
             setTimeout(cb, 0);
             return;
         }
@@ -379,7 +383,13 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
             function (css) {
                 allCssArr[i] = css;
                 var withMin = function (minCss) {
-                    allMinCssArr[i] = minCss;
+                    var rebaseOptions = {
+                        target: path.resolve(bundleName),
+                        relativeTo: path.resolve(path.dirname(cssPath)),
+                        noAdvanced: true
+                    };
+                      
+                    allMinCssArr[i] = new CleanCss(rebaseOptions).minify(minCss);
 
                     if (! --pending) whenDone();
                 };
