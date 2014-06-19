@@ -1,0 +1,40 @@
+{
+  "name": "Bundler",
+  "version": "1.1.30",
+  "description": "Bundler",
+  "homepage": "https://github.com/ServiceStack/Bundler/",
+  "author": {
+    "name": "Demis Bellot"
+  },
+  "contributors": [
+    {
+      "name": "ServiceStack"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ServiceStack/Bundler.git"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/ServiceStack/Bundler/blob/master/LICENSE"
+    }
+  ],
+  "engines": {
+    "node": ">=0.4.2"
+  },
+  "_id": "Bundler@1.1.30",
+  "dependencies": {
+    "clean-css": ">=2.0.0",
+    "coffee-script": ">=1.6.3",
+    "debug": ">=1.0.2",
+    "less": ">=1.5.0",
+    "LiveScript": ">=1.2.0",
+    "nib": ">=1.0.1",
+    "node-sass": ">=0.7.0",
+    "step": ">=0.0.5",
+    "stylus": ">=0.42.3"
+  },
+  "_from": "Bundler@1.1.30"
+}
