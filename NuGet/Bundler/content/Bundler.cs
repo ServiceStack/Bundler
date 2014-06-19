@@ -197,7 +197,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (href.StartsWith("~/"))
-                href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
+                href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
 
             var tag = new TagBuilder("link");
             tag.MergeAttribute("rel", rel);
@@ -228,7 +228,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (src.StartsWith("~/"))
-                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
+                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
 
             var tag = new TagBuilder("img");
 
@@ -254,7 +254,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (src.StartsWith("~/"))
-                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
+                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
 
             var tag = new TagBuilder("script");
             tag.MergeAttribute("type", "text/javascript");
@@ -299,7 +299,7 @@ namespace ServiceStack.Html
                 var scripts = new StringBuilder();
                 foreach (var file in jsFiles)
                 {
-                    if (file.StartsWith("#") || string.IsNullOrEmpty(file))
+                    if (file.StartsWith("#"))
                         continue;
                     
                     var jsFile = file.Trim()
@@ -340,7 +340,7 @@ namespace ServiceStack.Html
                 var styles = new StringBuilder();
                 foreach (var file in cssFiles)
                 {
-                    if (file.StartsWith("#") || string.IsNullOrEmpty(file))
+                    if (file.StartsWith("#"))
                         continue;
                     
                     var cssFile = file.Trim()

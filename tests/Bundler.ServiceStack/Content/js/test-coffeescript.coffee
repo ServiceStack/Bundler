@@ -2,3 +2,4 @@
 
 root.doCoffeeScript = (el) ->
     el.style.backgroundColor = 'green'
+     

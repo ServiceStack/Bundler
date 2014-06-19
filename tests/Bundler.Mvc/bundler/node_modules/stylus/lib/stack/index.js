@@ -6,12 +6,6 @@
  */
 
 /**
- * Module dependencies.
- */
-
-var Frame = require('./frame');
-
-/**
  * Initialize a new `Stack`.
  *
  * @api private
@@ -88,12 +82,7 @@ Stack.prototype.lookup = function(name){
   do {
     var frame = this.getBlockFrame(block);
     if (frame && (val = frame.lookup(name))) {
-      switch (val.first.nodeName) {
-        case 'ident':
-          return this.lookup(val.first.name) || val;
-        default:
-          return val;
-      }
+      return val;
     }
   } while (block = block.parent);
 };

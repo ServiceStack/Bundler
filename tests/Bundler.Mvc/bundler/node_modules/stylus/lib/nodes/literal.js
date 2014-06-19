@@ -16,13 +16,16 @@ var Node = require('./node')
  * Initialize a new `Literal` with the given `str`.
  *
  * @param {String} str
+ * @param {Boolean} [css]
  * @api public
  */
 
-var Literal = module.exports = function Literal(str){
+var Literal = module.exports = function Literal(str, css){
   Node.call(this);
   this.val = str;
   this.string = str;
+  this.css = css;
+  this.prefixed = false;
 };
 
 /**
@@ -89,4 +92,23 @@ Literal.prototype.operate = function(op, right){
     default:
       return Node.prototype.operate.call(this, op, right);
   }
+};
+
+/**
+ * Return a JSON representation of this node.
+ *
+ * @return {Object}
+ * @api public
+ */
+
+Literal.prototype.toJSON = function(){
+  return {
+    __type: 'Literal',
+    val: this.val,
+    string: this.string,
+    css: this.css,
+    prefixed: this.prefixed,
+    lineno: this.lineno,
+    filename: this.filename
+  };
 };

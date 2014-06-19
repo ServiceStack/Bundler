@@ -28,25 +28,37 @@ var transparentKeyword = "transparent";
 tree.Color.prototype = {
     type: "Color",
     eval: function () { return this; },
-    luma: function () { return (0.2126 * this.rgb[0] / 255) + (0.7152 * this.rgb[1] / 255) + (0.0722 * this.rgb[2] / 255); },
+    luma: function () {
+        var r = this.rgb[0] / 255,
+            g = this.rgb[1] / 255,
+            b = this.rgb[2] / 255;
+
+        r = (r <= 0.03928) ? r / 12.92 : Math.pow(((r + 0.055) / 1.055), 2.4);
+        g = (g <= 0.03928) ? g / 12.92 : Math.pow(((g + 0.055) / 1.055), 2.4);
+        b = (b <= 0.03928) ? b / 12.92 : Math.pow(((b + 0.055) / 1.055), 2.4);
+
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    },
 
     genCSS: function (env, output) {
         output.add(this.toCSS(env));
     },
     toCSS: function (env, doNotCompress) {
-        var compress = env && env.compress && !doNotCompress;
+        var compress = env && env.compress && !doNotCompress,
+            alpha = tree.fround(env, this.alpha);
 
         // If we have some transparency, the only way to represent it
         // is via `rgba`. Otherwise, we use the hex representation,
         // which has better compatibility with older browsers.
         // Values are capped between `0` and `255`, rounded and zero-padded.
-        if (this.alpha < 1.0) {
-            if (this.alpha === 0 && this.isTransparentKeyword) {
+        if (alpha < 1) {
+            if (alpha === 0 && this.isTransparentKeyword) {
                 return transparentKeyword;
             }
             return "rgba(" + this.rgb.map(function (c) {
-                return Math.round(c);
-            }).concat(this.alpha).join(',' + (compress ? '' : ' ')) + ")";
+                return clamp(Math.round(c), 255);
+            }).concat(clamp(alpha, 1))
+                .join(',' + (compress ? '' : ' ')) + ")";
         } else {
             var color = this.toRGB();
 
@@ -70,24 +82,16 @@ tree.Color.prototype = {
     // we create a new Color node to hold the result.
     //
     operate: function (env, op, other) {
-        var result = [];
-
-        if (! (other instanceof tree.Color)) {
-            other = other.toColor();
-        }
-
+        var rgb = [];
+        var alpha = this.alpha * (1 - other.alpha) + other.alpha;
         for (var c = 0; c < 3; c++) {
-            result[c] = tree.operate(env, op, this.rgb[c], other.rgb[c]);
+            rgb[c] = tree.operate(env, op, this.rgb[c], other.rgb[c]);
         }
-        return new(tree.Color)(result, this.alpha + other.alpha);
+        return new(tree.Color)(rgb, alpha);
     },
 
     toRGB: function () {
-        return '#' + this.rgb.map(function (i) {
-            i = Math.round(i);
-            i = (i > 255 ? 255 : (i < 0 ? 0 : i)).toString(16);
-            return i.length === 1 ? '0' + i : i;
-        }).join('');
+        return toHex(this.rgb);
     },
 
     toHSL: function () {
@@ -143,12 +147,7 @@ tree.Color.prototype = {
         return { h: h * 360, s: s, v: v, a: a };
     },
     toARGB: function () {
-        var argb = [Math.round(this.alpha * 255)].concat(this.rgb);
-        return '#' + argb.map(function (i) {
-            i = Math.round(i);
-            i = (i > 255 ? 255 : (i < 0 ? 0 : i)).toString(16);
-            return i.length === 1 ? '0' + i : i;
-        }).join('');
+        return toHex([this.alpha * 255].concat(this.rgb));
     },
     compare: function (x) {
         if (!x.rgb) {
@@ -163,6 +162,8 @@ tree.Color.prototype = {
 };
 
 tree.Color.fromKeyword = function(keyword) {
+    keyword = keyword.toLowerCase();
+
     if (tree.colors.hasOwnProperty(keyword)) {
         // detect named color
         return new(tree.Color)(tree.colors[keyword].slice(1));
@@ -174,5 +175,15 @@ tree.Color.fromKeyword = function(keyword) {
     }
 };
 
+function toHex(v) {
+    return '#' + v.map(function (c) {
+        c = clamp(Math.round(c), 255);
+        return (c < 16 ? '0' : '') + c.toString(16);
+    }).join('');
+}
+
+function clamp(v, max) {
+    return Math.min(Math.max(v, 0), max); 
+}
 
 })(require('../tree'));

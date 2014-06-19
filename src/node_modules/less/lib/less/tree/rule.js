@@ -2,13 +2,13 @@
 
 tree.Rule = function (name, value, important, merge, index, currentFileInfo, inline) {
     this.name = name;
-    this.value = (value instanceof tree.Value) ? value : new(tree.Value)([value]);
+    this.value = (value instanceof tree.Value || value instanceof tree.Ruleset) ? value : new(tree.Value)([value]);
     this.important = important ? ' ' + important.trim() : '';
     this.merge = merge;
     this.index = index;
     this.currentFileInfo = currentFileInfo;
     this.inline = inline || false;
-    this.variable = (name.charAt(0) === '@');
+    this.variable = name.charAt && (name.charAt(0) === '@');
 };
 
 tree.Rule.prototype = {
@@ -30,17 +30,38 @@ tree.Rule.prototype = {
     },
     toCSS: tree.toCSS,
     eval: function (env) {
-        var strictMathBypass = false;
-        if (this.name === "font" && !env.strictMath) {
+        var strictMathBypass = false, name = this.name, evaldValue;
+        if (typeof name !== "string") {
+            // expand 'primitive' name directly to get
+            // things faster (~10% for benchmark.less):
+            name = (name.length === 1) 
+                && (name[0] instanceof tree.Keyword)
+                    ? name[0].value : evalName(env, name);
+        }
+        if (name === "font" && !env.strictMath) {
             strictMathBypass = true;
             env.strictMath = true;
         }
         try {
-            return new(tree.Rule)(this.name,
-                              this.value.eval(env),
+            evaldValue = this.value.eval(env);
+            
+            if (!this.variable && evaldValue.type === "DetachedRuleset") {
+                throw { message: "Rulesets cannot be evaluated on a property.",
+                        index: this.index, filename: this.currentFileInfo.filename };
+            }
+
+            return new(tree.Rule)(name,
+                              evaldValue,
                               this.important,
                               this.merge,
                               this.index, this.currentFileInfo, this.inline);
+        }
+        catch(e) {
+            if (typeof e.index !== 'number') {
+                e.index = this.index;
+                e.filename = this.currentFileInfo.filename;
+            }
+            throw e;
         }
         finally {
             if (strictMathBypass) {
@@ -56,5 +77,14 @@ tree.Rule.prototype = {
                               this.index, this.currentFileInfo, this.inline);
     }
 };
+
+function evalName(env, name) {
+    var value = "", i, n = name.length,
+        output = {add: function (s) {value += s;}};
+    for (i = 0; i < n; i++) {
+        name[i].eval(env).genCSS(env, output);
+    }
+    return value;
+}
 
 })(require('../tree'));

@@ -11,8 +11,7 @@
 
 var Visitor = require('./')
   , nodes = require('../nodes')
-  , utils = require('../utils')
-  , fs = require('fs');
+  , utils = require('../utils');
 
 /**
  * Initialize a new `Normalizer` with the given `root` Node.
@@ -50,7 +49,72 @@ Normalizer.prototype.__proto__ = Visitor.prototype;
  */
 
 Normalizer.prototype.normalize = function(){
+  // normalize cached imports
+  if ('block' == this.root.nodeName) this.root.constructor = nodes.Root;
   return this.visit(this.root);
+};
+
+/**
+ * Bubble up the given `node`.
+ *
+ * @param {Node} node
+ * @api private
+ */
+
+Normalizer.prototype.bubble = function(node){
+  var props = []
+    , other = []
+    , self = this;
+
+  function filterProps(block) {
+    block.nodes.forEach(function(node) {
+      node = self.visit(node);
+
+      switch (node.nodeName) {
+        case 'property':
+          props.push(node);
+          break;
+        case 'block':
+          filterProps(node);
+          break;
+        default:
+          other.push(node);
+      }
+    });
+  }
+
+  filterProps(node.block);
+
+  if (props.length) {
+    var selector = new nodes.Selector([new nodes.Literal('&')])
+      , parentGroup = node.block.parent.node;
+    selector.lineno = node.lineno;
+    selector.filename = node.filename;
+    selector.val = '&';
+
+    var group = new nodes.Group;
+    group.lineno = node.lineno;
+    group.filename = node.filename;
+
+    var block = new nodes.Block(node.block, group);
+    block.lineno = node.lineno;
+    block.filename = node.filename;
+
+    props.forEach(function(prop){
+      block.push(prop);
+    });
+
+    group.push(selector);
+    group.block = block;
+
+    node.block.nodes = [];
+    node.block.push(group);
+    other.forEach(function(n){
+      node.block.push(n);
+    });
+    node.group = parentGroup.clone();
+    node.bubbled = true;
+  }
 };
 
 /**
@@ -67,8 +131,8 @@ Normalizer.prototype.visitRoot = function(block){
       case 'null':
       case 'expression':
       case 'function':
-      case 'jsliteral':
       case 'unit':
+      case 'atblock':
         continue;
       default:
         ret.push(this.visit(node));
@@ -94,9 +158,9 @@ Normalizer.prototype.visitBlock = function(block){
         case 'null':
         case 'expression':
         case 'function':
-        case 'jsliteral':
         case 'group':
         case 'unit':
+        case 'atblock':
           continue;
         default:
           ret.push(this.visit(node));
@@ -107,6 +171,8 @@ Normalizer.prototype.visitBlock = function(block){
   // nesting
   for (var i = 0, len = block.nodes.length; i < len; ++i) {
     node = block.nodes[i];
+    // normalize cached imports
+    if ('root' == node.nodeName) node.constructor = nodes.Block;
     ret.push(this.visit(node));
   }
 
@@ -118,14 +184,34 @@ Normalizer.prototype.visitBlock = function(block){
  */
 
 Normalizer.prototype.visitGroup = function(group){
-  // TODO: clean this mess up
   var stack = this.stack
     , map = this.map
-    , self = this;
+    , parts;
 
+  // normalize interpolated selectors with comma
+  group.nodes.forEach(function(selector, i){
+    if (!~selector.val.indexOf(',')) return;
+    if (~selector.val.indexOf('\\,')) {
+      selector.val = selector.val.replace(/\\,/g, ',');
+      return;
+    }
+    parts = selector.val.split(',');
+    var root = '/' == selector.val.charAt(0)
+      , part, s;
+    for (var k = 0, len = parts.length; k < len; ++k){
+      part = parts[k].trim();
+      if (root && k > 0 && !~part.indexOf('&')) {
+        part = '/' + part;
+      }
+      s = new nodes.Selector([part]);
+      s.val = part;
+      s.block = group.block;
+      group.nodes[i++] = s;
+    }
+  });
   stack.push(group.nodes);
 
-  var selectors = this.compileSelectors(stack);
+  var selectors = utils.compileSelectors(stack, true);
 
   // map for extension lookup
   selectors.forEach(function(selector){
@@ -146,56 +232,56 @@ Normalizer.prototype.visitGroup = function(group){
  */
 
 Normalizer.prototype.visitMedia = function(media){
-  var props = []
-    , other = [];
+  var medias = []
+    , self = this;
 
-  media.block.nodes.forEach(function(node, i) {
-    node = this.visit(node);
+  function mergeQueries(block) {
+    block.nodes.forEach(function(node, i){
+      node = self.visit(node);
 
-    if ('property' == node.nodeName) {
-      props.push(node);
-    } else {
-      other.push(node);
-    }
-  }, this);
-
-  // Fake self-referencing group to contain
-  // any props that are floating
-  // directly on the @media declaration
-  if (props.length) {
-    var selfLiteral = new nodes.Literal('&');
-    selfLiteral.lineno = media.lineno;
-    selfLiteral.filename = media.filename;
-
-    var selfSelector = new nodes.Selector(selfLiteral);
-    selfSelector.lineno = media.lineno;
-    selfSelector.filename = media.filename;
-    selfSelector.val = selfLiteral.val;
-
-    var propertyGroup = new nodes.Group;
-    propertyGroup.lineno = media.lineno;
-    propertyGroup.filename = media.filename;
-
-    var propertyBlock = new nodes.Block(media.block, propertyGroup);
-    propertyBlock.lineno = media.lineno;
-    propertyBlock.filename = media.filename;
-
-    props.forEach(function(prop){
-      propertyBlock.push(prop);
-    });
-
-    propertyGroup.push(selfSelector);
-    propertyGroup.block = propertyBlock;
-
-    media.block.nodes = [];
-    media.block.push(propertyGroup);
-    other.forEach(function(node){
-      media.block.push(node);
+      if ('media' == node.nodeName) {
+        node.val = media.val.merge(node.val);
+        medias.push(node);
+        block.nodes[i] = nodes.null;
+      } else if (node.block) {
+        mergeQueries(node.block);
+      }
     });
   }
 
-  return media;
+  this.bubble(media);
+  mergeQueries(media.block);
+
+  if (medias.length) {
+    var block = new nodes.Block(media.block);
+    block.push(media);
+    medias.forEach(function(node){
+      if (node.bubbled) {
+        if (!media.block.parent.node) {
+          node.group.block = node.block.nodes[0].block;
+          node.block.nodes[0] = node.group;
+        }
+        media.block.parent.push(node);
+      }
+      block.push(node);
+    });
+    return block;
+  } else {
+    return media;
+  }
 }
+
+/**
+ * Visit Keyframes.
+ */
+
+Normalizer.prototype.visitKeyframes = function(node){
+  var frames = node.block.nodes.filter(function(frame){
+    return frame.block && frame.block.hasProperties;
+  });
+  node.frames = frames.length;
+  return node;
+};
 
 /**
  * Apply `group` extensions.
@@ -224,60 +310,4 @@ Normalizer.prototype.extend = function(group, selectors){
       });
     });
   });
-};
-
-/**
- * Compile selector strings in `arr` from the bottom-up
- * to produce the selector combinations. For example
- * the following Stylus:
- *
- *    ul
- *      li
- *      p
- *        a
- *          color: red
- *
- * Would return:
- *
- *      [ 'ul li a', 'ul p a' ]
- *
- * @param {Array} arr
- * @return {Array}
- * @api private
- */
-
-Normalizer.prototype.compileSelectors = function(arr){
-  // TODO: remove this duplication
-  var stack = this.stack
-    , self = this
-    , selectors = []
-    , buf = [];
-
-  function compile(arr, i) {
-    if (i) {
-      arr[i].forEach(function(selector){
-        buf.unshift(selector.val);
-        compile(arr, i - 1);
-        buf.shift();
-      });
-    } else {
-      arr[0].forEach(function(selector){
-        var str = selector.val.trim();
-        if (buf.length) {
-          for (var i = 0, len = buf.length; i < len; ++i) {
-            if (~buf[i].indexOf('&')) {
-              str = buf[i].replace(/&/g, str).trim();
-            } else {
-              str += ' ' + buf[i].trim();
-            }
-          }
-        }
-        selectors.push(str.trimRight());
-      });
-    }
-  }
-
-  compile(arr, arr.length - 1);
-
-  return selectors;
 };

@@ -40,9 +40,11 @@ tree.Import = function (path, features, options, index, currentFileInfo) {
 tree.Import.prototype = {
     type: "Import",
     accept: function (visitor) {
-        this.features = visitor.visit(this.features);
+        if (this.features) {
+            this.features = visitor.visit(this.features);
+        }
         this.path = visitor.visit(this.path);
-        if (!this.options.inline) {
+        if (!this.options.inline && this.root) {
             this.root = visitor.visit(this.root);
         }
     },
@@ -79,7 +81,7 @@ tree.Import.prototype = {
                 var pathValue = path.value;
                 // Add the base path if the import is relative
                 if (pathValue && env.isPathRelative(pathValue)) {
-                    path.value = rootpath + pathValue;
+                    path.value = rootpath +pathValue;
                 }
             }
             path.value = env.normalizePath(path.value);
@@ -90,8 +92,15 @@ tree.Import.prototype = {
     eval: function (env) {
         var ruleset, features = this.features && this.features.eval(env);
 
-        if (this.skip) { return []; }
-
+        if (this.skip) {
+            if (typeof this.skip === "function") {
+                this.skip = this.skip();
+            }
+            if (this.skip) {
+                return []; 
+            }
+        }
+         
         if (this.options.inline) {
             //todo needs to reference css file not import
             var contents = new(tree.Anonymous)(this.root, 0, {filename: this.importedFilename}, true);
@@ -103,7 +112,7 @@ tree.Import.prototype = {
             }
             return newImport;
         } else {
-            ruleset = new(tree.Ruleset)([], this.root.rules.slice(0));
+            ruleset = new(tree.Ruleset)(null, this.root.rules.slice(0));
 
             ruleset.evalImports(env);
 

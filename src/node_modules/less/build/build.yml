@@ -13,14 +13,14 @@
 
 # Less.js Lib
 lib: lib/less
-
+lib_source_map: 'lib/source-map'
 
 # =================================
 # General
 # =================================
 prepend:
   browser: ['build/require.js', 'build/browser-header.js']
-  rhino:   build/require-rhino.js
+  rhino:   ['build/require-rhino.js', 'build/rhino-header.js', 'build/rhino-modules.js']
 
 append:
   amd:     build/amd.js
@@ -89,19 +89,22 @@ rhino:
 
   # core
   - <%= build.less.parser %>
+  - <%= build.less.functions %>
+  - <%= build.less.colors %>
+  - <%= build.less.tree %>
+  - <%= build.less.treedir %> # glob all files
   - <%= build.less.env %>
   - <%= build.less.visitor %>
   - <%= build.less.import_visitor %>
   - <%= build.less.join %>
   - <%= build.less.to_css_visitor %>
   - <%= build.less.extend_visitor %>
-  - <%= build.less.functions %>
-  - <%= build.less.colors %>
-  - <%= build.less.tree %>
-  - <%= build.less.treedir %> # glob all files
   - <%= build.less.source_map_output %>
+  - <%= build.source_map %>
 
-  # append rhino-specific code
+
+# <%= build.rhinolessc %>
+rhinolessc:
   - <%= build.append.rhino %>
 
 
@@ -124,6 +127,7 @@ tree:
   - <%= build.lib %>/tree/color.js
   - <%= build.lib %>/tree/comment.js
   - <%= build.lib %>/tree/condition.js
+  - <%= build.lib %>/tree/detached-ruleset.js
   - <%= build.lib %>/tree/dimension.js
   - <%= build.lib %>/tree/directive.js
   - <%= build.lib %>/tree/element.js
@@ -140,8 +144,19 @@ tree:
   - <%= build.lib %>/tree/quoted.js
   - <%= build.lib %>/tree/rule.js
   - <%= build.lib %>/tree/ruleset.js
+  - <%= build.lib %>/tree/ruleset-call.js
   - <%= build.lib %>/tree/selector.js
   - <%= build.lib %>/tree/unicode-descriptor.js
   - <%= build.lib %>/tree/url.js
   - <%= build.lib %>/tree/value.js
   - <%= build.lib %>/tree/variable.js
+  
+# =================================
+# source-map build
+# =================================
+
+# <%= build.source_map %>
+source_map:
+  - <%= build.lib_source_map %>/source-map-header.js
+  - <%= build.lib_source_map %>/source-map-0.1.31.js
+  - <%= build.lib_source_map %>/source-map-footer.js

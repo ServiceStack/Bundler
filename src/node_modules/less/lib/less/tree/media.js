@@ -13,8 +13,12 @@ tree.Media = function (value, features, index, currentFileInfo) {
 tree.Media.prototype = {
     type: "Media",
     accept: function (visitor) {
-        this.features = visitor.visit(this.features);
-        this.rules = visitor.visit(this.rules);
+        if (this.features) {
+            this.features = visitor.visit(this.features);
+        }
+        if (this.rules) {
+            this.rules = visitor.visitArray(this.rules);
+        }
     },
     genCSS: function (env, output) {
         output.add('@media ', this.currentFileInfo, this.index);
@@ -28,7 +32,7 @@ tree.Media.prototype = {
             env.mediaPath = [];
         }
         
-        var media = new(tree.Media)([], [], this.index, this.currentFileInfo);
+        var media = new(tree.Media)(null, [], this.index, this.currentFileInfo);
         if(this.debugInfo) {
             this.rules[0].debugInfo = this.debugInfo;
             media.debugInfo = this.debugInfo;
@@ -63,11 +67,14 @@ tree.Media.prototype = {
     find: function () { return tree.Ruleset.prototype.find.apply(this.rules[0], arguments); },
     rulesets: function () { return tree.Ruleset.prototype.rulesets.apply(this.rules[0]); },
     emptySelectors: function() { 
-        var el = new(tree.Element)('', '&', this.index, this.currentFileInfo);
-        return [new(tree.Selector)([el], null, null, this.index, this.currentFileInfo)];
+        var el = new(tree.Element)('', '&', this.index, this.currentFileInfo),
+            sels = [new(tree.Selector)([el], null, null, this.index, this.currentFileInfo)];
+        sels[0].mediaEmpty = true;
+        return sels;
     },
     markReferenced: function () {
         var i, rules = this.rules[0].rules;
+        this.rules[0].markReferenced();
         this.isReferenced = true;
         for (i = 0; i < rules.length; i++) {
             if (rules[i].markReferenced) {
@@ -141,6 +148,8 @@ tree.Media.prototype = {
       }
     },
     bubbleSelectors: function (selectors) {
+      if (!selectors)
+        return;
       this.rules = [new(tree.Ruleset)(selectors.slice(0), [this.rules[0]])];
     }
 };
