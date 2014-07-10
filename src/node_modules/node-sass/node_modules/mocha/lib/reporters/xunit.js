@@ -36,6 +36,10 @@ function XUnit(runner) {
     , tests = []
     , self = this;
 
+  runner.on('pending', function(test){
+    tests.push(test);
+  });
+
   runner.on('pass', function(test){
     tests.push(test);
   });
@@ -74,7 +78,7 @@ function test(test) {
   var attrs = {
       classname: test.parent.fullTitle()
     , name: test.title
-    , time: test.duration / 1000
+    , time: (test.duration / 1000) || 0
   };
 
   if ('failed' == test.state) {

@@ -30,12 +30,14 @@ namespace ServiceStack.Html
     {
         public static Func<bool> CachePaths = IsProduction;
         public static Func<string, BundleOptions, string> DefaultUrlFilter = ProcessVirtualPathDefault;
+        public static Func<string, string> MapPathFallbackFn;
         public static bool UseMvc;
 
         static Bundler()
         {
             var mvcControllerExists = AppDomain.CurrentDomain.GetAssemblies().Any(x => x.GetType("System.Web.Mvc.Controller") != null);
             UseMvc = mvcControllerExists;
+            MapPathFallbackFn = MapHostAbsolutePath;
         }
 
         // Logic to determine if the app is running in production or dev environment
@@ -47,7 +49,7 @@ namespace ServiceStack.Html
         public static bool FileExists(string virtualPath)
         {
             if (!HostingEnvironment.IsHosted) return false;
-            var filePath = HostingEnvironment.MapPath(virtualPath);
+            var filePath = MapPath(virtualPath);
             return File.Exists(filePath);
         }
 
@@ -58,7 +60,7 @@ namespace ServiceStack.Html
             {
                 if (HostingEnvironment.IsHosted)
                 {
-                    var filePath = HostingEnvironment.MapPath(virtualPath);
+                    var filePath = MapPath(virtualPath);
                     return Convert.ToString((File.GetLastWriteTimeUtc(filePath).Ticks - centuryBegin.Ticks) / 1000000000, 16);
                 }
             }
@@ -197,7 +199,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (href.StartsWith("~/"))
-                href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+                href = href.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
             var tag = new TagBuilder("link");
             tag.MergeAttribute("rel", rel);
@@ -228,7 +230,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (src.StartsWith("~/"))
-                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
             var tag = new TagBuilder("img");
 
@@ -254,7 +256,7 @@ namespace ServiceStack.Html
                 return MvcHtmlString.Empty;
 
             if (src.StartsWith("~/"))
-                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~"));
+                src = src.Replace("~/", VirtualPathUtility.ToAbsolute("~/"));
 
             var tag = new TagBuilder("script");
             tag.MergeAttribute("type", "text/javascript");
@@ -285,7 +287,7 @@ namespace ServiceStack.Html
 
             return BundleCache.GetOrAdd(bundlePath, str =>
             {
-                var filePath = HostingEnvironment.MapPath(bundlePath);
+                var filePath = MapPath(bundlePath);
 
                 var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
@@ -326,7 +328,7 @@ namespace ServiceStack.Html
 
             return BundleCache.GetOrAdd(bundlePath, str =>
             {
-                var filePath = HostingEnvironment.MapPath(bundlePath);
+                var filePath = MapPath(bundlePath);
 
                 var baseUrl = VirtualPathUtility.GetDirectory(bundlePath);
 
@@ -357,6 +359,35 @@ namespace ServiceStack.Html
 
                 return styles.ToString().ToMvcHtmlString();
             });
+        }
+
+        public static string MapPath(string virtualPath)
+        {
+            return HostingEnvironment.MapPath(virtualPath) 
+                ?? (MapPathFallbackFn != null ? MapPathFallbackFn(virtualPath) : null); //Mono can return null
+        }
+
+        //From ServiceStack.PathUtils
+        public static string MapHostAbsolutePath(this string relativePath)
+        {
+            var mapPath = MapAbsolutePath(relativePath, string.Format("{0}..", Path.DirectorySeparatorChar));
+            return mapPath;
+        }
+
+        public static string MapAbsolutePath(string relativePath, string appendPartialPathModifier)
+        {
+            if (relativePath.StartsWith("~"))
+            {
+                var assemblyDirectoryPath = Path.GetDirectoryName(new Uri(typeof(Bundler).Assembly.EscapedCodeBase).LocalPath);
+
+                // Escape the assembly bin directory to the hostname directory
+                var hostDirectoryPath = appendPartialPathModifier != null
+                                            ? assemblyDirectoryPath + appendPartialPathModifier
+                                            : assemblyDirectoryPath;
+
+                return Path.GetFullPath(relativePath.Replace("~", hostDirectoryPath));
+            }
+            return relativePath;
         }
     }
 }

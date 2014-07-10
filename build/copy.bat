@@ -55,28 +55,23 @@ COPY %FROM%\node_modules\lib\* %DIST%\node_modules\lib
 MD %DIST%\node_modules\debug
 XCOPY %FROM%\node_modules\debug %DIST%\node_modules\debug /s /e
 
-MD %DIST%\node_modules\node-sass %DIST%\node_modules\node-sass\bin 
-MD %DIST%\node_modules\node-sass\lib
+MD %DIST%\node_modules\node-sass 
+MD %DIST%\node_modules\node-sass\bin 
+MD %DIST%\node_modules\node-sass\bin\darwin-x64-v8-3.14 
 MD %DIST%\node_modules\node-sass\bin\win32-ia32-v8-3.14 
 MD %DIST%\node_modules\node-sass\bin\win32-x64-v8-3.14
-MD %DIST%\node_modules\node-sass\lib-sass 
-MD %DIST%\node_modules\node-sass\lib-sass\m4 
-MD %DIST%\node_modules\node-sass\lib-sass\src
 MD %DIST%\node_modules\node-sass\node_modules 
-MD %DIST%\node_modules\node-sass\precompiled
-REM Don't copy over .cpp files which can break aspnet's pre-compilation of views by just existing in a sub folder
+MD %DIST%\node_modules\node-sass\node_modules\node-sass-middleware 
+MD %DIST%\node_modules\node-sass\node_modules\object-assign 
 COPY %FROM%\node_modules\node-sass\*.js %DIST%\node_modules\node-sass
 COPY %FROM%\node_modules\node-sass\*.json %DIST%\node_modules\node-sass
 COPY %FROM%\node_modules\node-sass\*.md %DIST%\node_modules\node-sass
 COPY %FROM%\node_modules\node-sass\bin\* %DIST%\node_modules\node-sass\bin
+COPY %FROM%\node_modules\node-sass\bin\darwin-x64-v8-3.14\* %DIST%\node_modules\node-sass\bin\darwin-x64-v8-3.14
 COPY %FROM%\node_modules\node-sass\bin\win32-ia32-v8-3.14\* %DIST%\node_modules\node-sass\bin\win32-ia32-v8-3.14
 COPY %FROM%\node_modules\node-sass\bin\win32-x64-v8-3.14\* %DIST%\node_modules\node-sass\bin\win32-x64-v8-3.14
-COPY %FROM%\node_modules\node-sass\lib\* %DIST%\node_modules\node-sass\lib
-COPY %FROM%\node_modules\node-sass\lib-sass\* %DIST%\node_modules\node-sass\lib-sass
-COPY %FROM%\node_modules\node-sass\lib-sass\m4\* %DIST%\node_modules\node-sass\lib-sass\m4
-COPY %FROM%\node_modules\node-sass\lib-sass\src\* %DIST%\node_modules\node-sass\lib-sass\src
-XCOPY %FROM%\node_modules\node-sass\node_modules %DIST%\node_modules\node-sass\node_modules /s /e
-XCOPY %FROM%\node_modules\node-sass\precompiled %DIST%\node_modules\node-sass\precompiled /s /e
+XCOPY %FROM%\node_modules\node-sass\node_modules\node-sass-middleware %DIST%\node_modules\node-sass\node_modules\node-sass-middleware /s /e
+XCOPY %FROM%\node_modules\node-sass\node_modules\object-assign %DIST%\node_modules\node-sass\node_modules\object-assign /s /e
 
 
 MD %DIST%\node_modules\step\lib
