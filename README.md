@@ -101,7 +101,7 @@ Alternatively you can run bundler after every successful build. Add the line bel
 
     "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
 
-![Add Bundler to VS.NET Post-Build event](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/bundler//post-build-bundler.png)
+![Add Bundler to VS.NET Post-Build event](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/bundler/post-build-bundler.png)
 
 ## How it works
 
