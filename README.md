@@ -59,7 +59,7 @@ This release is thanks to the hard work of [@fody](https://twitter.com/fody) who
 
 To run you just need a copy of **/bundler** folder in your website host directory. This can be done by cloning this repo or installing via NuGet:
 
-[![Install-Pacakage ServiceStack.Host.Mvc](http://www.servicestack.net/img/nuget-bundler.png)](https://nuget.org/packages/Bundler)
+[![Install-Pacakage ServiceStack.Host.Mvc](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/bundler/nuget-bundler.png)](https://nuget.org/packages/Bundler)
 
 *Once installed you can optionally exclude the '/bundler' or '/bundler/node_modules' folders from your VS.NET project since they contain a lot of files (not required to be referenced).*
 
@@ -94,14 +94,14 @@ Once installed the **BundlerRunOnSave.vsix** VS.NET extension runs bundler when 
 
 Allows you to run **Alt T + B** (or assign your own short-cut) to re-compile and minify your changed assets without re-building your project:
 
-![Add External Tool in VS.NET](http://www.servicestack.net/img/external-tools-bundler.png)
+![Add External Tool in VS.NET](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/bundler/external-tools-bundler.png)
 
 ### Run script on post-build event
 Alternatively you can run bundler after every successful build. Add the line below to **Properties** > **Build events** > **Post-build event**:
 
     "$(ProjectDir)bundler\node.exe" "$(ProjectDir)bundler\bundler.js" "$(ProjectDir)Content" "$(ProjectDir)Scripts"
 
-![Add Bundler to VS.NET Post-Build event](http://mono.servicestack.net/img/post-build-bundler.png)
+![Add Bundler to VS.NET Post-Build event](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/bundler//post-build-bundler.png)
 
 ## How it works
 
