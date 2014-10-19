@@ -84,7 +84,7 @@ Although `bundler.cmd` is just a simple command-line script, there are a few dif
 
 If you have VS.NET 2010 you should also double-click the `bundler\vs2010-extension\BundlerRunOnSave.vsix` package to install Bundler's VS.NET extension which will automatically runs bundler when any .less, .css, .sass, .js, .coffee and .bundle file is saved.
 
-![Bundler VS.NET Extension installer](http://www.servicestack.net/files/BundlerRunOnSave.png)
+![Bundler VS.NET Extension installer](http://mono.servicestack.net/files/BundlerRunOnSave.png)
 
 *Note: You should reboot VS.NET for the changes to take effect*
 
