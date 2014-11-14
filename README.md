@@ -175,7 +175,7 @@ Will generate the following HTML:
 
 Note: the **?b578fa** suffix are *cache-breakers* added to each file, so any changes invalidates local brower caches - important if you end up hosting your static assets on a CDN.
 
-You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/content/Bundler.cs#L32).
+You can rewrite the generated urls (e.g. to use a CDN instead) by injecting your own [Bundler.DefaultUrlFilter](https://github.com/ServiceStack/Bundler/blob/master/NuGet/Bundler/content/Bundler.cs#L32).
 
 ## Advanced Options 
 
