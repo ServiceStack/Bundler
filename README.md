@@ -137,7 +137,7 @@ To enable MVC or ServiceStack Html helper's add **ServiceStack.Html** namespace 
         <add namespace="System.Web.Mvc.Ajax" />
         <add namespace="System.Web.Mvc.Html" />
         <add namespace="System.Web.Routing" />
-        <add namespace="ServiceStack.Html" />    <!-- Enable Html Exentions -->
+        <add namespace="ServiceStack.Html" />    <!-- Enable Html Extensions -->
       </namespaces>
     </pages>
     </system.web.webPages.razor>
