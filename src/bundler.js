@@ -386,9 +386,9 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
                     var rebaseOptions = {
                         target: path.resolve(bundleName),
                         relativeTo: path.resolve(path.dirname(cssPath)),
-                        noAdvanced: true
+                        advanced: false
                     };
-                    allMinCssArr[i] = new CleanCss(rebaseOptions).minify(minCss);
+                    allMinCssArr[i] = new CleanCss(rebaseOptions).minify(minCss).styles;
 
                     if (! --pending) whenDone();
                 };
@@ -461,7 +461,7 @@ function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(
 
 function getOrCreateMinCss(options, css, cssPath, minCssPath, cb /*cb(minCss)*/) {
     compileAsync(options, "minifying", function (css, cssPath, cb) {
-            cb(new CleanCss(options).minify(css));
+            cb(new CleanCss().minify(css).styles);
         }, css, cssPath, minCssPath, cb);
 }
 
