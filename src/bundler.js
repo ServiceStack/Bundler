@@ -461,7 +461,7 @@ function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(
 
 function getOrCreateMinCss(options, css, cssPath, minCssPath, cb /*cb(minCss)*/) {
     compileAsync(options, "minifying", function (css, cssPath, cb) {
-            cb(new CleanCss(options).minify(css).styles);
+            cb(new CleanCss().minify(css).styles);
         }, css, cssPath, minCssPath, cb);
 }
 
