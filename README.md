@@ -1,3 +1,18 @@
+Update:
+
+## ServiceStackVS modern Single Page App Templates!
+
+To provide the ultimate Single Page App development experience with VS.NET we've created specialized [AngularJS](https://angularjs.org) and [React.js](http://facebook.github.io/react/) Single Page App VS.NET templates focusing on providing an optimal run-time and development experience that provides a pre-configured project structure and starting template focused on fast dev-cycles and feedback loop as well as leveraging a rich Grunt/Gulp.js build ecosystem for optimized packaging and deployments that is accessible with VS.NET's new GUI Grunt Task Runner or command-line .bat scripts.
+
+The Single Page App templates are available in 2 flavours for each of the popular JS Frameworks:
+
+  - [AngularJS App Template](https://github.com/ServiceStack/ServiceStackVS/blob/master/angular-spa.md)
+  - [React.js App Template](https://github.com/ServiceStackApps/Chat-React)
+
+Both these templates are available in the [ServiceStackVS VS.NET Extension](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7).
+
+---
+
 # Bundler
 
 Bundler is a fast, cross-platform, command-line runner (easily integrated into existing IDEs, inc VS.NET) with optimized support for ASP.NET MVC and ServiceStack that statically **compiles**, **minifies** and **combines** your websites **less**, **sass**, **stylus**, **css**, **coffeescript**, **livescript** and **js** files.
