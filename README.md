@@ -1,4 +1,4 @@
-Update:
+New Project Update:
 
 ## ServiceStackVS modern Single Page App Templates!
 
@@ -10,6 +10,8 @@ The Single Page App templates are available in 2 flavours for each of the popula
   - [React.js App Template](https://github.com/ServiceStackApps/Chat-React)
 
 Both these templates are available in the [ServiceStackVS VS.NET Extension](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7).
+
+In contrast this Bundler project below uses a vanilla node.js-based build system configured using plain .txt files and avoids Grunt/Gulp.js by referencing npm packages directly:
 
 ---
 
