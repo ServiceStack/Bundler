@@ -37,7 +37,7 @@ namespace ServiceStack.Html
         {
             var mvcControllerExists = AppDomain.CurrentDomain.GetAssemblies().Any(x => x.GetType("System.Web.Mvc.Controller") != null);
             UseMvc = mvcControllerExists;
-            MapPathFallbackFn = MapHostAbsolutePath;
+            MapPathFallbackFn = s => s.MapServerPath();
         }
 
         // Logic to determine if the app is running in production or dev environment
