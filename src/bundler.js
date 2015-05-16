@@ -261,7 +261,7 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
         var isLiveScript = file.endsWith(".ls");
         var jsFile = isCoffee ?
             file.replace(".coffee", ".js")
-        : isLiveScript ?
+    		: isLiveScript ?
             file.replace(".ls", ".js") :
             file;
 
@@ -376,10 +376,10 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
                     readTextFile(filePath, function (sassText) {
                         getOrCreateSassCss(options, sassText, filePath, cssPath, next);
                     });
-        } else if (isStylus){
-          readTextFile(filePath, function (stylusText) {
-            getOrCreateStylusCss(options, stylusText, filePath, cssPath, next);
-          });
+				} else if (isStylus){
+					readTextFile(filePath, function (stylusText) {
+						getOrCreateStylusCss(options, stylusText, filePath, cssPath, next);
+					});
                 } else {
                     readTextFile(cssPath, next);
                 }
@@ -451,15 +451,15 @@ function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*
 function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(css)*/) {
     compileAsync(options, "compiling", function (stylusText, stylusPath, cb) {
         stylus(stylusText)
-      .set('filename', stylusPath)
-      .use(nib())
-      .render(function(err, css){
-        if(err){
-          throw new Error(err);
-        }
+			.set('filename', stylusPath)
+			.use(nib())
+			.render(function(err, css){
+				if(err){
+					throw new Error(err);
+				}
 
-        cb(css);
-      });
+				cb(css);
+			});
     }, stylusText, stylusPath, cssPath, cb);
 }
 
@@ -497,7 +497,7 @@ function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(co
                             fs.writeFile(compileTextPath, minText, 'utf-8', function(_) {
                                 cb(minText);
                             });
-                        });
+                       	});
                     }
                 };
                 compileFn(text, textPath, onAfterCompiled);
