@@ -261,13 +261,15 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
         var isLiveScript = file.endsWith(".ls");
         var jsFile = isCoffee ?
             file.replace(".coffee", ".js")
-    		: isLiveScript ?
+        : isLiveScript ?
             file.replace(".ls", ".js") :
             file;
 
         var filePath = path.join(bundleDir, file),
               jsPath = path.join(bundleDir, jsFile),
-           minJsPath = path.join(bundleDir, options.minfolder || ".", path.dirname(jsFile), getMinFileName(path.basename(jsFile)));
+           minJsPath = options.minfolder
+                        ? path.join(bundleDir, options.minfolder, path.dirname(jsFile), getMinFileName(path.basename(jsFile)))
+                        : getMinFileName(jsPath);
 
         var i = index++;
         pending++;
@@ -357,7 +359,9 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
 
         var filePath = path.join(bundleDir, file),
              cssPath = path.join(bundleDir, cssFile),
-          minCssPath = path.join(bundleDir, options.minfolder || ".", path.dirname(cssFile), getMinFileName(path.basename(cssFile)));
+          minCssPath = options.minfolder
+                        ? path.join(bundleDir, options.minfolder, path.dirname(cssFile), getMinFileName(path.basename(cssFile)))
+                        : getMinFileName(cssPath);
 
         var i = index++;
         pending++;
@@ -372,10 +376,10 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
                     readTextFile(filePath, function (sassText) {
                         getOrCreateSassCss(options, sassText, filePath, cssPath, next);
                     });
-				} else if (isStylus){
-					readTextFile(filePath, function (stylusText) {
-						getOrCreateStylusCss(options, stylusText, filePath, cssPath, next);
-					});
+        } else if (isStylus){
+          readTextFile(filePath, function (stylusText) {
+            getOrCreateStylusCss(options, stylusText, filePath, cssPath, next);
+          });
                 } else {
                     readTextFile(cssPath, next);
                 }
@@ -447,15 +451,15 @@ function getOrCreateSassCss(options, sassText, sassPath, cssPath, cb /*cb(sass)*
 function getOrCreateStylusCss(options, stylusText, stylusPath, cssPath, cb /*cb(css)*/) {
     compileAsync(options, "compiling", function (stylusText, stylusPath, cb) {
         stylus(stylusText)
-			.set('filename', stylusPath)
-			.use(nib())
-			.render(function(err, css){
-				if(err){
-					throw new Error(err);
-				}
+      .set('filename', stylusPath)
+      .use(nib())
+      .render(function(err, css){
+        if(err){
+          throw new Error(err);
+        }
 
-				cb(css);
-			});
+        cb(css);
+      });
     }, stylusText, stylusPath, cssPath, cb);
 }
 
@@ -493,7 +497,7 @@ function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(co
                             fs.writeFile(compileTextPath, minText, 'utf-8', function(_) {
                                 cb(minText);
                             });
-                       	});
+                        });
                     }
                 };
                 compileFn(text, textPath, onAfterCompiled);
