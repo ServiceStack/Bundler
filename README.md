@@ -4,10 +4,11 @@ New Project Update:
 
 To provide the ultimate Single Page App development experience from VS.NET we've created specialized [AngularJS](https://angularjs.org) and [React.js](http://facebook.github.io/react/) Single Page App VS.NET templates focusing on providing an optimal run-time and development experience using a pre-configured starting project template that leverages the rich Grunt/Gulp.js build ecosystem for optimized packaging and deployments. The individual Grunt tasks are also accessible with VS.NET's new GUI Grunt Task Runner or via command-line .bat scripts.
 
-There are 2 Single Page App templates optimized for building full-stack Apps with the popular JS Frameworks:
+There are 3 Single Page App templates optimized for building full-stack Apps with the popular JS Frameworks:
 
-  - [AngularJS App Template](https://github.com/ServiceStack/ServiceStackVS/blob/master/angular-spa.md)
+  - [TypeScript React Template](https://github.com/ServiceStackApps/typescript-react-template/)
   - [React.js App Template](https://github.com/ServiceStackApps/Chat-React)
+  - [AngularJS App Template](https://github.com/ServiceStack/ServiceStackVS/blob/master/angular-spa.md)
 
 Both these templates are available in the [ServiceStackVS VS.NET Extension](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7).
 
