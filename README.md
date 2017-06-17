@@ -1,18 +1,14 @@
 New Project Update:
 
-## ServiceStackVS modern Single Page App Templates!
+## [ServiceStackVS modern Single Page App Templates!](http://docs.servicestack.net/templates-single-page-apps)
 
-To provide the ultimate Single Page App development experience from VS.NET we've created specialized [AngularJS](https://angularjs.org) and [React.js](http://facebook.github.io/react/) Single Page App VS.NET templates focusing on providing an optimal run-time and development experience using a pre-configured starting project template that leverages the rich Grunt/Gulp.js build ecosystem for optimized packaging and deployments. The individual Grunt tasks are also accessible with VS.NET's new GUI Grunt Task Runner or via command-line .bat scripts.
+To provide the ultimate Single Page App development experience from VS.NET we've developed the gold standard [Angular](https://angular.io) and [React](http://facebook.github.io/react/), [Vue.js](https://vuejs.org) and [Aurelia](http://aurelia.io) Single Page App VS.NET templates for ASP.NET focusing on providing an optimal run-time and development experience using a pre-configured starting project template that leverages the world-class Webpack build ecosystem for optimized debugging, packaging and deployments. 
 
-There are 3 Single Page App templates optimized for building full-stack Apps with the popular JS Frameworks:
+[![](https://raw.githubusercontent.com/ServiceStack/docs/master/docs/images/ssvs/spa-templates-overview.png)](http://docs.servicestack.net/templates-single-page-apps)
 
-  - [TypeScript React Template](https://github.com/ServiceStackApps/typescript-react-template/)
-  - [React.js App Template](https://github.com/ServiceStackApps/Chat-React)
-  - [AngularJS App Template](https://github.com/ServiceStack/ServiceStackVS/blob/master/angular-spa.md)
+All Single Page App templates are available in the [ServiceStackVS VS.NET Extension](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7).
 
-Both these templates are available in the [ServiceStackVS VS.NET Extension](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7).
-
-In contrast this Bundler project below uses a vanilla node.js-based build system configured using plain .txt files and avoids Grunt/Gulp.js by referencing npm packages directly:
+In contrast, this Bundler project below uses a vanilla node.js-based build system configured using plain .txt files and avoids Gulp.js by referencing npm packages directly:
 
 ---
 
