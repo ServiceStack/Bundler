@@ -267,7 +267,9 @@ function processJsBundle(options, jsBundle, bundleDir, jsFiles, bundleName, cb) 
 
         var filePath = path.join(bundleDir, file),
               jsPath = path.join(bundleDir, jsFile),
-           minJsPath = getMinFileName(jsPath);
+           minJsPath = options.minfolder
+                        ? path.join(bundleDir, options.minfolder, path.dirname(jsFile), getMinFileName(path.basename(jsFile)))
+                        : getMinFileName(jsPath);
 
         var i = index++;
         pending++;
@@ -357,7 +359,9 @@ function processCssBundle(options, cssBundle, bundleDir, cssFiles, bundleName, c
 
         var filePath = path.join(bundleDir, file),
              cssPath = path.join(bundleDir, cssFile),
-          minCssPath = getMinFileName(cssPath);
+          minCssPath = options.minfolder
+                        ? path.join(bundleDir, options.minfolder, path.dirname(cssFile), getMinFileName(path.basename(cssFile)))
+                        : getMinFileName(cssPath);
 
         var i = index++;
         pending++;
@@ -489,9 +493,11 @@ function compileAsync(options, mode, compileFn /*compileFn(text, textPath, cb(co
                     if (options.outputbundleonly) {
                         cb(minText);
                     } else {
-                        fs.writeFile(compileTextPath, minText, 'utf-8', function(_) {
-                            cb(minText);
-                        });
+                        fs.mkdirp(path.dirname(compileTextPath), null, function(_) {
+                            fs.writeFile(compileTextPath, minText, 'utf-8', function(_) {
+                                cb(minText);
+                            });
+                       	});
                     }
                 };
                 compileFn(text, textPath, onAfterCompiled);
@@ -544,3 +550,13 @@ function readTextFile(filePath, cb) {
         cb(stripBOM(fileContents));
     });
 }
+
+fs.mkdirp = function(dirpath, mode, callback) {
+  fs.mkdir(dirpath, mode, function(error) {
+    if (error && error.errno === 34) {
+      fs.mkdirp(path.dirname(dirpath), mode, callback);
+      fs.mkdirp(dirpath, mode, callback);
+    }
+    callback && callback(error);
+  });
+};
